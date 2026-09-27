@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+
+# Local manual qualification workloads (not product artifacts).
+fifteen_minute_workload.py
+long_running_workload.py
+*.egg-info/
+.coverage
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+dist/
+build/
+*.log
+.DS_Store

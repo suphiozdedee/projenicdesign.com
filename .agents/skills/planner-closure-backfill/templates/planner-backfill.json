@@ -1,0 +1,41 @@
+{
+  "schema": "ccb.planner.backfill_proposal.v1",
+  "mode": "task_set_closure",
+  "expected_plan_revision": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "task_or_task_set_id": "task-set-a",
+  "task_or_task_set_revision": 1,
+  "closure_evidence_digest": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "aggregate_result": "pass",
+  "result": "closure_complete",
+  "brief_summary": "durable compact summary",
+  "roadmap_transitions": [],
+  "todo_transitions": [],
+  "decision_refs": [],
+  "open_question_refs": [],
+  "evidence_refs": ["docs/plantree/plans/example-plan/task-sets/task-set-a/closure.json"],
+  "accepted_scope": [],
+  "unresolved_scope": [],
+  "blockers": [],
+  "replan_inputs": [],
+  "next_milestone": {
+    "kind": "workflow_terminal",
+    "ref": "stable-milestone-ref",
+    "rationale": "semantic reason"
+  },
+  "frontdesk_notification_required": true,
+  "frontdesk_status": {
+    "schema": "ccb.planner.frontdesk_status.v1",
+    "notification_identity": "task-set-a",
+    "aggregate_result": "pass",
+    "accepted_scope": [],
+    "unresolved_scope": [],
+    "blockers": [],
+    "next_milestone": {
+      "kind": "workflow_terminal",
+      "ref": "stable-milestone-ref",
+      "rationale": "semantic reason"
+    },
+    "evidence_refs": ["docs/plantree/plans/example-plan/task-sets/task-set-a/closure.json"],
+    "user_report_body": "factual user-facing report"
+  }
+}

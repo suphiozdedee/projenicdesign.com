@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CRATE_DIR="$REPO_ROOT/tools/ccb-agent-sidebar"
+TARGET_BIN="$CRATE_DIR/target/release/ccb-agent-sidebar"
+OUT_BIN="$REPO_ROOT/bin/ccb-agent-sidebar"
+
+if [[ ! -f "$CRATE_DIR/Cargo.toml" ]]; then
+  echo "ERROR: missing $CRATE_DIR/Cargo.toml" >&2
+  exit 1
+fi
+
+if ! command -v cargo >/dev/null 2>&1; then
+  echo "ERROR: cargo is required to build ccb-agent-sidebar" >&2
+  exit 1
+fi
+
+cargo build --release --manifest-path "$CRATE_DIR/Cargo.toml"
+cp -f "$TARGET_BIN" "$OUT_BIN"
+chmod +x "$OUT_BIN"
+echo "Built $OUT_BIN"

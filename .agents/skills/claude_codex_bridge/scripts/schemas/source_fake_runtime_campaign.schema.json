@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ccb.g5.source_fake_runtime_campaign.v1",
+  "title": "G5 source/fake runtime campaign",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "execution_mode", "provider", "coverage",
+    "required_scenarios", "row_count", "rows"
+  ],
+  "properties": {
+    "schema": {"const": "ccb.g5.source_fake_runtime_campaign.v1"},
+    "status": {"const": "pass"},
+    "execution_mode": {"const": "source_fake_runtime"},
+    "provider": {"const": "fake"},
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["real_provider", "live_provider", "disclaimer"],
+      "properties": {
+        "real_provider": {"const": false},
+        "live_provider": {"const": false},
+        "disclaimer": {"type": "string", "minLength": 1}
+      }
+    },
+    "required_scenarios": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "pass", "reviewer_rework_pass", "reviewer_rework_exhausted_blocked",
+          "worker_failure_partial", "all_workers_failed_blocked", "reviewer_provider_failure",
+          "round_reviewer_blocked", "integration_verification_failure",
+          "root_verification_failure", "restart_replay_pass"
+        ]
+      }
+    },
+    "row_count": {"const": 10},
+    "rows": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "items": {"$ref": "#/$defs/row"}
+    }
+  },
+  "$defs": {
+    "scenario": {
+      "enum": [
+        "pass", "reviewer_rework_pass", "reviewer_rework_exhausted_blocked",
+        "worker_failure_partial", "all_workers_failed_blocked", "reviewer_provider_failure",
+        "round_reviewer_blocked", "integration_verification_failure",
+        "root_verification_failure", "restart_replay_pass"
+      ]
+    },
+    "rawDigests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle", "scheduler_state", "round", "integration_state", "raw_observed"],
+      "properties": {
+        "bundle": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scheduler_state": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "round": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "integration_state": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "raw_observed": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "postCleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owned_processes", "socket_entries", "connectable_sockets", "child_worktrees"],
+      "properties": {
+        "owned_processes": {"type": "array", "maxItems": 0},
+        "socket_entries": {"type": "array", "maxItems": 0},
+        "connectable_sockets": {"type": "array", "maxItems": 0},
+        "child_worktrees": {"type": "array", "maxItems": 0}
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema", "scenario", "classification", "project_root", "task_id", "loop_id",
+        "task_status", "round_result", "round_source", "node_count", "requested_shape", "report_path",
+        "report_sha256", "raw_evidence_sha256", "release", "post_cleanup"
+      ],
+      "properties": {
+        "schema": {"const": "ccb.g5.source_fake_runtime_evidence_row.v1"},
+        "scenario": {"$ref": "#/$defs/scenario"},
+        "classification": {"enum": ["pass", "valid_non_success"]},
+        "project_root": {"type": "string", "minLength": 1},
+        "task_id": {"const": "g5-multi-workgroup-task"},
+        "loop_id": {"type": "string", "minLength": 1},
+        "task_status": {"enum": ["done", "partial", "blocked", "replan_required"]},
+        "round_result": {"enum": ["pass", "partial", "blocked", "replan_required"]},
+        "round_source": {"type": "string", "minLength": 1},
+        "node_count": {"type": "integer", "minimum": 1, "maximum": 4},
+        "requested_shape": {"enum": ["parallel", "mixed_dag"]},
+        "report_path": {"type": "string", "minLength": 1},
+        "report_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "raw_evidence_sha256": {"$ref": "#/$defs/rawDigests"},
+        "release": {"type": "object"},
+        "post_cleanup": {"$ref": "#/$defs/postCleanup"}
+      }
+    }
+  }
+}

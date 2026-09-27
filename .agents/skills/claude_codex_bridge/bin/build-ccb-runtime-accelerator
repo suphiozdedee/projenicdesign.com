@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+WORKSPACE="$REPO_ROOT/rust"
+TARGET_BIN="$WORKSPACE/target/release/ccb-runtime-accelerator"
+OUT_BIN="$REPO_ROOT/bin/ccb-runtime-accelerator"
+
+if [[ ! -f "$WORKSPACE/Cargo.toml" ]]; then
+  echo "ERROR: missing $WORKSPACE/Cargo.toml" >&2
+  exit 1
+fi
+
+if ! command -v cargo >/dev/null 2>&1; then
+  echo "ERROR: cargo is required to build ccb-runtime-accelerator" >&2
+  exit 1
+fi
+
+cargo build --release --manifest-path "$WORKSPACE/Cargo.toml" -p ccb-runtime-accelerator
+cp -f "$TARGET_BIN" "$OUT_BIN"
+chmod +x "$OUT_BIN"
+echo "Built $OUT_BIN"

@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ccb.g5.source_fake_runtime_report.v1",
+  "title": "G5 source/fake runtime report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema", "status", "execution_mode", "coverage", "project_root", "project_id",
+    "role_store", "provider", "scenario", "expected", "observed", "config_version",
+    "matrix", "task_id", "loop_id", "bundle", "jobs", "integration", "task", "round",
+    "release", "root_changes", "runner_results", "execution", "checks", "paths",
+    "raw_evidence_sha256", "command_log", "external_cleanup", "post_cleanup"
+  ],
+  "properties": {
+    "schema": {"const": "ccb.g5.source_fake_runtime_report.v1"},
+    "status": {"const": "pass"},
+    "execution_mode": {"const": "source_fake_runtime"},
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "real_provider", "live_provider", "disclaimer"],
+      "properties": {
+        "provider": {"const": "fake"},
+        "real_provider": {"const": false},
+        "live_provider": {"const": false},
+        "disclaimer": {"type": "string", "minLength": 1}
+      }
+    },
+    "project_root": {"type": "string", "minLength": 1},
+    "project_id": {"type": ["string", "null"]},
+    "role_store": {"type": "string", "minLength": 1},
+    "provider": {"const": "fake"},
+    "scenario": {"$ref": "#/$defs/scenario"},
+    "expected": {"$ref": "#/$defs/outcome"},
+    "observed": {"$ref": "#/$defs/outcome"},
+    "config_version": {"const": 3},
+    "matrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requested_count", "requested_shape"],
+      "properties": {
+        "requested_count": {"type": "integer", "minimum": 1, "maximum": 4},
+        "requested_shape": {"enum": ["parallel", "mixed_dag"]}
+      }
+    },
+    "task_id": {"const": "g5-multi-workgroup-task"},
+    "loop_id": {"type": "string", "minLength": 1},
+    "bundle": {"type": "object"},
+    "jobs": {"type": "object"},
+    "integration": {"type": "object"},
+    "task": {"type": "object"},
+    "round": {"type": "object"},
+    "release": {"type": "object"},
+    "root_changes": {"type": "object"},
+    "runner_results": {"type": "array"},
+    "execution": {"type": "object"},
+    "checks": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {"const": true}
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["report", "bundle", "scheduler_state", "round", "integration_state", "raw_observed"],
+      "properties": {
+        "report": {"type": "string", "minLength": 1},
+        "bundle": {"type": "string", "minLength": 1},
+        "scheduler_state": {"type": "string", "minLength": 1},
+        "round": {"type": "string", "minLength": 1},
+        "integration_state": {"type": "string", "minLength": 1},
+        "raw_observed": {"type": "string", "minLength": 1}
+      }
+    },
+    "raw_evidence_sha256": {"$ref": "#/$defs/rawDigests"},
+    "command_log": {"type": "array"},
+    "external_cleanup": {"type": "object"},
+    "post_cleanup": {"$ref": "#/$defs/postCleanup"}
+  },
+  "$defs": {
+    "scenario": {
+      "enum": [
+        "pass", "reviewer_rework_pass", "reviewer_rework_exhausted_blocked",
+        "worker_failure_partial", "all_workers_failed_blocked", "reviewer_provider_failure",
+        "round_reviewer_blocked", "integration_verification_failure",
+        "root_verification_failure", "restart_replay_pass"
+      ]
+    },
+    "outcome": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["classification", "task_status", "round_result", "round_source"],
+      "properties": {
+        "classification": {"enum": ["pass", "valid_non_success"]},
+        "task_status": {"enum": ["done", "partial", "blocked", "replan_required"]},
+        "round_result": {"enum": ["pass", "partial", "blocked", "replan_required"]},
+        "round_source": {"type": "string", "minLength": 1}
+      }
+    },
+    "rawDigests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle", "scheduler_state", "round", "integration_state", "raw_observed"],
+      "properties": {
+        "bundle": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scheduler_state": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "round": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "integration_state": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "raw_observed": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "postCleanup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owned_processes", "socket_entries", "connectable_sockets", "child_worktrees"],
+      "properties": {
+        "owned_processes": {"type": "array", "maxItems": 0},
+        "socket_entries": {"type": "array", "maxItems": 0},
+        "connectable_sockets": {"type": "array", "maxItems": 0},
+        "child_worktrees": {"type": "array", "maxItems": 0}
+      }
+    }
+  }
+}

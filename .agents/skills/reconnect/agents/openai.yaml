@@ -1,0 +1,6 @@
+interface:
+  display_name: "Reconnect"
+  short_description: "Keep tmux Codex running through disconnects"
+  default_prompt: "Use $reconnect on to protect this tmux Codex thread from disconnects."
+policy:
+  allow_implicit_invocation: false

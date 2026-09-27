@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCB GitHub Release Maintainer"
+  short_description: "Manage CCB dev, release, and GitHub state"
+  default_prompt: "Use $ccb-github to classify CCB changes, commit/push development work, wait for required workflows, and run dev/prepare/published checks until the GitHub-facing result is verified."

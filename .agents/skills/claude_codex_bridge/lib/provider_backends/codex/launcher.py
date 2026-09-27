@@ -1,0 +1,126 @@
+from __future__ import annotations
+
+from pathlib import Path
+
+from agents.models import AgentSpec
+from cli.context import CliContext
+from cli.models import ParsedStartCommand
+from provider_core.contracts import ProviderRuntimeLauncher
+from provider_backends.codex.runtime_artifacts import codex_runtime_artifact_layout
+from provider_backends.codex.session_authority import (
+    current_memory_projection_fingerprint,
+    current_provider_authority_fingerprint,
+)
+from provider_profiles import load_resolved_provider_profile
+from workspace.models import WorkspacePlan
+from .launcher_runtime import build_start_cmd as _build_start_cmd_impl
+from .launcher_runtime import post_launch as _post_launch_impl
+from .launcher_runtime import prepare_runtime as _prepare_runtime_impl
+from .launcher_runtime import resolve_codex_home_layout as _resolve_codex_home_layout_impl
+
+
+def build_runtime_launcher() -> ProviderRuntimeLauncher:
+    return ProviderRuntimeLauncher(
+        provider='codex',
+        launch_mode='codex_tmux',
+        prepare_runtime=prepare_runtime,
+        prepare_launch_context=prepare_launch_context,
+        build_start_cmd=build_start_cmd,
+        build_session_payload=build_session_payload,
+        post_launch=post_launch,
+    )
+
+
+def prepare_runtime(runtime_dir: Path) -> dict[str, object]:
+    return _prepare_runtime_impl(runtime_dir)
+
+
+def prepare_launch_context(
+    context: CliContext,
+    spec: AgentSpec,
+    plan: WorkspacePlan,
+    runtime_dir: Path,
+    prepared_state: dict[str, object],
+) -> dict[str, object]:
+    del runtime_dir
+    payload = dict(prepared_state)
+    payload['agent_name'] = spec.name
+    payload['project_root'] = str(context.project.project_root)
+    payload['workspace_path'] = str(prepared_state.get('run_cwd') or plan.workspace_path)
+    payload['agent_events_path'] = str(context.paths.agent_events_path(spec.name))
+    return payload
+
+
+def build_start_cmd(
+    command: ParsedStartCommand,
+    spec: AgentSpec,
+    runtime_dir: Path,
+    launch_session_id: str,
+    *,
+    prepared_state: dict[str, object] | None = None,
+) -> str:
+    return _build_start_cmd_impl(command, spec, runtime_dir, launch_session_id, prepared_state=prepared_state)
+
+
+def build_session_payload(
+    context: CliContext,
+    spec: AgentSpec,
+    plan: WorkspacePlan,
+    runtime_dir: Path,
+    run_cwd: Path,
+    pane_id: str,
+    pane_title_marker: str,
+    start_cmd: str,
+    launch_session_id: str,
+    prepared_state: dict[str, object],
+) -> dict[str, object]:
+    input_fifo = Path(prepared_state['input_fifo'])
+    output_fifo = Path(prepared_state['output_fifo'])
+    artifacts = codex_runtime_artifact_layout(runtime_dir)
+    profile = load_resolved_provider_profile(runtime_dir)
+    layout = _resolve_codex_home_layout_impl(runtime_dir, profile)
+    payload = {
+        'ccb_session_id': launch_session_id,
+        'agent_name': spec.name,
+        'ccb_project_id': context.project.project_id,
+        'runtime_dir': str(runtime_dir),
+        'completion_artifact_dir': str(artifacts.completion_dir),
+        'input_fifo': str(input_fifo),
+        'output_fifo': str(output_fifo),
+        'terminal': str(prepared_state.get('ccb_backend_impl', 'tmux')).strip() or 'tmux',
+        'tmux_session': pane_id,
+        'pane_id': pane_id,
+        'pane_title_marker': pane_title_marker,
+        'tmux_log': str(artifacts.bridge_log),
+        'bridge_log': str(artifacts.bridge_log),
+        'workspace_path': str(plan.workspace_path),
+        'work_dir': str(run_cwd),
+        'start_dir': str(context.project.project_root),
+        'codex_start_cmd': start_cmd,
+        'start_cmd': start_cmd,
+    }
+    payload['codex_session_root'] = str(layout.session_root)
+    if layout.codex_home is not None:
+        payload['codex_home'] = str(layout.codex_home)
+    memory_projection_fingerprint = current_memory_projection_fingerprint(runtime_dir)
+    if memory_projection_fingerprint:
+        payload['codex_memory_projection_sha256'] = memory_projection_fingerprint
+    provider_authority_fingerprint = current_provider_authority_fingerprint(profile, runtime_dir=runtime_dir)
+    if provider_authority_fingerprint:
+        payload['codex_provider_authority_fingerprint'] = provider_authority_fingerprint
+    if str(prepared_state.get('ccb_continuation_launch_mode') or '').strip() == 'fork':
+        payload['ccb_continuation_launch_mode'] = 'fork'
+    if bool(prepared_state.get('codex_app_server_enabled')):
+        payload['codex_app_server_enabled'] = True
+        payload['codex_app_server_socket'] = str(prepared_state.get('codex_app_server_socket') or '')
+        payload['codex_app_server_remote_marker'] = str(
+            prepared_state.get('codex_app_server_remote_marker') or ''
+        )
+    return payload
+
+
+def post_launch(backend: object, pane_id: str, runtime_dir: Path, launch_session_id: str, prepared_state: dict[str, object]) -> None:
+    _post_launch_impl(backend, pane_id, runtime_dir, launch_session_id, prepared_state)
+
+
+__all__ = ['build_runtime_launcher', 'build_start_cmd']

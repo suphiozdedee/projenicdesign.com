@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCB Compact"
+  short_description: "Compact mounted CCB agent context"
+  default_prompt: "Use $ccb-compact to compact all mounted CCB agent contexts, or name specific agents to compact only those panes."

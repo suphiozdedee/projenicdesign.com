@@ -1,0 +1,218 @@
+#!/usr/bin/env python3
+"""Small Linux-native Hindsight API wrapper for CCB agents.
+
+This intentionally talks to the already-running Hindsight service over HTTP.
+It does not invoke Docker, Windows interop, or the Rust CLI build output.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import sys
+import urllib.error
+import urllib.parse
+import urllib.request
+
+
+DEFAULT_API_URL = "http://127.0.0.1:18888"
+
+
+class HindsightError(RuntimeError):
+    pass
+
+
+def api_url() -> str:
+    return os.environ.get("HINDSIGHT_API_URL", DEFAULT_API_URL).rstrip("/")
+
+
+def request(method: str, path: str, payload: object | None = None) -> object:
+    if not path.startswith("/"):
+        path = f"/{path}"
+    body = None
+    headers = {"Accept": "application/json"}
+    if payload is not None:
+        body = json.dumps(payload).encode("utf-8")
+        headers["Content-Type"] = "application/json"
+
+    api_key = os.environ.get("HINDSIGHT_API_KEY") or os.environ.get("HINDSIGHT_API_TOKEN")
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    req = urllib.request.Request(
+        f"{api_url()}{path}",
+        data=body,
+        headers=headers,
+        method=method.upper(),
+    )
+
+    try:
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            raw = resp.read()
+            content_type = resp.headers.get("content-type", "")
+    except urllib.error.HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise HindsightError(f"HTTP {exc.code} {method.upper()} {path}: {detail}") from exc
+    except urllib.error.URLError as exc:
+        raise HindsightError(f"cannot reach Hindsight API at {api_url()}: {exc.reason}") from exc
+
+    if not raw:
+        return {}
+    text = raw.decode("utf-8", errors="replace")
+    if "json" in content_type:
+        return json.loads(text)
+    return text
+
+
+def emit(value: object, output: str) -> None:
+    if output == "raw" and isinstance(value, str):
+        print(value)
+        return
+    print(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True))
+
+
+def add_common(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "-o",
+        "--output",
+        choices=("json", "raw"),
+        default="json",
+        help="Output format. JSON is the default.",
+    )
+
+
+def handle(args: argparse.Namespace) -> object:
+    if args.command == "health":
+        return request("GET", "/health")
+    if args.command == "version":
+        return request("GET", "/version")
+    if args.command == "raw":
+        payload = json.loads(args.json) if args.json else None
+        return request(args.method, args.path, payload)
+
+    if args.command == "bank":
+        if args.bank_command == "list":
+            return request("GET", "/v1/default/banks")
+        if args.bank_command == "stats":
+            return request("GET", f"/v1/default/banks/{quote(args.bank_id)}/stats")
+
+    if args.command == "memory":
+        bank = quote(args.bank_id)
+        if args.memory_command == "list":
+            query = urllib.parse.urlencode({"limit": args.limit, "offset": args.offset})
+            return request("GET", f"/v1/default/banks/{bank}/memories/list?{query}")
+        if args.memory_command == "retain":
+            item: dict[str, str] = {"content": args.content}
+            if args.context:
+                item["context"] = args.context
+            if args.document_id:
+                item["document_id"] = args.document_id
+            return request("POST", f"/v1/default/banks/{bank}/memories", {"items": [item]})
+        if args.memory_command == "recall":
+            return request(
+                "POST",
+                f"/v1/default/banks/{bank}/memories/recall",
+                {"query": args.query, "thinking_budget": args.thinking_budget},
+            )
+        if args.memory_command == "reflect":
+            payload: dict[str, object] = {
+                "query": args.query,
+                "thinking_budget": args.thinking_budget,
+            }
+            if args.context:
+                payload["context"] = args.context
+            return request("POST", f"/v1/default/banks/{bank}/reflect", payload)
+
+    raise HindsightError("unsupported command")
+
+
+def quote(value: str) -> str:
+    return urllib.parse.quote(value, safe="")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        prog="hindsight",
+        description="Linux-native wrapper for the running Hindsight HTTP API.",
+    )
+    parser.add_argument(
+        "--api-url",
+        default=None,
+        help=f"Override API URL for this invocation. Default: {DEFAULT_API_URL}",
+    )
+    parser.add_argument(
+        "--version",
+        action="store_true",
+        help="Print the Hindsight API version and exit.",
+    )
+    add_common(parser)
+
+    sub = parser.add_subparsers(dest="command")
+
+    sub.add_parser("health")
+    sub.add_parser("version")
+
+    raw = sub.add_parser("raw", help="Call an arbitrary API path.")
+    raw.add_argument("method")
+    raw.add_argument("path")
+    raw.add_argument("json", nargs="?")
+
+    bank = sub.add_parser("bank")
+    bank_sub = bank.add_subparsers(dest="bank_command", required=True)
+    bank_sub.add_parser("list")
+    bank_stats = bank_sub.add_parser("stats")
+    bank_stats.add_argument("bank_id")
+
+    memory = sub.add_parser("memory")
+    memory_sub = memory.add_subparsers(dest="memory_command", required=True)
+
+    mem_list = memory_sub.add_parser("list")
+    mem_list.add_argument("bank_id")
+    mem_list.add_argument("--limit", type=int, default=20)
+    mem_list.add_argument("--offset", type=int, default=0)
+
+    retain = memory_sub.add_parser("retain")
+    retain.add_argument("bank_id")
+    retain.add_argument("content")
+    retain.add_argument("--context")
+    retain.add_argument("--document-id")
+
+    recall = memory_sub.add_parser("recall")
+    recall.add_argument("bank_id")
+    recall.add_argument("query")
+    recall.add_argument("--thinking-budget", type=int, default=50)
+
+    reflect = memory_sub.add_parser("reflect")
+    reflect.add_argument("bank_id")
+    reflect.add_argument("query")
+    reflect.add_argument("--thinking-budget", type=int, default=30)
+    reflect.add_argument("--context")
+
+    return parser
+
+
+def main() -> int:
+    parser = build_parser()
+    args = parser.parse_args()
+    if args.api_url:
+        os.environ["HINDSIGHT_API_URL"] = args.api_url
+
+    try:
+        if args.version:
+            value = request("GET", "/version")
+            api_version = value.get("api_version") if isinstance(value, dict) else value
+            print(api_version)
+            return 0
+        if not args.command:
+            parser.print_help()
+            return 2
+        emit(handle(args), args.output)
+        return 0
+    except (HindsightError, json.JSONDecodeError) as exc:
+        print(f"hindsight: {exc}", file=sys.stderr)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

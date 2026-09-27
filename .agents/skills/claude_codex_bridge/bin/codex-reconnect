@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# codex-reconnect — CCB launcher for the bundled reconnect supervisor.
+src="${BASH_SOURCE[0]}"
+while [[ -L "$src" ]]; do
+  dir="$(cd -P "$(dirname "$src")" && pwd)"
+  src="$(readlink "$src")"
+  [[ "$src" != /* ]] && src="$dir/$src"
+done
+SCRIPT_DIR="$(cd -P "$(dirname "$src")" && pwd)"
+exec "$SCRIPT_DIR/_ccb-python" "$SCRIPT_DIR/codex-reconnect.py" "$@"

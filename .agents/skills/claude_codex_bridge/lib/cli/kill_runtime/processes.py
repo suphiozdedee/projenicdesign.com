@@ -1,0 +1,179 @@
+from __future__ import annotations
+
+import os
+import signal
+import subprocess
+import time
+from collections.abc import Callable
+from pathlib import Path
+
+
+def kill_pid(pid: int, *, force: bool = False) -> bool:
+    if pid <= 0:
+        return False
+    try:
+        if os.name == "nt":
+            if force:
+                subprocess.run(["taskkill", "/F", "/PID", str(pid)], capture_output=True)
+            else:
+                subprocess.run(["taskkill", "/PID", str(pid)], capture_output=True)
+        else:
+            sig = signal.SIGKILL if force else signal.SIGTERM
+            os.kill(pid, sig)
+        return True
+    except Exception:
+        return False
+
+
+def is_pid_alive(pid: int) -> bool:
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        return _is_pid_alive_windows(pid)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+    if _proc_pid_state(pid) == "Z":
+        return False
+    return True
+
+
+def _is_pid_alive_windows(pid: int) -> bool:
+    try:
+        import ctypes
+        from ctypes import wintypes
+    except Exception:
+        return False
+
+    process_query_limited_information = 0x1000
+    still_active = 259
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    handle = kernel32.OpenProcess(process_query_limited_information, False, int(pid))
+    if not handle:
+        return False
+    try:
+        exit_code = wintypes.DWORD()
+        if not kernel32.GetExitCodeProcess(handle, ctypes.byref(exit_code)):
+            return False
+        return int(exit_code.value) == still_active
+    finally:
+        kernel32.CloseHandle(handle)
+
+
+def terminate_pid_tree(
+    pid: int,
+    *,
+    timeout_s: float = 1.0,
+    is_pid_alive_fn: Callable[[int], bool] = is_pid_alive,
+) -> bool:
+    if pid <= 0:
+        return False
+    if not is_pid_alive_fn(pid):
+        return True
+
+    if _kill_pid_tree_once(pid, force=False):
+        if _wait_for_pid_exit(pid, timeout_s=timeout_s, is_pid_alive_fn=is_pid_alive_fn):
+            return True
+
+    if not is_pid_alive_fn(pid):
+        return True
+
+    if _kill_pid_tree_once(pid, force=True):
+        if _wait_for_pid_exit(pid, timeout_s=max(timeout_s, 0.2), is_pid_alive_fn=is_pid_alive_fn):
+            return True
+
+    return not is_pid_alive_fn(pid)
+
+
+def _kill_pid_tree_once(pid: int, *, force: bool) -> bool:
+    if pid <= 0:
+        return False
+    if os.name == "nt":
+        return _kill_pid_tree_windows(pid, force=force)
+    return _kill_pid_tree_posix(pid, force=force)
+
+
+def _kill_pid_tree_windows(pid: int, *, force: bool) -> bool:
+    try:
+        subprocess.run(_taskkill_tree_args(pid, force=force), capture_output=True)
+        return True
+    except Exception:
+        return False
+
+
+def _taskkill_tree_args(pid: int, *, force: bool) -> list[str]:
+    args = ["taskkill", "/T", "/PID", str(pid)]
+    if force:
+        args.insert(1, "/F")
+    return args
+
+
+def _kill_pid_tree_posix(pid: int, *, force: bool) -> bool:
+    sig = signal.SIGKILL if force else signal.SIGTERM
+    if _kill_process_group(pid, sig):
+        return True
+    return kill_pid(pid, force=force)
+
+
+def _kill_process_group(pid: int, sig: signal.Signals) -> bool:
+    pgid = _safe_getpgid(pid)
+    current_pgid = _safe_getpgrp()
+    if pgid is None or pgid <= 1 or pgid == current_pgid:
+        return False
+    try:
+        os.killpg(pgid, sig)
+        return True
+    except Exception:
+        return False
+
+
+def _wait_for_pid_exit(pid: int, *, timeout_s: float, is_pid_alive_fn: Callable[[int], bool]) -> bool:
+    deadline = time.time() + max(0.0, float(timeout_s))
+    while time.time() < deadline:
+        if not is_pid_alive_fn(pid):
+            return True
+        time.sleep(0.05)
+    return not is_pid_alive_fn(pid)
+
+
+def _safe_getpgid(pid: int) -> int | None:
+    try:
+        return os.getpgid(pid)
+    except Exception:
+        return None
+
+
+def _safe_getpgrp() -> int | None:
+    try:
+        return os.getpgrp()
+    except Exception:
+        return None
+
+
+def _proc_pid_state(pid: int, *, proc_root: Path = Path("/proc")) -> str | None:
+    if os.name == "nt" or pid <= 0:
+        return None
+    try:
+        return _parse_proc_stat_state((proc_root / str(pid) / "stat").read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _parse_proc_stat_state(text: str) -> str | None:
+    try:
+        after_comm = text.rsplit(") ", 1)[1]
+    except Exception:
+        return None
+    fields = after_comm.split()
+    if not fields:
+        return None
+    state = fields[0].strip()
+    return state[:1] or None
+
+
+__all__ = ["is_pid_alive", "kill_pid", "terminate_pid_tree"]

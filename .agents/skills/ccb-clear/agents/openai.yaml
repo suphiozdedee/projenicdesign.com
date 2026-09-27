@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCB Clear"
+  short_description: "Clear mounted CCB agent context"
+  default_prompt: "Use $ccb-clear to clear all mounted CCB agent contexts, or name specific agents to clear only those panes."

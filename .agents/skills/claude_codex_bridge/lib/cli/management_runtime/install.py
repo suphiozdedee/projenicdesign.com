@@ -1,0 +1,433 @@
+from __future__ import annotations
+
+from collections.abc import Mapping
+from dataclasses import dataclass
+import json
+import os
+from pathlib import Path
+import platform
+import re
+import shutil
+import subprocess
+import sys
+import tarfile
+import tempfile
+import time
+import urllib.request
+
+
+NPM_PACKAGE_NAME = "@seemseam/ccb"
+
+
+@dataclass(frozen=True)
+class NpmInstallProvenance:
+    package_root: Path
+    package_name: str
+    package_version: str
+
+
+def npm_install_provenance(
+    *,
+    script_root: Path,
+    env: Mapping[str, str] | None = None,
+) -> NpmInstallProvenance | None:
+    """Return runner-attested npm ownership for the current vendored payload.
+
+    The npm wrapper is the only component allowed to claim this provenance.  We
+    validate its package manifest and require the executing release to live
+    below that package's ``.ccb-release`` directory so a stale or inherited
+    environment marker cannot redirect update ownership for another install.
+    """
+
+    values = env if env is not None else os.environ
+    if str(values.get("CCB_INSTALL_KIND") or "").strip() != "npm":
+        return None
+    package_name = str(values.get("CCB_NPM_PACKAGE_NAME") or "").strip()
+    package_version = str(values.get("CCB_NPM_PACKAGE_VERSION") or "").strip()
+    package_root_text = str(values.get("CCB_NPM_PACKAGE_ROOT") or "").strip()
+    if package_name != NPM_PACKAGE_NAME or not package_version or not package_root_text:
+        return None
+    package_root = Path(package_root_text).expanduser().resolve(strict=False)
+    payload_root = (package_root / ".ccb-release").resolve(strict=False)
+    executing_root = Path(script_root).expanduser().resolve(strict=False)
+    if not _is_within_directory(payload_root, executing_root):
+        return None
+    manifest_path = package_root / "package.json"
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError):
+        return None
+    if manifest.get("name") != package_name or str(manifest.get("version") or "").strip() != package_version:
+        return None
+    return NpmInstallProvenance(
+        package_root=package_root,
+        package_name=package_name,
+        package_version=package_version,
+    )
+
+
+def npm_update_command(target_version: str | None = None) -> str:
+    target = str(target_version or "latest").strip().lstrip("v") or "latest"
+    if target != "latest" and re.fullmatch(r"\d+(?:\.\d+)*(?:[-+][0-9A-Za-z.-]+)?", target) is None:
+        target = "latest"
+    return f"npm install -g {NPM_PACKAGE_NAME}@{target}"
+
+
+def _is_within_directory(root: Path, candidate: Path) -> bool:
+    try:
+        candidate.relative_to(root)
+        return True
+    except ValueError:
+        return False
+
+
+def _env_install_prefix() -> Path | None:
+    env_prefix = (os.environ.get("CODEX_INSTALL_PREFIX") or "").strip()
+    return Path(env_prefix).expanduser() if env_prefix else None
+
+
+def _default_install_dir() -> Path:
+    env_prefix = _env_install_prefix()
+    if env_prefix is not None:
+        return env_prefix
+    if platform.system() == "Windows":
+        return _windows_install_dir_candidates()[0]
+    return Path.home() / ".local/share/codex-dual"
+
+
+def _install_dir_candidates() -> list[Path]:
+    candidates: list[Path] = [_default_install_dir()]
+    if platform.system() == "Windows":
+        candidates.extend(candidate for candidate in _windows_install_dir_candidates() if candidate not in candidates)
+    return candidates
+
+
+def _windows_install_dir_candidates() -> list[Path]:
+    candidates: list[Path] = []
+    localappdata = os.environ.get("LOCALAPPDATA", "")
+    if localappdata:
+        candidates.append(Path(localappdata) / "codex-dual")
+        candidates.append(Path(localappdata) / "claude-code-bridge")
+    candidates.append(Path.home() / "AppData/Local/codex-dual")
+    return candidates
+
+
+def _installed_candidate(candidate: Path) -> bool:
+    return bool(candidate and (candidate / "ccb").exists())
+
+
+def is_source_repo_root(script_root: Path) -> bool:
+    root = Path(script_root).expanduser()
+    return (root / "install.sh").exists() and (root / ".git").exists()
+
+
+def find_install_dir(script_root: Path) -> Path:
+    if (script_root / "install.sh").exists() or (script_root / "install.ps1").exists():
+        return script_root
+
+    for candidate in _install_dir_candidates():
+        if _installed_candidate(candidate):
+            return candidate
+    return script_root
+
+
+def _missing_installer_message(script_name: str, install_dir: Path) -> int:
+    print(f"❌ {script_name} not found in {install_dir}", file=sys.stderr)
+    return 1
+
+
+def _windows_installer_command(source_dir: Path, install_dir: Path, action: str) -> tuple[list[str], Path]:
+    script = source_dir / "install.ps1"
+    cmd = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(script),
+        action,
+        "-InstallPrefix",
+        str(install_dir),
+    ]
+    return cmd, script
+
+
+def _normalize_lf_bytes(content: bytes) -> bytes:
+    return content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
+def _is_probably_binary(content: bytes) -> bool:
+    sample = content[:8192]
+    if b"\0" in sample:
+        return True
+    return sample.startswith((b"\x7fELF", b"\xca\xfe\xba\xbe", b"\xcf\xfa\xed\xfe", b"\xfe\xed\xfa\xcf"))
+
+
+def _should_normalize_unix_text(rel_path: Path) -> bool:
+    rel = Path(rel_path)
+    if rel.name in {"install.sh", "ccb"}:
+        return True
+    if rel.suffix.lower() in {".py", ".sh", ".yml", ".yaml"}:
+        return True
+    return len(rel.parts) >= 2 and rel.parts[0] == "bin"
+
+
+def _stage_tree_ignores(_root: str, names: list[str]) -> set[str]:
+    ignored = {".git", "__pycache__", ".pytest_cache", ".mypy_cache", ".venv"}
+    return {name for name in names if name in ignored}
+
+
+def _detect_git_head(source_dir: Path) -> tuple[str | None, str | None]:
+    git_bin = shutil.which("git")
+    if not git_bin:
+        return None, None
+    probe = subprocess.run(
+        [git_bin, "-C", str(source_dir), "rev-parse", "--is-inside-work-tree"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    if probe.returncode != 0:
+        return None, None
+    commit = subprocess.run(
+        [git_bin, "-C", str(source_dir), "log", "-1", "--format=%h"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    ).stdout.strip() or None
+    commit_date = subprocess.run(
+        [git_bin, "-C", str(source_dir), "log", "-1", "--format=%cs"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    ).stdout.strip() or None
+    return commit, commit_date
+
+
+def _build_unix_installer_env(
+    install_dir: Path,
+    *,
+    source_dir: Path,
+    extra_env: dict[str, str] | None = None,
+) -> dict[str, str]:
+    env = os.environ.copy()
+    env["CODEX_INSTALL_PREFIX"] = str(install_dir)
+    if extra_env:
+        env.update(extra_env)
+    if not env.get("CCB_SOURCE_KIND") and (source_dir / ".git").exists():
+        env["CCB_SOURCE_KIND"] = "source"
+    if not env.get("CCB_SOURCE_ROOT") and (source_dir / ".git").exists():
+        env["CCB_SOURCE_ROOT"] = str(source_dir)
+    if not env.get("CCB_GIT_COMMIT"):
+        git_commit, git_date = _detect_git_head(source_dir)
+        if git_commit:
+            env["CCB_GIT_COMMIT"] = git_commit
+        if git_date and not env.get("CCB_GIT_DATE"):
+            env["CCB_GIT_DATE"] = git_date
+    return env
+
+
+def _stage_unix_installer_tree(source_dir: Path, *, temp_base: Path) -> tuple[Path, Path]:
+    staging_root = Path(tempfile.mkdtemp(prefix="ccb-installer-", dir=str(temp_base))).expanduser()
+    staged_source = staging_root / (source_dir.name or "source")
+    shutil.copytree(
+        source_dir,
+        staged_source,
+        ignore=_stage_tree_ignores,
+        copy_function=shutil.copy2,
+    )
+    for path in staged_source.rglob("*"):
+        if not path.is_file() or path.is_symlink():
+            continue
+        rel_path = path.relative_to(staged_source)
+        if not _should_normalize_unix_text(rel_path):
+            continue
+        original = path.read_bytes()
+        if _is_probably_binary(original):
+            continue
+        normalized = _normalize_lf_bytes(original)
+        if normalized != original:
+            path.write_bytes(normalized)
+    return staging_root, staged_source
+
+
+def run_staged_unix_installer(
+    action: str,
+    *,
+    source_dir: Path,
+    install_dir: Path,
+    extra_env: dict[str, str] | None = None,
+) -> int:
+    source_dir = Path(source_dir).expanduser()
+    script = source_dir / "install.sh"
+    if not script.exists():
+        return _missing_installer_message("install.sh", source_dir)
+    temp_base = pick_temp_base_dir(install_dir)
+    staging_root, staged_source = _stage_unix_installer_tree(source_dir, temp_base=temp_base)
+    try:
+        bash_bin = shutil.which("bash")
+        if not bash_bin:
+            raise RuntimeError("❌ Unix installer requires 'bash' to be available")
+        env = _build_unix_installer_env(
+            install_dir,
+            source_dir=source_dir,
+            extra_env=extra_env,
+        )
+        staged_script = staged_source / "install.sh"
+        return subprocess.run(
+            [bash_bin, str(staged_script), action],
+            env=env,
+            cwd=staged_source,
+        ).returncode
+    finally:
+        shutil.rmtree(staging_root, ignore_errors=True)
+
+
+def resolve_installer_paths(action: str, *, script_root: Path) -> tuple[Path, Path]:
+    del action
+    root = Path(script_root).expanduser()
+    if is_source_repo_root(root):
+        return root, _default_install_dir()
+    install_dir = find_install_dir(root)
+    return install_dir, install_dir
+
+
+def resolve_managed_install_dir(*, script_root: Path) -> Path:
+    root = Path(script_root).expanduser()
+    if is_source_repo_root(root):
+        return _default_install_dir()
+    if (root / "install.sh").exists() or (root / "install.ps1").exists():
+        return root
+    env_prefix = _env_install_prefix()
+    if env_prefix is not None:
+        return env_prefix
+    for candidate in _install_dir_candidates():
+        if _installed_candidate(candidate):
+            return candidate
+    return root
+
+
+def run_installer(action: str, *, script_root: Path) -> int:
+    source_dir, install_dir = resolve_installer_paths(action, script_root=script_root)
+    if platform.system() == "Windows":
+        cmd, script = _windows_installer_command(source_dir, install_dir, action)
+        if not script.exists():
+            return _missing_installer_message("install.ps1", source_dir)
+        return subprocess.run(cmd).returncode
+
+    return run_staged_unix_installer(action, source_dir=source_dir, install_dir=install_dir)
+
+
+def _temp_base_candidates(install_dir: Path) -> list[Path]:
+    candidates: list[Path] = []
+    for key in ("CCB_TMPDIR", "TMPDIR", "TEMP", "TMP"):
+        value = (os.environ.get(key) or "").strip()
+        if value:
+            candidates.append(Path(value).expanduser())
+    try:
+        candidates.append(Path(tempfile.gettempdir()))
+    except Exception:
+        pass
+    candidates.extend(
+        [
+            Path("/tmp"),
+            Path("/var/tmp"),
+            Path("/usr/tmp"),
+            Path.home() / ".cache" / "ccb" / "tmp",
+            install_dir / ".tmp",
+            Path.cwd() / ".tmp",
+        ]
+    )
+    return candidates
+
+
+def _probe_temp_base(base: Path) -> bool:
+    try:
+        base.mkdir(parents=True, exist_ok=True)
+        probe = base / f".ccb_tmp_probe_{os.getpid()}_{int(time.time() * 1000)}"
+        probe.write_bytes(b"1")
+        probe.unlink(missing_ok=True)
+        return True
+    except Exception:
+        return False
+
+
+def pick_temp_base_dir(install_dir: Path) -> Path:
+    for base in _temp_base_candidates(install_dir):
+        if _probe_temp_base(base):
+            return base
+
+    raise RuntimeError(
+        "❌ No usable temporary directory found.\n"
+        "Fix options:\n"
+        "  - Create /tmp (Linux/WSL): sudo mkdir -p /tmp && sudo chmod 1777 /tmp\n"
+        "  - Or set TMPDIR/CCB_TMPDIR to a writable path (e.g. export TMPDIR=$HOME/.cache/tmp)"
+    )
+
+
+def _download_with_command(cmd: list[str]) -> bool:
+    result = subprocess.run(cmd, capture_output=True)
+    return result.returncode == 0
+
+
+def _download_with_urllib(url: str, destination: Path) -> bool:
+    import ssl
+
+    try:
+        urllib.request.urlretrieve(url, destination)
+        return True
+    except ssl.SSLError:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        with urllib.request.urlopen(url, context=ctx) as resp:
+            destination.write_bytes(resp.read())
+        return True
+    except Exception:
+        return False
+
+
+def download_tarball(url: str, destination: Path) -> bool:
+    if shutil.which("curl"):
+        if _download_with_command(["curl", "-fsSL", "-o", str(destination), url]):
+            return True
+    if shutil.which("wget"):
+        if _download_with_command(["wget", "-q", "-O", str(destination), url]):
+            return True
+    return _download_with_urllib(url, destination)
+
+
+def _ensure_safe_tar_members(tar: tarfile.TarFile, destination: Path) -> None:
+    for member in tar.getmembers():
+        member_path = (destination / member.name).resolve()
+        if not _is_within_directory(destination, member_path):
+            raise RuntimeError(f"Unsafe tar member path: {member.name}")
+        if not (member.issym() or member.islnk()):
+            continue
+        link_target = Path(member.linkname)
+        if link_target.is_absolute():
+            raise RuntimeError(f"Unsafe tar link target: {member.name} -> {member.linkname}")
+        resolved_link_target = ((destination / member.name).parent / member.linkname).resolve()
+        if not _is_within_directory(destination, resolved_link_target):
+            raise RuntimeError(f"Unsafe tar link target: {member.name} -> {member.linkname}")
+
+
+def _format_tar_extract_error(exc: tarfile.TarError) -> str:
+    detail = str(exc).strip() or exc.__class__.__name__
+    return (
+        "Unsafe tar archive content detected: "
+        f"{detail}. "
+        "This usually means the downloaded archive contains unsafe paths or links. "
+        "Use an official release asset or a clean source archive."
+    )
+
+
+def safe_extract_tar(tar: tarfile.TarFile, destination: Path) -> None:
+    destination = destination.resolve()
+    _ensure_safe_tar_members(tar, destination)
+    try:
+        tar.extractall(destination, filter="data")
+    except TypeError:
+        tar.extractall(destination)
+    except tarfile.TarError as exc:
+        raise RuntimeError(_format_tar_extract_error(exc)) from exc

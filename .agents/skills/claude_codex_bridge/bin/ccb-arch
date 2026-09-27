@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+set -eu
+
+if command -v archi >/dev/null 2>&1; then
+  exec archi "$@"
+fi
+
+echo "ccb-arch requires the Architec npm package." >&2
+echo "Install it with: npm install -g @seemseam/archi" >&2
+exit 127

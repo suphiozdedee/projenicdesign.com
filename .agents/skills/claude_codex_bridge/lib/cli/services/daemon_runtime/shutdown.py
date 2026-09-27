@@ -1,0 +1,141 @@
+from __future__ import annotations
+
+from ccbd.socket_client import CcbdClientError
+
+from .lease import mark_inspected_lease_unmounted
+from .models import KillSummary
+
+
+def _request_shutdown_or_mark_unmounted(
+    context,
+    *,
+    inspection,
+    manager,
+    guard,
+    force: bool,
+    client_factory,
+) -> None:
+    if inspection.socket_connectable:
+        try:
+            client_factory(context).shutdown()
+        except CcbdClientError:
+            # Shutdown intent is already authoritative.  The keeper may close
+            # the socket between inspection and this best-effort RPC; bounded
+            # pid cleanup and lifecycle finalization below must still run.
+            pass
+    else:
+        mark_inspected_lease_unmounted(manager, inspection, ownership_guard=guard)
+
+
+def _wait_for_daemon_shutdown(
+    *,
+    daemon_pid: int,
+    inspection,
+    manager,
+    guard,
+    shutdown_timeout_s: float,
+    wait_for_pid_exit_fn,
+    terminate_pid_tree_fn,
+    is_pid_alive_fn,
+) -> None:
+    if daemon_pid <= 0 or not inspection.pid_alive:
+        return
+    if not wait_for_pid_exit_fn(daemon_pid, timeout_s=shutdown_timeout_s):
+        terminate_pid_tree_fn(daemon_pid, timeout_s=shutdown_timeout_s, is_pid_alive_fn=is_pid_alive_fn)
+    if not is_pid_alive_fn(daemon_pid):
+        mark_inspected_lease_unmounted(manager, inspection, ownership_guard=guard)
+
+
+def _wait_for_keeper_shutdown(
+    context,
+    *,
+    keeper_pid: int,
+    shutdown_timeout_s: float,
+    wait_for_keeper_exit_fn,
+    terminate_pid_tree_fn,
+    is_pid_alive_fn,
+) -> None:
+    if keeper_pid <= 0:
+        return
+    if not wait_for_keeper_exit_fn(context, timeout_s=shutdown_timeout_s):
+        terminate_pid_tree_fn(keeper_pid, timeout_s=shutdown_timeout_s, is_pid_alive_fn=is_pid_alive_fn)
+
+
+def _unlink_socket_if_forced(context, *, force: bool) -> None:
+    if not force:
+        return
+    try:
+        context.paths.ccbd_socket_path.unlink()
+    except FileNotFoundError:
+        pass
+
+
+def shutdown_daemon(
+    context,
+    *,
+    force: bool,
+    record_shutdown_intent_fn,
+    finalize_shutdown_lifecycle_fn,
+    inspect_daemon_fn,
+    client_factory,
+    lease_pid_fn,
+    keeper_pid_fn,
+    wait_for_pid_exit_fn,
+    wait_for_keeper_exit_fn,
+    is_pid_alive_fn,
+    terminate_pid_tree_fn,
+    shutdown_timeout_s: float,
+) -> KillSummary:
+    record_shutdown_intent_fn(context, reason='kill')
+    manager, guard, inspection = inspect_daemon_fn(context)
+    lease = inspection.lease
+    daemon_pid = lease_pid_fn(lease)
+    keeper_pid = keeper_pid_fn(context, lease)
+    _request_shutdown_or_mark_unmounted(
+        context,
+        inspection=inspection,
+        manager=manager,
+        guard=guard,
+        force=force,
+        client_factory=client_factory,
+    )
+    _wait_for_daemon_shutdown(
+        daemon_pid=daemon_pid,
+        inspection=inspection,
+        manager=manager,
+        guard=guard,
+        shutdown_timeout_s=shutdown_timeout_s,
+        wait_for_pid_exit_fn=wait_for_pid_exit_fn,
+        terminate_pid_tree_fn=terminate_pid_tree_fn,
+        is_pid_alive_fn=is_pid_alive_fn,
+    )
+    _wait_for_keeper_shutdown(
+        context,
+        keeper_pid=keeper_pid,
+        shutdown_timeout_s=shutdown_timeout_s,
+        wait_for_keeper_exit_fn=wait_for_keeper_exit_fn,
+        terminate_pid_tree_fn=terminate_pid_tree_fn,
+        is_pid_alive_fn=is_pid_alive_fn,
+    )
+    _unlink_socket_if_forced(context, force=force)
+    finalize_shutdown_lifecycle_fn(context)
+
+    _, _, final_inspection = inspect_daemon_fn(context)
+    return KillSummary(
+        project_id=context.project.project_id,
+        state=_inspection_phase(final_inspection),
+        socket_path=str(context.paths.ccbd_socket_path),
+        forced=force,
+    )
+
+
+def _inspection_phase(inspection) -> str:
+    phase = str(getattr(inspection, 'phase', '') or '').strip()
+    if phase:
+        return phase
+    lease = getattr(inspection, 'lease', None)
+    mount_state = str(getattr(getattr(lease, 'mount_state', None), 'value', '') or '').strip()
+    return mount_state or 'unmounted'
+
+
+__all__ = ['shutdown_daemon']

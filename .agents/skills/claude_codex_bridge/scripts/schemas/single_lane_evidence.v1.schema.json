@@ -1,0 +1,541 @@
+{
+  "$id": "https://ccb.dev/schemas/single_lane_evidence.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CCB single-lane multi-workgroup evidence v1",
+  "$defs": {
+    "classification": {
+      "enum": [
+        "pass",
+        "valid_non_success",
+        "test_design_failure",
+        "system_failure"
+      ]
+    },
+    "digest": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "diagnostic": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {"minLength": 1, "type": "string"},
+        "message": {"minLength": 1, "type": "string"}
+      },
+      "required": ["code", "message"],
+      "type": "object"
+    },
+    "check": {
+      "additionalProperties": false,
+      "properties": {
+        "command": {"minLength": 1, "type": "string"},
+        "status": {"enum": ["passed", "failed", "not_run"]}
+      },
+      "required": ["command", "status"],
+      "type": "object"
+    },
+    "intent": {
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {"minLength": 1, "type": "string"},
+        "attempt": {"minimum": 1, "type": "integer"},
+        "state": {"minLength": 1, "type": "string"}
+      },
+      "required": ["purpose", "attempt", "state"],
+      "type": "object"
+    },
+    "job": {
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {"minLength": 1, "type": "string"},
+        "attempt": {"minimum": 1, "type": "integer"},
+        "job_id": {"minLength": 1, "type": "string"},
+        "status": {"minLength": 1, "type": "string"},
+        "submission_history": {"items": {"type": "string"}, "type": "array"}
+      },
+      "required": ["purpose", "attempt", "job_id", "status"],
+      "type": "object"
+    },
+    "task": {
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {"minLength": 1, "type": "string"},
+        "revision": {"minimum": 1, "type": "integer"},
+        "digest": {"$ref": "#/$defs/digest"},
+        "digest_matches": {"type": "boolean"}
+      },
+      "required": ["task_id", "revision", "digest", "digest_matches"],
+      "type": "object"
+    },
+    "selection": {
+      "additionalProperties": false,
+      "properties": {
+        "workgroup_count": {"maximum": 4, "minimum": 1, "type": "integer"},
+        "complexity": {"enum": ["atomic", "bounded", "complex", "very_complex"]},
+        "cutability": {"enum": ["none", "limited", "high"]},
+        "execution_shape": {"enum": ["single_unit", "parallel", "serial", "mixed_dag"]},
+        "rationale": {"minLength": 1, "type": "string"}
+      },
+      "required": ["workgroup_count", "complexity", "cutability", "execution_shape", "rationale"],
+      "type": "object"
+    },
+    "bundle": {
+      "additionalProperties": false,
+      "properties": {
+        "revision": {"minimum": 1, "type": "integer"},
+        "digest": {"$ref": "#/$defs/digest"},
+        "digest_matches": {"type": "boolean"},
+        "adaptive_selection": {"$ref": "#/$defs/selection"}
+      },
+      "required": ["revision", "digest", "digest_matches", "adaptive_selection"],
+      "type": "object"
+    },
+    "node": {
+      "additionalProperties": false,
+      "properties": {
+        "node_id": {"pattern": "^node-[0-9]{3}$", "type": "string"},
+        "dependencies": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "intent_records": {"items": {"$ref": "#/$defs/intent"}, "type": "array"},
+        "jobs": {
+          "oneOf": [
+            {"items": {"$ref": "#/$defs/job"}, "type": "array"},
+            {"type": "null"}
+          ]
+        },
+        "workspace": {"minLength": 1, "type": "string"},
+        "branch": {"minLength": 1, "type": "string"},
+        "base_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "head_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "tree_digest": {"$ref": "#/$defs/digest"},
+        "tree_digest_matches": {"type": "boolean"},
+        "review_result": {"enum": ["pass", "failed", "not_run"]},
+        "reviewed_tree_digest": {"oneOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "reviewed_commit": {"oneOf": [{"pattern": "^[0-9a-f]{40}$", "type": "string"}, {"type": "null"}]},
+        "integrated": {"type": "boolean"}
+      },
+      "required": [
+        "node_id",
+        "dependencies",
+        "intent_records",
+        "jobs",
+        "workspace",
+        "branch",
+        "base_commit",
+        "head_commit",
+        "tree_digest",
+        "tree_digest_matches",
+        "review_result",
+        "reviewed_tree_digest",
+        "reviewed_commit",
+        "integrated"
+      ],
+      "type": "object"
+    },
+    "integration": {
+      "additionalProperties": false,
+      "properties": {
+        "worktree": {"minLength": 1, "type": "string"},
+        "base_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "order": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "head_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "tree_digest": {"$ref": "#/$defs/digest"},
+        "tree_digest_matches": {"type": "boolean"},
+        "checks": {"items": {"$ref": "#/$defs/check"}, "type": "array"},
+        "conflict": {"type": "boolean"},
+        "status": {"enum": ["passed", "partial", "conflict", "failed"]}
+      },
+      "required": [
+        "worktree",
+        "base_commit",
+        "order",
+        "head_commit",
+        "tree_digest",
+        "tree_digest_matches",
+        "checks",
+        "conflict",
+        "status"
+      ],
+      "type": "object"
+    },
+    "root": {
+      "additionalProperties": false,
+      "properties": {
+        "pre_digest": {"$ref": "#/$defs/digest"},
+        "post_digest": {"$ref": "#/$defs/digest"},
+        "promotion": {"enum": ["promoted", "not_promoted"]},
+        "rollback": {"enum": ["not_required", "restored"]},
+        "rollback_digest": {"oneOf": [{"$ref": "#/$defs/digest"}, {"type": "null"}]},
+        "digests_match": {"type": "boolean"},
+        "checks": {"items": {"$ref": "#/$defs/check"}, "type": "array"}
+      },
+      "required": ["pre_digest", "post_digest", "promotion", "rollback", "rollback_digest", "digests_match", "checks"],
+      "type": "object"
+    },
+    "dependencyReadiness": {
+      "additionalProperties": false,
+      "properties": {
+        "ready_node_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "blocked_node_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "observations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "node_id": {"type": "string"},
+              "dependencies": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+              "ready": {"type": "boolean"}
+            },
+            "required": ["node_id", "dependencies", "ready"],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["ready_node_ids", "blocked_node_ids", "observations"],
+      "type": "object"
+    },
+    "round": {
+      "additionalProperties": false,
+      "properties": {
+        "result": {"enum": ["pass", "partial", "blocked", "replan_required"]},
+        "task_status": {"minLength": 1, "type": "string"},
+        "round_reviewer_job": {"minLength": 1, "type": "string"},
+        "round_review_result": {"enum": ["pass", "failed", "not_run"]},
+        "script_owned_import": {"type": "boolean"},
+        "provider_prose": {"type": "string"}
+      },
+      "required": [
+        "result",
+        "task_status",
+        "round_reviewer_job",
+        "round_review_result",
+        "script_owned_import",
+        "provider_prose"
+      ],
+      "type": "object"
+    },
+    "topologyRelease": {
+      "additionalProperties": false,
+      "properties": {
+        "desired_digest": {"$ref": "#/$defs/digest"},
+        "observed_digest": {"$ref": "#/$defs/digest"},
+        "digests_match": {"type": "boolean"},
+        "released_count": {"minimum": 0, "type": "integer"},
+        "retained_count": {"minimum": 0, "type": "integer"},
+        "drained_agents": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "release_incomplete": {"type": "boolean"},
+        "release_status": {"enum": ["released", "retained_busy", "failed"]},
+        "observed_agents": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "checks": {
+          "additionalProperties": false,
+          "properties": {
+            "desired_count_matches": {"type": "boolean"},
+            "released_count_matches": {"type": "boolean"},
+            "drained_agents_match_released": {"type": "boolean"},
+            "observed_empty_or_bounded_busy": {"type": "boolean"},
+            "release_complete_or_bounded_busy": {"type": "boolean"}
+          },
+          "required": [
+            "desired_count_matches",
+            "released_count_matches",
+            "drained_agents_match_released",
+            "observed_empty_or_bounded_busy",
+            "release_complete_or_bounded_busy"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "desired_digest",
+        "observed_digest",
+        "digests_match",
+        "released_count",
+        "retained_count",
+        "drained_agents",
+        "release_incomplete",
+        "release_status",
+        "observed_agents",
+        "checks"
+      ],
+      "type": "object"
+    },
+    "processOrRuntimeFile": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {"minLength": 1, "type": "string"},
+        "agent_id": {"minLength": 1, "type": "string"},
+        "state": {"minLength": 1, "type": "string"}
+      },
+      "required": ["kind", "agent_id", "state"],
+      "type": "object"
+    },
+    "boundedBusy": {
+      "additionalProperties": false,
+      "properties": {
+        "agent_ids": {"items": {"type": "string"}, "minItems": 1, "type": "array", "uniqueItems": true},
+        "reason": {"const": "retained_busy"},
+        "bounded": {"const": true},
+        "retry_attempt": {"minimum": 0, "type": "integer"},
+        "max_retries": {"minimum": 1, "type": "integer"}
+      },
+      "required": ["agent_ids", "reason", "bounded", "retry_attempt", "max_retries"],
+      "type": "object"
+    },
+    "runtimeResidue": {
+      "additionalProperties": false,
+      "properties": {
+        "captured_before_cleanup": {"type": "boolean"},
+        "processes": {"items": {"$ref": "#/$defs/processOrRuntimeFile"}, "type": "array"},
+        "runtime_files": {"items": {"$ref": "#/$defs/processOrRuntimeFile"}, "type": "array"},
+        "bounded_retained_busy": {"oneOf": [{"$ref": "#/$defs/boundedBusy"}, {"type": "null"}]},
+        "checks": {
+          "additionalProperties": false,
+          "properties": {
+            "captured_before_cleanup": {"type": "boolean"},
+            "active_process_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+            "active_runtime_file_count": {"minimum": 0, "type": "integer"},
+            "bounded_busy_valid": {"type": "boolean"},
+            "unexplained_residue_absent": {"type": "boolean"}
+          },
+          "required": [
+            "captured_before_cleanup",
+            "active_process_ids",
+            "active_runtime_file_count",
+            "bounded_busy_valid",
+            "unexplained_residue_absent"
+          ],
+          "type": "object"
+        }
+      },
+      "required": ["captured_before_cleanup", "processes", "runtime_files", "bounded_retained_busy", "checks"],
+      "type": "object"
+    },
+    "uiPlacement": {
+      "additionalProperties": false,
+      "properties": {
+        "socket": {"minLength": 1, "type": "string"},
+        "windows": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "placements": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "agent_id": {"type": "string"},
+              "window": {"type": "string"},
+              "pane": {"type": "string"}
+            },
+            "required": ["agent_id", "window", "pane"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "sidebar_agents": {"items": {"type": "string"}, "type": "array", "uniqueItems": true}
+      },
+      "required": ["socket", "windows", "placements", "sidebar_agents"],
+      "type": "object"
+    },
+    "freshness": {
+      "additionalProperties": false,
+      "properties": {
+        "activations": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "activation_id": {"type": "string"},
+              "immaculate": {"type": "boolean"}
+            },
+            "required": ["activation_id", "immaculate"],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "provider_sessions": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "session_id": {"type": "string"},
+              "reused": {"type": "boolean"}
+            },
+            "required": ["session_id", "reused"],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["activations", "provider_sessions"],
+      "type": "object"
+    },
+    "artifactDigests": {
+      "additionalProperties": false,
+      "properties": {
+        "all_match": {"type": "boolean"},
+        "artifacts": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "name": {"type": "string"},
+              "path": {"type": "string"},
+              "sha256": {"$ref": "#/$defs/digest"}
+            },
+            "required": ["name", "path", "sha256"],
+            "type": "object"
+          },
+          "type": "array"
+        }
+      },
+      "required": ["all_match", "artifacts"],
+      "type": "object"
+    },
+    "reportSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "required_case_count": {"minimum": 1, "type": "integer"},
+        "observed_case_count": {"minimum": 0, "type": "integer"},
+        "classification_counts": {
+          "additionalProperties": false,
+          "properties": {
+            "pass": {"minimum": 0, "type": "integer"},
+            "valid_non_success": {"minimum": 0, "type": "integer"},
+            "test_design_failure": {"minimum": 0, "type": "integer"},
+            "system_failure": {"minimum": 0, "type": "integer"}
+          },
+          "required": ["pass", "valid_non_success", "test_design_failure", "system_failure"],
+          "type": "object"
+        },
+        "missing_or_incomplete_case_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "system_failure_case_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "valid_non_success_case_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true},
+        "classification_mismatch_case_ids": {"items": {"type": "string"}, "type": "array", "uniqueItems": true}
+      },
+      "required": [
+        "required_case_count",
+        "observed_case_count",
+        "classification_counts",
+        "missing_or_incomplete_case_ids",
+        "system_failure_case_ids",
+        "valid_non_success_case_ids",
+        "classification_mismatch_case_ids"
+      ],
+      "type": "object"
+    },
+    "authorityChecks": {
+      "additionalProperties": false,
+      "properties": {
+        "provider_prose_is_evidence_only": {"type": "boolean"},
+        "script_owned_result_import": {"type": "boolean"},
+        "topology_dispatch_absent": {"type": "boolean"},
+        "duplicate_asks_absent": {"type": "boolean"},
+        "duplicate_integrations_absent": {"type": "boolean"},
+        "fake_success_absent": {"type": "boolean"}
+      },
+      "required": [
+        "provider_prose_is_evidence_only",
+        "script_owned_result_import",
+        "topology_dispatch_absent",
+        "duplicate_asks_absent",
+        "duplicate_integrations_absent",
+        "fake_success_absent"
+      ],
+      "type": "object"
+    },
+    "row": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {"const": "ccb.single_lane.evidence_row.v1"},
+        "record_type": {"const": "ccb_single_lane_evidence_row"},
+        "source_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "case_id": {"minLength": 1, "type": "string"},
+        "scenario": {"minLength": 1, "type": "string"},
+        "execution_mode": {"const": "deterministic_fixture"},
+        "observed": {"type": "boolean"},
+        "classification": {"$ref": "#/$defs/classification"},
+        "expected_classification": {"$ref": "#/$defs/classification"},
+        "classification_matches_expected": {"type": "boolean"},
+        "complete": {"type": "boolean"},
+        "diagnostics": {"items": {"$ref": "#/$defs/diagnostic"}, "type": "array"},
+        "task": {"oneOf": [{"$ref": "#/$defs/task"}, {"type": "null"}]},
+        "bundle": {"oneOf": [{"$ref": "#/$defs/bundle"}, {"type": "null"}]},
+        "nodes": {"items": {"$ref": "#/$defs/node"}, "maxItems": 4, "type": "array"},
+        "dependency_readiness": {"oneOf": [{"$ref": "#/$defs/dependencyReadiness"}, {"type": "null"}]},
+        "integration": {"oneOf": [{"$ref": "#/$defs/integration"}, {"type": "null"}]},
+        "root": {"oneOf": [{"$ref": "#/$defs/root"}, {"type": "null"}]},
+        "round": {"oneOf": [{"$ref": "#/$defs/round"}, {"type": "null"}]},
+        "topology_release": {"oneOf": [{"$ref": "#/$defs/topologyRelease"}, {"type": "null"}]},
+        "runtime_residue": {"oneOf": [{"$ref": "#/$defs/runtimeResidue"}, {"type": "null"}]},
+        "ui_placement": {"oneOf": [{"$ref": "#/$defs/uiPlacement"}, {"type": "null"}]},
+        "immaculate_freshness": {"oneOf": [{"$ref": "#/$defs/freshness"}, {"type": "null"}]},
+        "authority_checks": {"oneOf": [{"$ref": "#/$defs/authorityChecks"}, {"type": "null"}]},
+        "artifact_digests": {"oneOf": [{"$ref": "#/$defs/artifactDigests"}, {"type": "null"}]}
+      },
+      "required": [
+        "schema",
+        "record_type",
+        "source_commit",
+        "case_id",
+        "scenario",
+        "execution_mode",
+        "observed",
+        "classification",
+        "expected_classification",
+        "classification_matches_expected",
+        "complete",
+        "diagnostics",
+        "task",
+        "bundle",
+        "nodes",
+        "dependency_readiness",
+        "integration",
+        "root",
+        "round",
+        "topology_release",
+        "runtime_residue",
+        "ui_placement",
+        "immaculate_freshness",
+        "authority_checks",
+        "artifact_digests"
+      ],
+      "type": "object"
+    },
+    "report": {
+      "additionalProperties": false,
+      "properties": {
+        "schema": {"const": "ccb.single_lane.evidence_report.v1"},
+        "record_type": {"const": "ccb_single_lane_evidence_report"},
+        "source_commit": {"pattern": "^[0-9a-f]{40}$", "type": "string"},
+        "campaign_id": {"minLength": 1, "type": "string"},
+        "execution_mode": {"const": "deterministic_fixture"},
+        "live_execution_claimed": {"const": false},
+        "classification": {"$ref": "#/$defs/classification"},
+        "pass": {"type": "boolean"},
+        "complete": {"type": "boolean"},
+        "summary": {"$ref": "#/$defs/reportSummary"},
+        "artifact_digests": {
+          "additionalProperties": false,
+          "properties": {
+            "input_sha256": {"$ref": "#/$defs/digest"},
+            "rows_jsonl_sha256": {"$ref": "#/$defs/digest"}
+          },
+          "required": ["input_sha256", "rows_jsonl_sha256"],
+          "type": "object"
+        },
+        "rows": {"items": {"$ref": "#/$defs/row"}, "maxItems": 19, "minItems": 19, "type": "array"}
+      },
+      "required": [
+        "schema",
+        "record_type",
+        "source_commit",
+        "campaign_id",
+        "execution_mode",
+        "live_execution_claimed",
+        "classification",
+        "pass",
+        "complete",
+        "summary",
+        "artifact_digests",
+        "rows"
+      ],
+      "type": "object"
+    }
+  },
+  "oneOf": [
+    {"$ref": "#/$defs/row"},
+    {"$ref": "#/$defs/report"}
+  ]
+}

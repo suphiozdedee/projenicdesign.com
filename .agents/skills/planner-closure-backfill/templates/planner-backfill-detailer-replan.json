@@ -1,0 +1,18 @@
+{
+  "schema": "ccb.planner.backfill_proposal.v1",
+  "mode": "detailer_replan",
+  "expected_plan_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "task_or_task_set_id": "task-a",
+  "task_or_task_set_revision": 1,
+  "closure_evidence_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "aggregate_result": "replan_required",
+  "result": "task_set_replanned",
+  "brief_summary": "Planner-authored replacement macro summary.",
+  "roadmap_transitions": [], "todo_transitions": [], "decision_refs": [], "open_question_refs": [],
+  "evidence_refs": ["tasks/task-a/details/macro-adjustment-request.json"], "accepted_scope": [],
+  "unresolved_scope": ["Planner-authored unresolved replacement scope."], "blockers": [],
+  "replan_inputs": ["Copy validated Detailer macro-impact input."],
+  "next_milestone": {"kind": "selected", "ref": "planner-selected", "rationale": "Planner-authored reason."},
+  "frontdesk_notification_required": false,
+  "frontdesk_status": {"schema": "ccb.planner.frontdesk_status.v1", "notification_identity": "planner-status", "aggregate_result": "replan_required", "accepted_scope": [], "unresolved_scope": ["Planner-authored unresolved replacement scope."], "blockers": [], "next_milestone": {"kind": "selected", "ref": "planner-selected", "rationale": "Planner-authored reason."}, "evidence_refs": ["tasks/task-a/details/macro-adjustment-request.json"], "user_report_body": "Planner-authored factual report."}
+}

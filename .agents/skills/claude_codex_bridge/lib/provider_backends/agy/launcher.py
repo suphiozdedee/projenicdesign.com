@@ -1,0 +1,733 @@
+from __future__ import annotations
+
+import functools
+import hashlib
+import json
+import os
+import shlex
+import shutil
+import sqlite3
+import stat
+import subprocess
+import sys
+import urllib.parse
+from pathlib import Path
+
+from provider_core.source_home import current_provider_source_home
+from provider_core.macos_keychain import prepare_private_keychain, private_keychain_path
+from provider_core.platform_info import is_macos
+from provider_core.one_way_inheritance import (
+    copy_regular_file,
+    ensure_private_descendant_directory,
+    ensure_private_directory,
+    ensure_private_inheritance_directory,
+)
+
+from agents.models import AgentSpec
+from cli.context import CliContext
+from cli.models import ParsedStartCommand
+from provider_core.caller_env import (
+    caller_context_env,
+    export_env_clause,
+    join_env_prefix,
+    provider_user_session_env,
+)
+from provider_core.contracts import ProviderRuntimeLauncher
+from provider_core.runtime_shared import apply_provider_command_template, provider_start_parts
+from provider_profiles import load_resolved_provider_profile
+from storage.atomic import atomic_write_text
+from workspace.models import WorkspacePlan
+
+
+_YOLO_FLAG = '--dangerously-skip-permissions'
+_WSL_POWERSHELL = '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe'
+_WSL_CMD = '/mnt/c/Windows/System32/cmd.exe'
+_AGY_NTFS_HOMES_DIRNAME = '.ccb_agy_homes'
+_AGY_CONVERSATIONS_REL = Path('.gemini') / 'antigravity-cli' / 'conversations'
+_AGY_KEYRING_BYPASS_MARKER_REL = (
+    Path('.gemini') / 'antigravity-cli' / 'cache' / 'antigravity-keyring-unavailable'
+)
+_AGY_AUTH_MODE_REL = Path('.gemini') / 'antigravity-cli' / 'cache' / 'ccb-auth-mode'
+_AGY_AUTH_PROJECTION_REL = Path('.gemini') / 'antigravity-cli' / 'cache' / 'ccb-auth-projection.json'
+_AGY_MACOS_KEYCHAIN_ACCOUNT = 'antigravity'
+_AGY_MACOS_KEYCHAIN_SERVICE = 'gemini'
+_AGY_AUTH_FILES = (
+    Path('.gemini') / '.env',
+    Path('.gemini') / 'google_accounts.json',
+    Path('.gemini') / 'oauth_creds.json',
+    Path('.antigravity') / 'auth.json',
+    Path('.antigravity') / 'google_accounts.json',
+    Path('.antigravity') / 'oauth_creds.json',
+)
+_AGY_CONFIG_FILES = (
+    Path('.gemini') / 'settings.json',
+    Path('.gemini') / 'config' / 'config.json',
+    Path('.gemini') / 'config' / 'mcp_config.json',
+    Path('.antigravity') / 'config.json',
+    Path('.antigravity') / 'settings.json',
+)
+
+
+def _log_warn(msg: str) -> None:
+    sys.stderr.write(f'agy launcher: {msg}\n')
+
+
+@functools.lru_cache(maxsize=1)
+def _detect_windows_user_home() -> Path | None:
+    """Resolve the real Windows %USERPROFILE% from inside WSL.
+
+    Queries the Win32 API via PowerShell's [Environment]::GetFolderPath,
+    which avoids the env-var route. CCB rewrites HOME/USERPROFILE for
+    sandboxed sub-providers, so a cmd.exe-based env probe inherits the
+    rewritten values and points at the wrong home.
+    """
+    if not Path(_WSL_POWERSHELL).exists():
+        return None
+    try:
+        ps = subprocess.run(
+            [
+                _WSL_POWERSHELL,
+                '-NoProfile',
+                '-Command',
+                '[Environment]::GetFolderPath("UserProfile")',
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        _log_warn(f'Windows home detection via PowerShell failed: {exc}')
+        return None
+    win_path = ps.stdout.strip()
+    if not win_path:
+        return None
+    try:
+        wp = subprocess.run(
+            ['wslpath', '-u', win_path],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        _log_warn(f'wslpath -u {win_path!r} failed: {exc}')
+        return None
+    wsl_path = wp.stdout.strip()
+    if not wsl_path:
+        return None
+    resolved = Path(wsl_path)
+    return resolved if resolved.exists() else None
+
+
+def _resolve_credential_source_home() -> Path | None:
+    """Find the home directory hosting agy credentials.
+
+    Search order:
+    1. CCB_AGY_SOURCE_HOME env override (escape hatch).
+    2. Real Windows %USERPROFILE% via Win32 API.
+    Returns None to let the caller fall back to current_provider_source_home().
+    """
+    override = os.environ.get('CCB_AGY_SOURCE_HOME')
+    if override:
+        candidate = Path(override).expanduser()
+        if candidate.exists():
+            return candidate
+        _log_warn(f'CCB_AGY_SOURCE_HOME points to nonexistent path: {override}')
+    return _detect_windows_user_home()
+
+
+@functools.lru_cache(maxsize=1)
+def _agy_ntfs_homes_root() -> Path | None:
+    """NTFS directory hosting per-runtime managed HOME dirs (WSL-path view).
+
+    Returns None when the Windows USERPROFILE cannot be located on NTFS
+    (only /mnt/<drive>/... paths qualify; non-NTFS HOMEs cannot host
+    directory junctions).
+    """
+    win_home = _detect_windows_user_home()
+    if win_home is None:
+        return None
+    if not str(win_home).startswith('/mnt/'):
+        return None
+    return win_home / _AGY_NTFS_HOMES_DIRNAME
+
+
+def _resolve_managed_home(runtime_dir: Path) -> Path:
+    """Pick where agy's managed HOME lives for this runtime_dir.
+
+    Preferred: NTFS subdir under %USERPROFILE%/.ccb_agy_homes/<runtime-id>.
+    NTFS placement lets a Windows agy executable treat the managed directory
+    as a normal Windows home.  Login/config files are copied into it; source
+    credential directories are never linked or mounted.
+
+    Fallback: runtime_dir / 'home' on WSL ext4. agy.exe will likely crash
+    on launch in this mode; the fallback exists only for environments
+    where the Windows home cannot be detected.
+    """
+    root = _agy_ntfs_homes_root()
+    if root is None:
+        return runtime_dir / 'home'
+    runtime_id = hashlib.sha1(str(runtime_dir).encode()).hexdigest()[:16]
+    return root / runtime_id
+
+
+def _remove_windows_junction(path: Path) -> bool:
+    """Remove a legacy NTFS junction without traversing its target."""
+    try:
+        path_win = subprocess.run(
+            ['wslpath', '-w', str(path)],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        ).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as exc:
+        _log_warn(f'wslpath conversion failed for legacy junction {path}: {exc}')
+        return False
+    try:
+        subprocess.run(
+            [_WSL_CMD, '/c', 'rmdir', path_win],
+            capture_output=True,
+            text=True,
+            errors='replace',
+            check=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError) as exc:
+        _log_warn(f'failed to remove legacy junction {path_win}: {exc}')
+        return False
+    return True
+
+
+def _detach_legacy_credential_link(target: Path, source: Path) -> bool:
+    """Detach a link/junction that aliases the external credential directory."""
+    try:
+        if target.is_symlink():
+            target.unlink()
+            return True
+        if not target.exists():
+            return True
+        if not source.exists() or not os.path.samefile(target, source):
+            return True
+        if str(target).startswith('/mnt/') and Path(_WSL_CMD).exists():
+            return _remove_windows_junction(target)
+        # On platforms where a directory junction is represented as a normal
+        # directory entry, rmdir removes the entry and never its contents.
+        target.rmdir()
+        return True
+    except OSError as exc:
+        _log_warn(f'failed to detach legacy credential link {target}: {exc}')
+        return False
+
+
+def _sync_private_file(source: Path, target: Path) -> None:
+    try:
+        copy_regular_file(source, target)
+    except OSError as exc:
+        _log_warn(f'failed to inherit {source} into managed home: {exc}')
+
+
+def _managed_macos_keychain_auth_exists(managed_home: Path) -> bool:
+    if not is_macos():
+        return False
+    keychain = private_keychain_path(managed_home)
+    if keychain.is_symlink():
+        raise RuntimeError(f'managed AGY Keychain is not private: {keychain}')
+    if not keychain.is_file():
+        return False
+    security = shutil.which('security') or '/usr/bin/security'
+    env = dict(os.environ)
+    env['HOME'] = str(managed_home)
+    try:
+        result = subprocess.run(
+            [
+                security,
+                'find-generic-password',
+                '-a',
+                _AGY_MACOS_KEYCHAIN_ACCOUNT,
+                '-s',
+                _AGY_MACOS_KEYCHAIN_SERVICE,
+                str(keychain),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            env=env,
+        )
+    except Exception as exc:
+        raise RuntimeError(f'cannot inspect managed AGY Keychain login: {type(exc).__name__}') from None
+    if result.returncode == 0:
+        return True
+    if result.returncode == 44:
+        return False
+    raise RuntimeError(f'cannot inspect managed AGY Keychain login: security exited {result.returncode}')
+
+
+def _read_auth_projection(managed_home: Path) -> dict:
+    path = managed_home / _AGY_AUTH_PROJECTION_REL
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError:
+        return {}
+    if not stat.S_ISREG(metadata.st_mode) or metadata.st_nlink != 1:
+        raise RuntimeError('AGY auth projection must be a private regular file')
+    try:
+        payload = json.loads(path.read_text(encoding='utf-8'))
+    except (OSError, ValueError) as exc:
+        raise RuntimeError('cannot read AGY auth projection provenance') from exc
+    if not isinstance(payload, dict) or payload.get('schema_version') != 1:
+        raise RuntimeError('invalid AGY auth projection provenance')
+    files = payload.get('files', [])
+    allowed = {str(p) for p in _AGY_AUTH_FILES}
+    if not isinstance(files, list) or any(not isinstance(name, str) or name not in allowed for name in files):
+        raise RuntimeError('invalid AGY auth projection paths')
+    return payload
+
+
+def _write_auth_projection(managed_home: Path, payload: dict) -> None:
+    directory = ensure_private_descendant_directory(managed_home, _AGY_AUTH_PROJECTION_REL.parent)
+    atomic_write_text(directory / _AGY_AUTH_PROJECTION_REL.name,
+                      json.dumps({'schema_version': 1, **payload}, sort_keys=True) + '\n')
+
+
+def _refresh_auth_files(source_home: Path, managed_home: Path) -> None:
+    previous = _read_auth_projection(managed_home)
+    # Read every source before changing projections. An unreadable source is
+    # not a logout and must not authorize a stale launch or partial cleanup.
+    snapshots = {}
+    for relative in _AGY_AUTH_FILES:
+        source = source_home / relative
+        try:
+            metadata = source.lstat()
+        except FileNotFoundError:
+            continue
+        if not stat.S_ISREG(metadata.st_mode):
+            raise RuntimeError(f'AGY auth source must be a regular file: {relative}')
+        try:
+            snapshots[str(relative)] = source.read_text(encoding='utf-8')
+        except (OSError, UnicodeError) as exc:
+            raise RuntimeError(f'cannot read AGY auth source {relative}: {type(exc).__name__}') from None
+    for name, contents in snapshots.items():
+        relative = Path(name)
+        parent = ensure_private_descendant_directory(managed_home, relative.parent)
+        atomic_write_text(parent / relative.name, contents)
+    for name in set(previous.get('files', [])) - snapshots.keys():
+        relative = Path(name)
+        parent = ensure_private_descendant_directory(managed_home, relative.parent)
+        (parent / relative.name).unlink(missing_ok=True)
+    _write_auth_projection(managed_home, {**previous, 'files': sorted(snapshots)})
+
+
+def _materialize_private_credentials(
+    source_home: Path,
+    managed_home: Path,
+    *,
+    profile,
+) -> None:
+    """Project auth/config source -> managed home without any reverse path."""
+    for dirname in ('.gemini', '.antigravity'):
+        if not _detach_legacy_credential_link(managed_home / dirname, source_home / dirname):
+            raise RuntimeError(
+                f'agy managed credential directory aliases external source: {managed_home / dirname}'
+            )
+        ensure_private_descendant_directory(managed_home, Path(dirname))
+    ensure_private_descendant_directory(managed_home, Path('.gemini') / 'config')
+    inherit_auth = profile is None or bool(getattr(profile, 'inherit_auth', True))
+    mode_dir = ensure_private_descendant_directory(managed_home, _AGY_AUTH_MODE_REL.parent)
+    mode_path = mode_dir / _AGY_AUTH_MODE_REL.name
+    if mode_path.is_symlink() or (mode_path.exists() and not mode_path.is_file()):
+        raise RuntimeError(f'AGY auth mode marker is not a private regular file: {mode_path}')
+    previous_mode = mode_path.read_text(encoding='utf-8').strip() if mode_path.is_file() else ''
+    if not inherit_auth and previous_mode != 'independent':
+        existing_auth = [
+            managed_home / relative
+            for relative in _AGY_AUTH_FILES
+            if (managed_home / relative).exists() or (managed_home / relative).is_symlink()
+        ]
+        if _managed_macos_keychain_auth_exists(managed_home):
+            existing_auth.append(private_keychain_path(managed_home))
+        if existing_auth:
+            raise RuntimeError(
+                'managed AGY credentials may belong to inherited auth; '
+                'remove or move those managed credentials before enabling independent auth'
+            )
+    if inherit_auth:
+        if previous_mode == 'independent':
+            raise RuntimeError('stop and resolve Agent-private AGY authority before enabling inheritance')
+        _refresh_auth_files(source_home, managed_home)
+    atomic_write_text(mode_path, ('inherited' if inherit_auth else 'independent') + '\n')
+    if profile is None or bool(getattr(profile, 'inherit_config', True)):
+        for relative in _AGY_CONFIG_FILES:
+            _sync_private_file(source_home / relative, managed_home / relative)
+
+
+def _materialize_file_token_storage_bypass(managed_home: Path) -> Path:
+    """Refresh AGY's private marker so startup skips the unavailable keyring."""
+    cache_dir = ensure_private_descendant_directory(
+        managed_home,
+        _AGY_KEYRING_BYPASS_MARKER_REL.parent,
+    )
+    marker = cache_dir / _AGY_KEYRING_BYPASS_MARKER_REL.name
+    try:
+        if marker.exists() or marker.is_symlink():
+            marker.unlink()
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+        if hasattr(os, 'O_NOFOLLOW'):
+            flags |= os.O_NOFOLLOW
+        fd = os.open(marker, flags, 0o600)
+        try:
+            if hasattr(os, 'fchmod'):
+                os.fchmod(fd, 0o600)
+        finally:
+            os.close(fd)
+    except OSError as exc:
+        raise RuntimeError(f'failed to prepare AGY file token storage marker: {marker}') from exc
+    return marker
+
+
+def _remove_file_token_storage_bypass(managed_home: Path) -> None:
+    cache_dir = ensure_private_descendant_directory(
+        managed_home,
+        _AGY_KEYRING_BYPASS_MARKER_REL.parent,
+    )
+    marker = cache_dir / _AGY_KEYRING_BYPASS_MARKER_REL.name
+    if marker.is_symlink() or marker.is_file():
+        marker.unlink()
+
+
+def _prepare_macos_agent_private_keychain(managed_home: Path) -> Path | None:
+    if not is_macos():
+        return None
+    return prepare_private_keychain(managed_home)
+
+
+def _project_macos_inherited_keychain_auth(
+    source_home: Path,
+    managed_home: Path,
+    private_keychain: Path,
+) -> bool:
+    security = shutil.which('security') or '/usr/bin/security'
+    source_env = dict(os.environ)
+    source_env['HOME'] = str(source_home)
+    try:
+        result = subprocess.run(
+            [
+                security,
+                'find-generic-password',
+                '-a',
+                _AGY_MACOS_KEYCHAIN_ACCOUNT,
+                '-s',
+                _AGY_MACOS_KEYCHAIN_SERVICE,
+                '-w',
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            env=source_env,
+        )
+    except Exception as exc:
+        raise RuntimeError(f'cannot read external AGY Keychain login: {type(exc).__name__}') from None
+    if result.returncode == 44:
+        previous = _read_auth_projection(managed_home)
+        if previous.get('keychain_projected') is True:
+            managed_env = dict(os.environ)
+            managed_env['HOME'] = str(managed_home)
+            deleted = subprocess.run(
+                [security, 'delete-generic-password', '-a', _AGY_MACOS_KEYCHAIN_ACCOUNT,
+                 '-s', _AGY_MACOS_KEYCHAIN_SERVICE, str(private_keychain)],
+                check=False, capture_output=True, text=True, timeout=5, env=managed_env,
+            )
+            if deleted.returncode not in (0, 44):
+                raise RuntimeError('cannot remove obsolete AGY private Keychain projection')
+            _write_auth_projection(managed_home, {**previous, 'keychain_projected': False})
+        return False
+    if result.returncode != 0:
+        raise RuntimeError(f'security exited {result.returncode}')
+    secret = result.stdout[:-1] if result.stdout.endswith('\n') else result.stdout
+    if not secret:
+        raise RuntimeError('external AGY Keychain returned an empty credential')
+    managed_env = dict(os.environ)
+    managed_env['HOME'] = str(managed_home)
+    try:
+        result = subprocess.run(
+            [
+                security,
+                'add-generic-password',
+                '-U',
+                '-a',
+                _AGY_MACOS_KEYCHAIN_ACCOUNT,
+                '-s',
+                _AGY_MACOS_KEYCHAIN_SERVICE,
+                '-w',
+                secret,
+                str(private_keychain),
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5,
+            env=managed_env,
+        )
+    except Exception as exc:
+        raise RuntimeError(f'cannot seed agent-private AGY Keychain login: {type(exc).__name__}') from None
+    if result.returncode != 0:
+        raise RuntimeError(f'security exited {result.returncode}')
+    previous = _read_auth_projection(managed_home)
+    _write_auth_projection(managed_home, {**previous, 'keychain_projected': True})
+    return True
+
+
+def _wslpath_to_windows(wsl_path: Path) -> str | None:
+    """Translate a WSL path to a Windows path via `wslpath -w`."""
+    try:
+        out = subprocess.run(
+            ['wslpath', '-w', str(wsl_path)],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=5,
+        ).stdout.strip()
+    except (OSError, subprocess.SubprocessError) as exc:
+        _log_warn(f'wslpath -w {wsl_path} failed: {exc}')
+        return None
+    return out or None
+
+
+def _encode_cwd_for_agy(win_cwd: str) -> bytes:
+    """Encode a Windows cwd the way agy stores it in trajectory_metadata_blob.
+
+    Example: ``F:\\项目资料\\AI\\ccb-changes`` →
+             ``F:/%E9%A1%B9%E7%9B%AE%E8%B5%84%E6%96%99/AI/ccb-changes``
+    The drive letter and colon are kept literal; the rest is percent-encoded
+    using URL-quoting (forward slashes preserved). Conversation DBs always
+    embed this exact substring inside ``trajectory_metadata_blob.data``.
+    """
+    forward = win_cwd.replace('\\', '/')
+    if len(forward) >= 2 and forward[1] == ':':
+        head = forward[:2]
+        tail = forward[2:]
+        return (head + urllib.parse.quote(tail, safe='/')).encode('ascii')
+    return urllib.parse.quote(forward, safe='/').encode('ascii')
+
+
+def _find_latest_conversation_uuid(credential_home: Path, win_cwd: str) -> str | None:
+    """Scan agy's conversations/*.db for the latest match on ``win_cwd``.
+
+    agy's ``--continue`` relies on ``cache/last_conversations.json`` which
+    only gets refreshed on graceful exit. After ``ccb kill``, that file is
+    stale (or missing the cwd entry entirely), so ``--continue`` falls back
+    to "start a new conversation". Each conversation DB embeds the project
+    cwd as a URL-encoded ``file:///<path>`` URL in
+    ``trajectory_metadata_blob.data``, which is enough to identify the
+    most-recent conversation for any given cwd. The returned UUID is then
+    passed to agy via ``--conversation <UUID>``.
+
+    Returns None when the conversations directory is missing or no match
+    exists (caller falls back to plain ``--continue``).
+    """
+    conv_dir = credential_home / _AGY_CONVERSATIONS_REL
+    if not conv_dir.is_dir():
+        _log_warn(f'agy conversations dir missing: {conv_dir}')
+        return None
+    needle = _encode_cwd_for_agy(win_cwd)
+    best_mtime = -1.0
+    best_uuid: str | None = None
+    for db in conv_dir.glob('*.db'):
+        try:
+            mtime = db.stat().st_mtime
+        except OSError as exc:
+            _log_warn(f'stat failed for {db}: {exc}')
+            continue
+        if mtime <= best_mtime:
+            continue
+        try:
+            with sqlite3.connect(
+                f'file:{db}?mode=ro', uri=True, timeout=2.0
+            ) as conn:
+                row = conn.execute(
+                    'SELECT data FROM trajectory_metadata_blob LIMIT 1'
+                ).fetchone()
+        except sqlite3.Error as exc:
+            _log_warn(f'sqlite read failed for {db}: {exc}')
+            continue
+        if not row or not row[0]:
+            continue
+        data = _conversation_data_bytes(row[0], db=db)
+        if data is None:
+            continue
+        if needle in data:
+            best_mtime = mtime
+            best_uuid = db.stem
+    return best_uuid
+
+
+def _conversation_data_bytes(value: object, *, db: Path) -> bytes | None:
+    if isinstance(value, bytes):
+        return value
+    if isinstance(value, memoryview):
+        return value.tobytes()
+    if isinstance(value, str):
+        return value.encode('utf-8')
+    _log_warn(f'unsupported agy conversation metadata type in {db}: {type(value).__name__}')
+    return None
+
+
+def _resolve_resume_uuid(
+    credential_home: Path, prepared_state: dict[str, object] | None
+) -> str | None:
+    """Pick the agy conversation UUID to resume for this launch.
+
+    Uses ``prepared_state['workspace_path']`` (set by
+    ``prepare_launch_context``) as the WSL-side cwd, converts it to the
+    Windows path agy embeds in its conversation DBs, and returns the latest
+    matching conversation. Returns None if any step fails so the caller
+    falls back to ``--continue``.
+    """
+    if not prepared_state:
+        return None
+    workspace_path = prepared_state.get('workspace_path')
+    if not workspace_path:
+        return None
+    win_cwd = _wslpath_to_windows(Path(str(workspace_path)))
+    if not win_cwd:
+        return None
+    try:
+        return _find_latest_conversation_uuid(credential_home, win_cwd)
+    except Exception as exc:
+        _log_warn(f'agy conversation resume lookup failed: {exc}')
+        return None
+
+
+def build_runtime_launcher() -> ProviderRuntimeLauncher:
+    return ProviderRuntimeLauncher(
+        provider='agy',
+        launch_mode='simple_tmux',
+        prepare_launch_context=prepare_launch_context,
+        build_start_cmd=build_start_cmd,
+        build_session_payload=build_session_payload,
+    )
+
+
+def prepare_launch_context(
+    context: CliContext,
+    spec: AgentSpec,
+    plan: WorkspacePlan,
+    runtime_dir: Path,
+    prepared_state: dict[str, object],
+) -> dict[str, object]:
+    del runtime_dir
+    payload = dict(prepared_state or {})
+    payload['agent_name'] = spec.name
+    payload['project_root'] = str(context.project.project_root)
+    payload['workspace_path'] = str(prepared_state.get('run_cwd') or plan.workspace_path)
+    payload['agent_events_path'] = str(context.paths.agent_events_path(spec.name))
+    return payload
+
+
+def build_start_cmd(
+    command: ParsedStartCommand,
+    spec: AgentSpec,
+    runtime_dir,
+    launch_session_id: str,
+    *,
+    prepared_state: dict[str, object] | None = None,
+) -> str:
+    runtime_dir = Path(runtime_dir)
+    managed_home = _resolve_managed_home(runtime_dir)
+    credential_home = _resolve_credential_source_home() or current_provider_source_home()
+    if not _detach_legacy_credential_link(managed_home, credential_home):
+        raise RuntimeError(f'agy managed home aliases external credential home: {managed_home}')
+    managed_home = ensure_private_inheritance_directory(managed_home, credential_home)
+    profile = load_resolved_provider_profile(runtime_dir)
+    _materialize_private_credentials(credential_home, managed_home, profile=profile)
+    private_keychain = _prepare_macos_agent_private_keychain(managed_home)
+    inherit_auth = profile is None or bool(profile.inherit_auth)
+    inherited_keychain_auth = False
+    if private_keychain is not None and inherit_auth:
+        inherited_keychain_auth = _project_macos_inherited_keychain_auth(
+            credential_home,
+            managed_home,
+            private_keychain,
+        )
+    if private_keychain is not None and (not inherit_auth or inherited_keychain_auth):
+        _remove_file_token_storage_bypass(managed_home)
+    else:
+        _materialize_file_token_storage_bypass(managed_home)
+
+    cmd_parts = provider_start_parts('agy')
+    if command.auto_permission and _YOLO_FLAG not in cmd_parts and _YOLO_FLAG not in spec.startup_args:
+        cmd_parts.append(_YOLO_FLAG)
+    if command.restore and not _has_restore_arg(cmd_parts) and not _has_restore_arg(spec.startup_args):
+        resume_uuid = _resolve_resume_uuid(managed_home, prepared_state)
+        if resume_uuid:
+            cmd_parts.extend(['--conversation', resume_uuid])
+        else:
+            cmd_parts.append('--continue')
+    cmd_parts.extend(spec.startup_args)
+    cmd = ' '.join(shlex.quote(str(part)) for part in cmd_parts)
+    cmd = apply_provider_command_template(cmd, spec.provider_command_template)
+    overrides = {'HOME': str(managed_home), 'USERPROFILE': str(managed_home)}
+    if "WSL_DISTRO_NAME" in os.environ:
+        appdata_root = ensure_private_directory(managed_home / 'AppData')
+        roaming_dir = ensure_private_directory(appdata_root / 'Roaming')
+        local_dir = ensure_private_directory(appdata_root / 'Local')
+        overrides['APPDATA'] = str(roaming_dir)
+        overrides['LOCALAPPDATA'] = str(local_dir)
+        wslenv_additions = "HOME/p:USERPROFILE/p:APPDATA/p:LOCALAPPDATA/p"
+        existing_wslenv = os.environ.get("WSLENV", "")
+        if existing_wslenv:
+            overrides['WSLENV'] = f"{wslenv_additions}:{existing_wslenv}"
+        else:
+            overrides['WSLENV'] = wslenv_additions
+    env_prefix = join_env_prefix(
+        export_env_clause(provider_user_session_env()),
+        export_env_clause(spec.env),
+        # Private roots must win over inherited/user environment values.
+        export_env_clause(overrides),
+        export_env_clause(
+            caller_context_env(actor=spec.name, runtime_dir=runtime_dir, launch_session_id=launch_session_id)
+        ),
+    )
+
+    if env_prefix:
+        return f'{env_prefix}; {cmd}'
+    return cmd
+
+
+def build_session_payload(
+    context: CliContext,
+    spec: AgentSpec,
+    plan: WorkspacePlan,
+    runtime_dir,
+    run_cwd,
+    pane_id: str,
+    pane_title_marker: str,
+    start_cmd: str,
+    launch_session_id: str,
+    prepared_state: dict[str, object],
+) -> dict[str, object]:
+    del spec, prepared_state
+    return {
+        'ccb_session_id': launch_session_id,
+        'runtime_dir': str(runtime_dir),
+        'completion_artifact_dir': str(runtime_dir / 'completion'),
+        'terminal': 'tmux',
+        'tmux_session': pane_id,
+        'pane_id': pane_id,
+        'pane_title_marker': pane_title_marker,
+        'workspace_path': str(plan.workspace_path),
+        'work_dir': str(run_cwd),
+        'start_cmd': start_cmd,
+        'agy_auto_permission': bool(getattr(context.command, 'auto_permission', False)),
+    }
+
+
+def _has_restore_arg(parts: tuple[str, ...] | list[str]) -> bool:
+    normalized = {str(part).strip() for part in parts}
+    return bool({'--continue', '-c', '--conversation'} & normalized)
+
+
+__all__ = ['build_runtime_launcher', 'build_start_cmd', 'prepare_launch_context']

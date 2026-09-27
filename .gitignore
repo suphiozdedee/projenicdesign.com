@@ -1,0 +1,26 @@
+node_modules
+dist
+temp_repos
+.gemini
+graphify-out
+*.log
+
+# Sensitive credentials & tokens
+test_cookies.db
+*.db
+*cookies*.json
+scripts/hostinger_cookies.json
+
+# Temporary & scratch files
+scratch/
+local_live_craftsman.jpg
+__pycache__/
+*.pyc
+
+# Archives
+*.zip
+deploy-projenicdesign.zip
+
+# Environment
+.env
+.env.*

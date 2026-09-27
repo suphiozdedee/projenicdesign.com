@@ -1,0 +1,4 @@
+interface:
+  display_name: "CCB Diagnose"
+  short_description: "Diagnose and recover a CCB agent"
+  default_prompt: "Use $ccb_diagnose <agentname> to inspect the target pane, diagnose the execution state, safely recover it when possible, and ask before submitting a redacted GitHub issue."

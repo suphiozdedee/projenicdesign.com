@@ -1,0 +1,81 @@
+{
+  "archive_name": "ccb-windows-x86_64.zip",
+  "artifact_basename": "ccb-windows-x86_64",
+  "artifact_status": "ready",
+  "baseline_gate_ref": "VERSION",
+  "baseline_version_ref": "VERSION",
+  "baseline_version_status": "matching",
+  "beta_gaps": [
+    "Python 3.10+ remains an external prerequisite.",
+    "The native launchers are unsigned beta binaries.",
+    "Real Windows, WezTerm, and Herdr acceptance remains pending."
+  ],
+  "checksum_entry": "ccb-windows-x86_64.zip.sha256",
+  "diagnostic": "Native Windows x64 beta artifact is ready; external prerequisites still apply.",
+  "extract_dir": "ccb-windows-x86_64",
+  "failure_reason": "managed-python-degraded",
+  "host_gate": {
+    "default_failure_reason": "projection-schema-invalid",
+    "default_next_action": "Regenerate the Windows x64 release-surface projection.",
+    "rules": [
+      {
+        "diagnostic": "Windows x64 release route requires os_platform=win32.",
+        "failure_reason": "not-windows",
+        "field": "os_platform",
+        "next_action": "Use Linux/macOS release routes or retry on native Windows x64.",
+        "op": "equals",
+        "value": "win32"
+      },
+      {
+        "diagnostic": "Windows x64 release route requires cpu_arch=x64.",
+        "failure_reason": "not-x64",
+        "field": "cpu_arch",
+        "next_action": "Retry from a native Windows x64 host.",
+        "op": "equals",
+        "value": "x64"
+      },
+      {
+        "diagnostic": "WOW64 is not a native Windows x64 process.",
+        "failure_reason": "wow64",
+        "field": "wow64",
+        "next_action": "Use a native 64-bit shell and Node runtime.",
+        "op": "is_false",
+        "value": false
+      }
+    ]
+  },
+  "implementation_admission": "admitted",
+  "managed_python_status": "degraded",
+  "native_helper_status": "ready",
+  "next_action": "Verify the SHA256 file, reinstall with install.ps1, and report beta results.",
+  "package_cpu": [
+    "x64"
+  ],
+  "package_metadata_policy": "win32-disabled",
+  "package_os": [
+    "win32"
+  ],
+  "packaged_projection_ref": "lib/platforms/windows/release/projection.json",
+  "projection_source": "repo_evidence",
+  "release_artifact_ref": "v8.6.19",
+  "release_gate_detail": "The Windows x64 ZIP is attached to the stable CCB release but retains beta support status.",
+  "release_install_entry": "install_ps1",
+  "schema_version": 1,
+  "source_install_allowed": true,
+  "source_install_entry": "install_ps1",
+  "surface_state": "degraded",
+  "update_entry": "diagnostic_only",
+  "upstream_detail_reason": null,
+  "upstream_failure_ref": null,
+  "upstream_gate_status": "ready",
+  "user_surfaces_parity_ref": "platforms/windows/README.md",
+  "windows_bin_entries": {
+    "ask": "bin/ask.exe",
+    "autonew": "bin/autonew.exe",
+    "ccb": "bin/ccb.exe",
+    "ctx-transfer": "bin/ctx-transfer.exe"
+  },
+  "windows_executable_entry": "bin/ccb.exe",
+  "windows_installer_entry": "install.ps1",
+  "windows_npm_enabled": false
+}

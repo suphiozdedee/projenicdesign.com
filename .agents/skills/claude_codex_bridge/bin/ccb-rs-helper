@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# CCB_RS_HELPER_WRAPPER
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" == /* ]] || SOURCE="$DIR/$SOURCE"
+done
+REPO_ROOT="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
+TARGET_BIN="$REPO_ROOT/tools/ccb-rs-helper/target/release/ccb-rs-helper"
+
+if [[ -x "$TARGET_BIN" ]]; then
+  exec "$TARGET_BIN" "$@"
+fi
+
+printf '%s\n' 'CCB Rust helper binary is not built.'
+printf '%s\n' 'Run: bin/build-ccb-rs-helper'
+exit 127

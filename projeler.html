@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PROJENIC | Seçilmiş Projeler (Selected Work)</title>
+  <meta name="description" content="Projenic tarafından tasarlanan, üretilen ve uygulanan seçilmiş fuar standları, showroom, etkinlik ve perakende projeleri.">
+  <link rel="icon" type="image/png" href="/assets/images/logo-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/style.css">
+</head>
+<body class="selection:bg-[#E84E1C] selection:text-white">
+
+  <!-- Top Navigation Bar -->
+  <header class="nav-fixed-top">
+    <div class="max-w-[1440px] mx-auto w-full flex items-center justify-between">
+      <a href="/" class="nav-brand flex items-center gap-3.5 focus:outline-none flex-shrink-0">
+        <img src="/assets/images/logo-black.png" alt="Projenic" class="brand-logo h-7 sm:h-8 w-auto object-contain">
+        <span class="hidden 2xl:inline-block font-mono text-[10px] tracking-widest uppercase opacity-60 border-l border-current pl-3.5">
+          Tasarım · Üretim · Kurulum
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-5 xl:gap-8 flex-shrink-0">
+        <a href="/projeler.html" class="projenic-link">
+          <span class="link-first">Projeler</span>
+          <span class="link-second">Projeler</span>
+        </a>
+        <a href="/yetkinlikler.html" class="projenic-link">
+          <span class="link-first">Yetkinlikler</span>
+          <span class="link-second">Yetkinlikler</span>
+        </a>
+        <a href="/#process" class="projenic-link">
+          <span class="link-first">Süreç</span>
+          <span class="link-second">Süreç</span>
+        </a>
+        <a href="/#production" class="projenic-link">
+          <span class="link-first">Üretim Gücü</span>
+          <span class="link-second">Üretim Gücü</span>
+        </a>
+        <a href="/hakkimizda.html" class="projenic-link">
+          <span class="link-first">Hakkımızda</span>
+          <span class="link-second">Hakkımızda</span>
+        </a>
+        <a href="/iletisim.html" class="projenic-link">
+          <span class="link-first">İletişim</span>
+          <span class="link-second">İletişim</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
+        <button type="button" data-theme-toggle class="projenic-btn-outline py-2 px-3 text-[11px] flex items-center gap-1 focus:outline-none" aria-label="Temayı Değiştir">
+          <span class="nav-theme-prefix">TEMA: </span>
+          <span class="theme-label font-bold text-[var(--text)] opacity-80">GECE</span>
+        </button>
+        <a href="/iletisim.html" class="projenic-btn-solid py-2 px-3.5 sm:px-4 text-[11px] focus:outline-none whitespace-nowrap">
+          Proje Başlat →
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-36 sm:pt-40 lg:pt-44 pb-24 max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16">
+    
+    <!-- BREADCRUMB & HEADER -->
+    <div class="mb-12 border-b border-current/10 pb-10">
+      <div class="flex items-center gap-3 font-mono text-xs text-[var(--muted)] mb-4 uppercase tracking-wider">
+        <a href="/" class="hover:underline">Ana Sayfa</a>
+        <span>/</span>
+        <span class="text-[var(--text)] font-semibold">02 — Projeler</span>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+        <div class="lg:col-span-8">
+          <span class="font-mono text-xs uppercase tracking-widest text-[var(--muted)] font-semibold block mb-3">
+            02 / PORTFOLIO — SEÇİLMİŞ İŞLER
+          </span>
+          <h1 class="projenic-hero text-[var(--text)]">
+            Seçilmiş İşler
+          </h1>
+        </div>
+        <div class="lg:col-span-4 text-left lg:text-right">
+          <p class="projenic-lead text-base text-[var(--muted)]">
+            Fuar standı, showroom ve etkinlik alanlarında markaları hayata geçiren projelerimizden bir seçki.
+          </p>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex items-center gap-2 font-mono text-xs overflow-x-auto no-scrollbar whitespace-nowrap pt-8 max-w-full">
+        <button type="button" class="portfolio-filter-btn px-4 py-1.5 rounded-full border border-current font-bold opacity-100 transition-colors" data-filter="all">Tümü (6)</button>
+        <button type="button" class="portfolio-filter-btn px-4 py-1.5 rounded-full border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="exhibition">Fuar Standı</button>
+        <button type="button" class="portfolio-filter-btn px-4 py-1.5 rounded-full border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="spatial">Showroom & İç Mimari</button>
+        <button type="button" class="portfolio-filter-btn px-4 py-1.5 rounded-full border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="events">Etkinlikler</button>
+        <button type="button" class="portfolio-filter-btn px-4 py-1.5 rounded-full border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="production">Üretim & Uygulama</button>
+      </div>
+    </div>
+
+    <!-- 6 Projects Grid (Identical Card Heights & Concentric Industrial Design) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12 items-stretch">
+      
+      <!-- 01: ULAK Haberleşme -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="ulak">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              İSTANBUL (TÜYAP)
+            </span>
+            <span class="opacity-50 tabular-nums">2023</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / SAVUNMA & TELEKOM</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>ULAK Haberleşme</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              IDEF Savunma Sanayii Fuarı için milli haberleşme teknolojilerini yansıtan yüksek mimari disiplinli anahtar teslim fuar standı.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Sayısal Tünel & Ahşap Lake</span>
+          <a href="/proje-aurora.html" class="hover:underline text-[var(--text)] font-semibold" onclick="event.stopPropagation()">Vaka Detayı ↗</a>
+        </div>
+      </article>
+
+      <!-- 02: Yamaha Marine -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="yamaha">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              MARİN FUARI
+            </span>
+            <span class="opacity-50 tabular-nums">2024</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / DENİZCİLİK</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>Yamaha Marine</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              Ağır deniz motorları teşhiri için tasarlanan güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Ağır Yük Platformu & Lake</span>
+          <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+        </div>
+      </article>
+
+      <!-- 03: Dardanel -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="dardanel">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              İSTANBUL (WORLDFOOD)
+            </span>
+            <span class="opacity-50 tabular-nums">2024</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / GIDA DENEYİMİ</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>Dardanel</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              Canlı şef mutfak istasyonu, tadım barı ve ışıklı pleksi teşhir duvarlarıyla lezzet ve mimariyi buluşturan fuar standı.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Canlı Mutfak & Işıklı Pleksi</span>
+          <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+        </div>
+      </article>
+
+      <!-- 04: STM Savunma -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="stm">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              İSTANBUL (SAHA EXPO)
+            </span>
+            <span class="opacity-50 tabular-nums">2023</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / SAVUNMA SANAYİİ</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>STM Savunma</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              Milli savunma teknolojileri için özel maket kaideleri, yüksek karkas tavan ızgarası ve VIP toplantı odalarıyla donatılan stand.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Özel Maket Kaidesi & VIP</span>
+          <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+        </div>
+      </article>
+
+      <!-- 05: Mercedes-Benz Türk -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="events" data-open-project="mercedes">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              İSTANBUL
+            </span>
+            <span class="opacity-50 tabular-nums">2023</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">ETKİNLİK / OTOMOTİV</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>Mercedes-Benz Türk</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              Global otomotiv devinin kurum kültürünü yansıtan minimalist ahşap hacimler, görüşme masaları ve akustik bölmeler.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Minimalist Ahşap & Akustik</span>
+          <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+        </div>
+      </article>
+
+      <!-- 06: Perotti Showroom -->
+      <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="spatial" data-open-project="perotti">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+            <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+              İSTOÇ, İSTANBUL
+            </span>
+            <span class="opacity-50 tabular-nums">2024</span>
+          </div>
+          <div class="space-y-2">
+            <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">SHOWROOM & İÇ MİMARİ</span>
+            <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+              <span>Perotti Showroom</span>
+              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+            </h3>
+            <p class="text-xs opacity-75 leading-relaxed font-sans">
+              Lüks sofra ürünleri için monolitik koyu dokular, gizli lineer ışık kanalları ve özel teşhir üniteleriyle tasarlanan showroom.
+            </p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+          <span>Lineer LED & Lake Raflar</span>
+          <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Bottom Action Area -->
+    <div class="mt-20 pt-12 border-t border-current/10 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <span class="font-mono text-xs text-[var(--muted)] uppercase font-semibold block mb-1">SIRADA NE VAR? —</span>
+        <h3 class="text-2xl font-bold">Bir sonraki etkiyi birlikte inşa edelim.</h3>
+      </div>
+      <a href="/iletisim.html" class="projenic-btn-solid text-xs py-3 px-8 inline-flex items-center">
+        Proje Başlat →
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ── UNIFIED CORPORATE FOOTER ────────────────────────────────────── -->
+  <footer class="mt-16 border-t border-current/10 bg-[var(--surface)] text-[var(--text)] transition-colors duration-200">
+    
+    <!-- Status & Clocks -->
+    <div class="border-b border-current/10 py-3.5 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 font-mono text-xs opacity-75">
+      <div class="flex items-center gap-2.5">
+        <span class="w-2 h-2 rounded-full bg-[#E84E1C] animate-pulse"></span>
+        <span class="font-semibold uppercase tracking-wider text-[11px]">ATÖLYE AKTİF · KÜÇÜKÇEKMECE, İSTANBUL</span>
+      </div>
+      <div class="flex items-center gap-4 text-[11px] tabular-nums">
+        <div><span class="opacity-50">İSTANBUL</span> <strong id="clock-ist" class="font-bold">--:--:--</strong></div>
+        <span class="opacity-30">·</span>
+        <div><span class="opacity-50">DÜSSELDORF</span> <strong id="clock-dus" class="font-bold">--:--:--</strong></div>
+        <span class="opacity-30">·</span>
+        <div><span class="opacity-50">DUBAİ</span> <strong id="clock-dxb" class="font-bold">--:--:--</strong></div>
+      </div>
+    </div>
+
+    <!-- Huge Projenic Wordmark -->
+    <div class="py-6 px-6 max-w-[1440px] mx-auto text-center">
+      <div class="footer-wordmark text-center w-full">
+        projenic
+      </div>
+    </div>
+
+    <!-- Quick Links & Contact Grid -->
+    <div class="py-10 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 items-start border-t border-current/10 font-sans text-xs">
+      <div class="md:col-span-5 space-y-3">
+        <span class="font-mono text-[11px] uppercase tracking-widest font-semibold block opacity-80">
+          PROJENIC TASARIM MİMARLIK LTD. ŞTİ.
+        </span>
+        <p class="opacity-75 leading-relaxed max-w-sm">
+          Fuar standı, showroom ve ticari alanlar için mimari tasarım, hassas ahşap & metal işçiliği ve sahada eksiksiz anahtar teslim uygulama.
+        </p>
+      </div>
+
+      <div class="md:col-span-3 space-y-2">
+        <span class="font-mono text-[11px] uppercase tracking-widest font-semibold block opacity-80">
+          NAVİGASYON
+        </span>
+        <ul class="space-y-1.5 opacity-75">
+          <li><a href="/projeler.html" class="hover:underline">Seçilmiş Projeler</a></li>
+          <li><a href="/yetkinlikler.html" class="hover:underline">Yetkinlikler & İmalat</a></li>
+          <li><a href="/#process" class="hover:underline">5 Aşamalı Süreç</a></li>
+          <li><a href="/hakkimizda.html" class="hover:underline">Hakkımızda</a></li>
+          <li><a href="/iletisim.html" class="hover:underline">İletişim & Brief</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4 space-y-3 font-mono text-xs">
+        <span class="font-mono text-[11px] uppercase tracking-widest font-semibold block opacity-80">
+          İLETİŞİM & PORTAL
+        </span>
+        <div class="opacity-80 space-y-1 font-sans">
+          <p>Tevfikbey Mah. İbrahim Kalfa Sk. No 25/B, Küçükçekmece, İstanbul</p>
+          <a href="tel:+905512047851" class="font-mono font-bold block text-sm tabular-nums hover:underline text-[var(--text)]">+90 551 204 78 51</a>
+          <a href="mailto:info@projenicdesign.com" class="font-mono hover:underline block opacity-80">info@projenicdesign.com</a>
+        </div>
+        <div class="pt-1">
+          <a href="https://planicworks.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 border border-current/15 font-mono text-[11px] transition-colors">
+            <span>Müşteri Portalı:</span>
+            <strong class="font-bold underline">planicworks.com ↗</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div class="border-t border-current/10 py-6 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] opacity-60">
+      <div>© 2026 Projenic Tasarım Mimarlık Ticaret Ltd. Şti. Tüm Hakları Saklıdır.</div>
+      <div>Tasarım · Üretim · Kurulum</div>
+    </div>
+
+  </footer>
+
+  <!-- ── PROJECT DETAIL MODAL (RECTANGULAR GALLERY FOR STANDS, SHOWROOMS & EVENTS) ───── -->
+  <div id="project-detail-modal" class="project-modal" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
+    <div class="bg-[var(--bg)] text-[var(--text)] rounded-xl shadow-2xl max-w-5xl w-full p-6 sm:p-12 relative my-auto mx-auto border border-current/15 font-sans overflow-hidden">
+      
+      <!-- Close Button -->
+      <button type="button" data-close-project-modal class="absolute top-6 right-6 p-2 rounded opacity-60 hover:opacity-100 transition-opacity focus:outline-none" aria-label="Kapat">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <!-- Back Link -->
+      <button type="button" data-close-project-modal class="font-mono text-xs opacity-60 hover:opacity-100 flex items-center gap-1.5 mb-6">
+        <span>← TÜM PROJELER</span>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="space-y-2 pb-6 border-b border-current/10">
+        <h2 id="modal-project-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight">Aurora</h2>
+        <div id="modal-project-type" class="font-mono text-xs text-[var(--text)] font-semibold">
+          FUAR STANDI / TEKNOLOJİ / DUBAİ / 2026
+        </div>
+        <p id="modal-project-lead" class="projenic-lead max-w-2xl pt-2">
+          Işık, mimari ve insan etkileşimi üzerinden yeniliği hayata geçiren etkileyici bir fuar deneyimi.
+        </p>
+      </div>
+
+      <!-- Hero Large Project Visual -->
+      <div class="my-6 rounded-lg overflow-hidden border border-current/10 bg-black/10 aspect-[16/8]">
+        <img id="modal-project-hero-img" src="/assets/images/projects/aurora-hero-large.jpg" alt="Proje Detayı" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Project Facts Bar -->
+      <div class="my-6 p-6 rounded-lg border border-current/10 bg-[var(--surface)] font-mono text-xs space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pb-4 border-b border-current/10">
+          <div>
+            <span class="opacity-50 block text-[10px] uppercase">MÜŞTERİ</span>
+            <span id="modal-project-client" class="font-bold font-sans block mt-0.5">Gizli / Teknoloji Kuruluşu</span>
+          </div>
+          <div>
+            <span class="opacity-50 block text-[10px] uppercase">KONUM</span>
+            <span id="modal-project-location" class="font-semibold block mt-0.5">Dubai, BAE (DWTC)</span>
+          </div>
+          <div>
+            <span class="opacity-50 block text-[10px] uppercase">YIL</span>
+            <span id="modal-project-year" class="font-semibold block mt-0.5 tabular-nums">2026</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="opacity-50 block text-[10px] uppercase mb-2">DOĞRULANMIŞ KAPSAM</span>
+          <ul id="modal-project-scope-list" class="flex flex-wrap gap-2 font-sans text-xs opacity-85">
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• Konsept Tasarım</li>
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• Showroom & İç Mimari</li>
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• Teknik Geliştirme</li>
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• İçerik & Medya</li>
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• Üretim & İmalat</li>
+            <li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10">• Saha Kurulumu</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Project Gallery Grid -->
+      <div class="mt-10 pt-6 border-t border-current/10">
+        <div class="flex items-center justify-between mb-4 font-mono text-xs">
+          <span class="opacity-50 uppercase font-bold">PROJE GALERİSİ — DETAY GÖRSELLERİ</span>
+          <span class="opacity-40">04 GÖRSEL / 04</span>
+        </div>
+
+        <div id="modal-project-gallery" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Dynamically populated with aspect-[16/10] rectangular cards -->
+        </div>
+      </div>
+
+      <!-- Modal Bottom Call to Action -->
+      <div class="mt-10 pt-6 border-t border-current/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="font-mono text-xs text-[var(--muted)] uppercase font-semibold block">SIRADA NE VAR? —</span>
+          <h4 class="text-lg font-bold font-sans">Bir sonraki etkiyi birlikte inşa edelim.</h4>
+        </div>
+
+        <a href="/iletisim.html" class="projenic-btn-solid text-xs py-3 px-6 text-center">
+          Proje Başlat →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── FULLSCREEN IMAGE LIGHTBOX MODAL ───── -->
+  <div id="image-lightbox-modal" class="fixed inset-0 z-[120] bg-black/95 backdrop-blur-md hidden items-center justify-center p-4 sm:p-8 transition-all duration-300" role="dialog" aria-modal="true" aria-label="Görsel Büyütme">
+    <button type="button" id="lightbox-close" class="absolute top-6 right-6 z-10 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition focus:outline-none" aria-label="Kapat">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div class="relative max-w-5xl w-full max-h-[90vh] flex flex-col items-center justify-center">
+      <img id="lightbox-img" src="" alt="Büyütülmüş Görsel" class="w-full max-w-5xl max-h-[82vh] object-contain rounded-lg shadow-2xl border border-white/15">
+      <p id="lightbox-caption" class="mt-4 text-center text-xs sm:text-sm font-mono text-white/90 tracking-wide bg-black/60 px-4 py-1.5 rounded-full border border-white/10"></p>
+    </div>
+  </div>
+
+  <script type="module" src="/src/js/main.js"></script>
+</body>
+</html>

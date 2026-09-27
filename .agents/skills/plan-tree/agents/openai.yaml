@@ -1,0 +1,4 @@
+interface:
+  display_name: "Plan Tree"
+  short_description: "Maintain planning trees, handoff status, and repo hygiene"
+  default_prompt: "Use $plan-tree to organize this planning folder and reconcile roadmap, implementation status, repo cleanup/file-structure hygiene, topics, decisions, and open questions."

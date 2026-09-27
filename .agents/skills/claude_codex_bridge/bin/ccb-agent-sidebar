@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# CCB_AGENT_SIDEBAR_WRAPPER
+SOURCE="${BASH_SOURCE[0]}"
+while [[ -L "$SOURCE" ]]; do
+  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" == /* ]] || SOURCE="$DIR/$SOURCE"
+done
+REPO_ROOT="$(cd -P "$(dirname "$SOURCE")/.." && pwd)"
+TARGET_BIN="$REPO_ROOT/tools/ccb-agent-sidebar/target/release/ccb-agent-sidebar"
+
+if [[ -x "$TARGET_BIN" ]]; then
+  exec "$TARGET_BIN" "$@"
+fi
+
+printf '%s\n' 'CCB sidebar helper binary is not built.'
+printf '%s\n' 'Run: bin/build-ccb-agent-sidebar'
+while :; do sleep 3600; done
