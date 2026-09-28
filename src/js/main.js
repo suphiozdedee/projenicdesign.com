@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactDrawer();
   initPortfolioFilter();
   initProjectDetailModal();
+  initProjectHeroGallery();
   initImageLightbox();
   initBriefSubmission();
   initSmoothScroll();
@@ -365,6 +366,31 @@ function initProjectDetailModal() {
     if (e.key === 'Escape' && modal.classList.contains('is-open')) {
       closeModal();
     }
+  });
+}
+
+function initProjectHeroGallery() {
+  const heroImage = document.querySelector('[data-project-hero]');
+  const heroContainer = heroImage?.closest('[data-lightbox]');
+  const thumbButtons = document.querySelectorAll('[data-hero-thumb]');
+
+  if (!heroImage || !thumbButtons.length) return;
+
+  thumbButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextSrc = button.dataset.heroSrc;
+      const nextAlt = button.dataset.heroAlt || button.querySelector('img')?.alt || heroImage.alt;
+
+      if (!nextSrc) return;
+
+      heroImage.src = nextSrc;
+      heroImage.alt = nextAlt;
+
+      if (heroContainer) {
+        heroContainer.dataset.lightbox = nextSrc;
+        heroContainer.dataset.caption = button.dataset.caption || '';
+      }
+    });
   });
 }
 
