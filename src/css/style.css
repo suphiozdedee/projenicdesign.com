@@ -256,15 +256,21 @@ input[type=range]::-webkit-slider-thumb {
 .footer-wordmark { padding: 2rem 0 1rem; user-select: none; }
 .footer-slogan {
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: clamp(1.15rem, 3vw, 1.75rem);
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: lowercase;
+  font-size: clamp(1.25rem, 3.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--text);
-  opacity: 0.7;
+  opacity: 1;
   line-height: 1.2;
+  margin: 0;
 }
-.footer-slogan strong { font-weight: 800; letter-spacing: 0.12em; opacity: 1; }
+.footer-slogan strong {
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  opacity: 1;
+}
 .footer-brand-logo {
   height: clamp(3.25rem, 7vw, 5.75rem);
   width: auto; max-width: 100%; object-fit: contain; display: block;
