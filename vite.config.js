@@ -20,7 +20,10 @@ export default defineConfig({
         projeAurora: resolve(__dirname, 'proje-aurora.html'),
         yetkinlikler: resolve(__dirname, 'yetkinlikler.html'),
         hakkimizda: resolve(__dirname, 'hakkimizda.html'),
-        iletisim: resolve(__dirname, 'iletisim.html')
+        iletisim: resolve(__dirname, 'iletisim.html'),
+        kvkk: resolve(__dirname, 'kvkk.html'),
+        cerezPolitikasi: resolve(__dirname, 'cerez-politikasi.html'),
+        aydinlatmaMetni: resolve(__dirname, 'aydinlatma-metni.html')
       }
     }
   }

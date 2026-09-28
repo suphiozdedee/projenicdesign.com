@@ -24,3 +24,4 @@ deploy-projenicdesign.zip
 # Environment
 .env
 .env.*
+!.env.example
