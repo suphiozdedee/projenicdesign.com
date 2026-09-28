@@ -16,7 +16,7 @@ def run_comprehensive_audit():
             ("Yetkinlikler", "http://localhost:3000/yetkinlikler.html"),
             ("Hakkimizda", "http://localhost:3000/hakkimizda.html"),
             ("Iletisim", "http://localhost:3000/iletisim.html"),
-            ("ULAK Case Study", "http://localhost:3000/proje-aurora.html")
+            ("ULAK Project Detail", "http://localhost:3000/proje-aurora.html")
         ]
 
         print("================================================================")
@@ -129,12 +129,12 @@ def run_comprehensive_audit():
         assert card_count == 6, f"Expected 6 cards on projeler.html, got {card_count}"
         print(f"  ✓ Found all 6 authentic project cards on projeler.html")
 
-        # Deep test: ULAK Case Study & Lightbox
-        print("\n--- Testing ULAK Case Study & Lightbox ---")
+        # Deep test: ULAK Project Detail & Lightbox
+        print("\n--- Testing ULAK Project Detail & Lightbox ---")
         page.goto("http://localhost:3000/proje-aurora.html")
         page.wait_for_load_state("networkidle")
         h1 = page.locator("h1").inner_text()
-        print(f"  ✓ Case study page H1: '{h1}'")
+        print(f"  ✓ Project detail page H1: '{h1}'")
         assert "ULAK Haberleşme" in h1, f"Expected ULAK Haberleşme, got {h1}"
         
         # Test Lightbox

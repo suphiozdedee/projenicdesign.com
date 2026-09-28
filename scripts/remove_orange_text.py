@@ -19,7 +19,7 @@ def clean_file(path):
     content = content.replace('tracking-widest text-[#E84E1C] font-bold block mb-2', 'tracking-widest text-[var(--text)] opacity-75 font-semibold block mb-2')
     content = content.replace('tracking-widest text-[#E84E1C] font-bold block', 'tracking-widest text-[var(--text)] opacity-75 font-semibold block')
     
-    # Steps / Numbers / Case study headers
+    # Steps / Numbers / Project headers
     content = content.replace('text-[#E84E1C] font-bold block">01', 'text-[var(--muted)] font-mono text-xs font-semibold block">01')
     content = content.replace('text-[#E84E1C] font-bold block">02', 'text-[var(--muted)] font-mono text-xs font-semibold block">02')
     content = content.replace('text-[#E84E1C] font-bold block">03', 'text-[var(--muted)] font-mono text-xs font-semibold block">03')
