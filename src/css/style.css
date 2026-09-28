@@ -88,7 +88,7 @@ body {
   letter-spacing: 0.06em;
   cursor: pointer;
   color: var(--text);
-  margin: 0 0.35rem;
+  margin: 0 0.15rem;
   padding: 0 0.25rem;
   white-space: nowrap;
 }
@@ -164,14 +164,8 @@ body {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 1.15rem !important;
+  gap: 1rem !important;
   flex-wrap: nowrap !important;
-}
-
-@media (min-width: 1440px) {
-  .nav-fixed-top nav {
-    gap: 1.75rem !important;
-  }
 }
 
 .nav-brand {
@@ -180,6 +174,10 @@ body {
   gap: 0.75rem !important;
   flex-shrink: 0 !important;
   white-space: nowrap !important;
+}
+
+.nav-brand > span {
+  display: none !important;
 }
 
 .nav-actions {
@@ -234,6 +232,12 @@ body {
   .projenic-link {
     margin: 0 0.15rem;
     font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 1279px) {
+  .nav-theme-prefix {
+    display: none !important;
   }
 }
 
