@@ -207,97 +207,67 @@ const projectData = {
     title: 'ULAK Haberleşme',
     type: 'FUAR STANDI / SAVUNMA & TELEKOMÜNİKASYON / TÜYAP / 2023',
     lead: 'Türkiye’nin milli haberleşme teknolojileri kuruluşu için tasarlanan, yüksek teknoloji ve kurumsal otoriteyi yansıtan anahtar teslim IDEF fuar standı.',
-    heroImg: '/assets/images/projects/ulak-haberlesme-hero.jpg',
+    heroImg: '',
     client: 'ULAK Haberleşme A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF 2023)',
     year: '2023',
-    scope: ['Mimari Stand Tasarımı', 'Teknoloji Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Lake Ahşap İmalat', 'Yerinde Montaj'],
-    gallery: [
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg', caption: 'Karkas Konstrüksiyon ve Işıklı Tavan Izgarası' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-2.jpg', caption: 'Ana Karşılama Alanı ve Mat Lake Banko' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-3.jpg', caption: 'Teknoloji Teşhir Tüneli ve Enstalasyon Detayı' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-4.jpg', caption: 'VIP Görüşme Odası ve Akustik Panel Detayı' }
-    ]
+    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Lake Ahşap İmalat', 'Yerinde Montaj'],
+    gallery: []
   },
   yamaha: {
     title: 'Yamaha Marine',
     type: 'FUAR STANDI / DENİZCİLİK & MOTOR / BOAT SHOW / 2024',
     lead: 'Dünya denizcilik devi Yamaha için kurgulanan; ağır deniz motorlarını sergileyen güçlendirilmiş platform mimarisi ve lüks ağırlama üniteleri.',
-    heroImg: '/assets/images/projects/yamaha-hero.jpg',
+    heroImg: '',
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
-    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Özel Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
-    gallery: [
-      { src: '/assets/images/projects/yamaha-gallery-1.jpg', caption: 'Ağır Deniz Motorları Taşıyıcı Platformu' },
-      { src: '/assets/images/projects/yamaha-gallery-2.jpg', caption: 'Özel Lake Bankolar ve Karşılama Hattı' },
-      { src: '/assets/images/projects/yamaha-gallery-3.jpg', caption: 'Lineer LED Aydınlatma ve Tavan Kurgusu' },
-      { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'VIP Dinlenme ve İş Görüşme Lounge Alanı' }
-    ]
+    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Monolitik Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
+    gallery: []
   },
   dardanel: {
     title: 'Dardanel',
     type: 'FUAR STANDI / GIDA & PERAKENDE / WORLDFOOD / 2024',
     lead: 'Türkiye’nin gıda devi Dardanel için lezzet, tazelik ve çağdaş mimariyi bir araya getiren interaktif tadım, şef mutfağı ve karşılama standı.',
-    heroImg: '/assets/images/projects/dardanel-hero.jpg',
+    heroImg: '',
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood Istanbul)',
     year: '2024',
     scope: ['Konsept Tasarım', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Lake Marangozluk', 'Anahtar Teslim'],
-    gallery: [
-      { src: '/assets/images/projects/dardanel-gallery-1.jpg', caption: 'Canlı Şef Mutfak İstasyonu ve Tadım Barı' },
-      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Işıklı Pleksi Teşhir Duvarları ve Raflar' },
-      { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Özel İpek Mat Lake Marangozluk İmalatı' },
-      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Karşılama Bankosu ve Kurumsal Teşhir Hattı' }
-    ]
+    gallery: []
   },
   stm: {
     title: 'STM Savunma',
     type: 'FUAR STANDI / SAVUNMA SANAYİİ / SAHA EXPO / 2023',
     lead: 'Milli savunma sanayiinin öncülerinden STM için yüksek güvenlik ve prestij standartlarına uygun olarak üretilen fuar ve teknoloji standı.',
-    heroImg: '/assets/images/projects/stm-savunma-hero.jpg',
+    heroImg: '',
     client: 'STM Savunma Teknolojileri Mühendislik A.Ş.',
     location: 'İstanbul Fuar Merkezi (SAHA Expo 2023)',
     year: '2023',
     scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'VIP Toplantı Salonu', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
-    gallery: [
-      { src: '/assets/images/projects/stm-savunma-gallery-1.jpg', caption: 'Özel Savunma Maketi Teşhir Kaideleri' },
-      { src: '/assets/images/projects/stm-savunma-gallery-2.jpg', caption: 'Yüksek Karkas Tavan Izgarası ve Işık Kurgusu' },
-      { src: '/assets/images/projects/stm-savunma-gallery-3.jpg', caption: 'Yüksek Güvenlikli VIP Toplantı Hacmi' },
-      { src: '/assets/images/projects/stm-savunma-gallery-4.jpg', caption: 'Kurumsal Karşılama ve Bilgilendirme Totemi' }
-    ]
+    gallery: []
   },
   mercedes: {
     title: 'Mercedes-Benz Türk',
     type: 'ETKİNLİK & STAND / OTOMOTİV / İSTANBUL / 2023',
     lead: 'Global otomotiv liderinin kurum kültürünü ve mühendislik mirasını yansıtan heykelsi, minimalist insan kaynakları ve deneyim standı.',
-    heroImg: '/assets/images/projects/mercedes-benz-hero.jpg',
+    heroImg: '',
     client: 'Mercedes-Benz Türk A.Ş.',
     location: 'İstanbul',
     year: '2023',
     scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Ahşap Banko & Mobilya', 'Modüler Sahne', 'Hassas Montaj'],
-    gallery: [
-      { src: '/assets/images/projects/mercedes-benz-gallery-1.jpg', caption: 'Minimalist Masif Ahşap ve Lake Geometri' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Akustik Bölmeler ve İş Görüşme İstasyonları' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Modüler Sahne ve Entegre LED Altyapısı' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-4.jpg', caption: 'Kurumsal Kimlik ve Hassas Yüzey Bitişleri' }
-    ]
+    gallery: []
   },
   perotti: {
     title: 'Perotti Showroom',
     type: 'SHOWROOM & İÇ MİMARİ / ZÜCCACİYE & YAŞAM / İSTOÇ / 2024',
-    lead: 'Lüks sofra ve ev yaşam ürünleri için mimari koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
-    heroImg: '/assets/images/projects/perotti-hero.jpg',
+    lead: 'Lüks sofra ve ev yaşam ürünleri için monolitik koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
+    heroImg: '',
     client: 'Perotti Ev Gereçleri',
     location: 'İSTOÇ Ticaret Merkezi, İstanbul',
     year: '2024',
     scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Lake Bankolar', 'Anahtar Teslim'],
-    gallery: [
-      { src: '/assets/images/projects/perotti-gallery-1.jpg', caption: 'Mimari Koyu Ahşap ve Özel Teşhir Rafları' },
-      { src: '/assets/images/projects/perotti-gallery-2.jpg', caption: 'Gizli Lineer LED Aydınlatma Kanalları' },
-      { src: '/assets/images/projects/perotti-gallery-3.jpg', caption: 'Özel Tasarım Karşılama ve Satış Bankosu' },
-      { src: '/assets/images/projects/perotti-gallery-4.jpg', caption: 'Lüks Züccaciye Koleksiyon Vitrinleri' }
-    ]
+    gallery: []
   }
 };
 
