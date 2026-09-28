@@ -381,3 +381,18 @@ input[type=range]::-webkit-slider-thumb {
   letter-spacing: 0.08em;
   opacity: 1;
 }
+.footer-brand-logo {
+  height: clamp(3.25rem, 7vw, 5.75rem);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+}
+.footer-brand-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+}
