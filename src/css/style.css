@@ -429,22 +429,26 @@ input[type=range]::-webkit-slider-thumb {
 
 /* ── PROJENIC OFFICIAL FOOTER BRAND SIGNATURE ────────────────────── */
 .footer-wordmark {
-  padding: 1.5rem 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.25rem 1.5rem 1.1rem;
   user-select: none;
 }
 .footer-slogan {
-  display: block;
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 0.72rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.5rem);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.16em;
   text-transform: lowercase;
+  line-height: 1;
   color: var(--text);
-  opacity: 0.55;
+  opacity: 0.62;
+  margin: 0;
 }
 .footer-slogan strong {
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   opacity: 1;
 }
 .footer-brand-logo {
