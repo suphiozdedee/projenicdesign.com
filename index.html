@@ -65,10 +65,6 @@
 
       <!-- Right Action Area: Language, Theme Toggle & Start Project CTA -->
       <div class="nav-actions flex items-center gap-2.5 sm:gap-3 flex-shrink-0">
-        <!-- Language indicator -->
-        <span class="hidden xl:inline-block font-mono text-[11px] font-semibold opacity-70 px-2">
-          TR <span class="opacity-40">/ EN</span>
-        </span>
 
         <!-- Theme Toggle Button -->
         <button type="button" data-theme-toggle class="projenic-btn-outline py-2 px-3 text-[11px] flex items-center gap-1 focus:outline-none" aria-label="Temayı Değiştir">
@@ -219,111 +215,189 @@
 
     </section>
 
-    <!-- ── SECTION 2: FEATURED PROJECTS / SEÇİLMİŞ PROJELER ───────────────── -->
-    <section id="projects" class="py-16 sm:py-24 max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 border-b border-current/10">
+    <!-- ── SECTION 2: FEATURED PROJECTS / SEÇİLMİŞ İŞLER ───────────────── -->
+    <section id="projects" class="py-24 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto border-b border-current/10">
       
-      <!-- Başlık ve Tüm Projeler Linki -->
-      <div class="flex items-end justify-between mb-8 pb-4 border-b border-current/10">
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-sans">
-          Seçilmiş Projeler
-        </h2>
-        <a href="/projeler.html" class="font-mono text-xs opacity-75 hover:opacity-100 hover:text-[#E84E1C] transition-colors flex items-center gap-1">
-          Tüm Projeler →
-        </a>
+      <!-- Section Header with Category Filters -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between pb-10 border-b border-current/10 gap-6">
+        <div>
+          <span class="font-mono text-xs uppercase tracking-widest text-[var(--text)] opacity-75 font-semibold block mb-2">
+            ÖNE ÇIKAN PROJELER —
+          </span>
+          <h2 class="projenic-h2">Seçilmiş Portföy</h2>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex items-center gap-2 font-mono text-xs overflow-x-auto no-scrollbar whitespace-nowrap pb-2 pt-1 flex-shrink-0">
+          <button type="button" class="portfolio-filter-btn px-3.5 py-1.5 rounded border border-current font-bold opacity-100 transition-colors" data-filter="all">Tümü (6)</button>
+          <button type="button" class="portfolio-filter-btn px-3.5 py-1.5 rounded border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="exhibition">Fuar Standı</button>
+          <button type="button" class="portfolio-filter-btn px-3.5 py-1.5 rounded border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="spatial">Showroom & İç Mimari</button>
+          <button type="button" class="portfolio-filter-btn px-3.5 py-1.5 rounded border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="events">Etkinlikler</button>
+          <button type="button" class="portfolio-filter-btn px-3.5 py-1.5 rounded border border-current/20 opacity-60 hover:opacity-100 transition-colors" data-filter="production">Üretim & Uygulama</button>
+        </div>
       </div>
 
-      <!-- Üstteki Büyük Gerçek Proje Fotoğrafı (ULAK TÜYAP) -->
-      <div class="mb-12 rounded-2xl overflow-hidden border border-current/10 bg-black/5 shadow-md">
-        <img src="/assets/images/projects/ulak-haberlesme-hero.jpg" 
-             alt="ULAK Haberleşme IDEF Fuar Standı" 
-             class="w-full h-auto max-h-[650px] object-cover object-center">
-      </div>
-
-      <!-- Filtre Butonları -->
-      <div class="flex flex-wrap items-center gap-2.5 mb-10 font-mono text-xs">
-        <button class="px-4 py-2 rounded-full border border-current font-bold bg-black/5 dark:bg-white/10">Tümü (6)</button>
-        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Fuar Standı</button>
-        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Showroom & İç Mimari</button>
-        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Etkinlikler</button>
-        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Üretim & Uygulama</button>
-      </div>
-
-      <!-- 3'lü Proje Kart Izgarası -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 font-sans">
+      <!-- Projects Grid (6 Curated Architectural Projects - Clean Industrial Typographic Architecture) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12 items-stretch">
         
-        <!-- Kart 1: ULAK -->
-        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
+        <!-- 01: ULAK Haberleşme -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="ulak">
           <div class="space-y-4">
-            <div class="flex items-center justify-between font-mono text-[11px]">
-              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">İSTANBUL (TÜYAP)</span>
-              <span class="opacity-60 tabular-nums">2023</span>
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                İSTANBUL (TÜYAP)
+              </span>
+              <span class="opacity-50 tabular-nums">2023</span>
             </div>
-            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / SAVUNMA & TELEKOM</div>
-            <a href="/proje-aurora.html" class="group block">
-              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / SAVUNMA & TELEKOM</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
                 <span>ULAK Haberleşme</span>
-                <span>→</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
               </h3>
-            </a>
-            <p class="text-xs opacity-75 leading-relaxed">
-              IDEF Savunma Sanayii Fuarı için milli haberleşme teknolojilerini yansıtan yüksek mimari disiplinli anahtar teslim fuar standı.
-            </p>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Milli haberleşme altyapıları ve 5G teknolojileri için geliştirilen monolitik taşıyıcı karkas, veri tüneli ve anahtar teslim ahşap lake imalatı.
+              </p>
+            </div>
           </div>
-          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
             <span>Sayısal Tünel & Ahşap Lake</span>
-            <a href="/proje-aurora.html" class="hover:underline font-bold">Projeyi incele →</a>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
           </div>
-        </div>
+        </article>
 
-        <!-- Kart 2: Yamaha Marine -->
-        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
+        <!-- 02: Yamaha Marine -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="yamaha">
           <div class="space-y-4">
-            <div class="flex items-center justify-between font-mono text-[11px]">
-              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">MARİN FUARI</span>
-              <span class="opacity-60 tabular-nums">2024</span>
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                MARİN FUARI
+              </span>
+              <span class="opacity-50 tabular-nums">2024</span>
             </div>
-            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / DENİZCİLİK</div>
-            <a href="/projeler.html" class="group block">
-              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / DENİZCİLİK</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
                 <span>Yamaha Marine</span>
-                <span>→</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
               </h3>
-            </a>
-            <p class="text-xs opacity-75 leading-relaxed">
-              Ağır deniz motorları teşhiri için tasarlanan güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.
-            </p>
-          </div>
-          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
-            <span>Ağır Yük Platformu & Lake</span>
-            <a href="/projeler.html" class="hover:underline font-bold">Detaylar →</a>
-          </div>
-        </div>
-
-        <!-- Kart 3: Dardanel -->
-        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
-          <div class="space-y-4">
-            <div class="flex items-center justify-between font-mono text-[11px]">
-              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">İSTANBUL (ANFAŞ)</span>
-              <span class="opacity-60 tabular-nums">2023</span>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Ağır deniz motorları teşhiri için tasarlanan güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.
+              </p>
             </div>
-            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / GIDA & PERAKENDE</div>
-            <a href="/projeler.html" class="group block">
-              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+          </div>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+            <span>Ağır Yük Platformu & Lake</span>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+          </div>
+        </article>
+
+        <!-- 03: Dardanel -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="dardanel">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                İSTANBUL (WORLDFOOD)
+              </span>
+              <span class="opacity-50 tabular-nums">2024</span>
+            </div>
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / GIDA DENEYİMİ</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
                 <span>Dardanel</span>
-                <span>→</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
               </h3>
-            </a>
-            <p class="text-xs opacity-75 leading-relaxed">
-              Canlı şef mutfağı, koku filtrasyonlu havalandırma kanalları ve arkadan aydınlatmalı pleksi ürün duvarlarıyla hibrit fuar standı.
-            </p>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Canlı şef mutfak istasyonu, tadım barı ve ışıklı pleksi teşhir duvarlarıyla lezzet ve mimariyi buluşturan fuar standı.
+              </p>
+            </div>
           </div>
-          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
             <span>Canlı Mutfak & Işıklı Pleksi</span>
-            <a href="/projeler.html" class="hover:underline font-bold">Detaylar →</a>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
           </div>
-        </div>
+        </article>
+
+        <!-- 04: STM Savunma -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="exhibition" data-open-project="stm">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                İSTANBUL (SAHA EXPO)
+              </span>
+              <span class="opacity-50 tabular-nums">2023</span>
+            </div>
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">FUAR STANDI / SAVUNMA SANAYİİ</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+                <span>STM Savunma</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+              </h3>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Milli savunma teknolojileri için özel maket kaideleri, yüksek karkas tavan ızgarası ve VIP toplantı odalarıyla donatılan stand.
+              </p>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+            <span>Özel Maket Kaidesi & VIP</span>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+          </div>
+        </article>
+
+        <!-- 05: Mercedes-Benz Türk -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="events" data-open-project="mercedes">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                İSTANBUL
+              </span>
+              <span class="opacity-50 tabular-nums">2023</span>
+            </div>
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">ETKİNLİK / OTOMOTİV</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+                <span>Mercedes-Benz Türk</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+              </h3>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Global otomotiv devinin kurum kültürünü yansıtan minimalist ahşap hacimler, görüşme masaları ve akustik bölmeler.
+              </p>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+            <span>Minimalist Ahşap & Akustik</span>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+          </div>
+        </article>
+
+        <!-- 06: Perotti Showroom -->
+        <article class="portfolio-project-card projenic-card overflow-hidden group cursor-pointer flex flex-col justify-between h-full p-6 sm:p-8 space-y-6" data-category="spatial" data-open-project="perotti">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-xs pb-3 border-b border-current/10">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[10px] font-bold uppercase tracking-wider">
+                İSTOÇ, İSTANBUL
+              </span>
+              <span class="opacity-50 tabular-nums">2024</span>
+            </div>
+            <div class="space-y-2">
+              <span class="font-mono text-[11px] opacity-60 uppercase block tracking-wider">SHOWROOM & İÇ MİMARİ</span>
+              <h3 class="text-2xl font-bold font-sans group-hover:text-[var(--text)] transition-colors flex items-center justify-between">
+                <span>Perotti Showroom</span>
+                <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span>
+              </h3>
+              <p class="text-xs opacity-75 leading-relaxed font-sans">
+                Lüks sofra ürünleri için monolitik koyu dokular, gizli lineer ışık kanalları ve özel teşhir üniteleriyle tasarlanan showroom.
+              </p>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-60">
+            <span>Lineer LED & Lake Raflar</span>
+            <span class="font-semibold group-hover:text-[var(--text)] transition-colors">Detaylar ↗</span>
+          </div>
+        </article>
 
       </div>
+
     </section>
 
     <!-- ── SECTION 3: CAPABILITIES / YETKİNLİKLER ─────────────────────── -->

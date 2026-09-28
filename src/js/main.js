@@ -222,7 +222,7 @@ const projectData = {
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
-    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Monolitik Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
+    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Özel Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
     gallery: []
   },
   dardanel: {
@@ -261,7 +261,7 @@ const projectData = {
   perotti: {
     title: 'Perotti Showroom',
     type: 'SHOWROOM & İÇ MİMARİ / ZÜCCACİYE & YAŞAM / İSTOÇ / 2024',
-    lead: 'Lüks sofra ve ev yaşam ürünleri için monolitik koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
+    lead: 'Lüks sofra ve ev yaşam ürünleri için mimari koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
     heroImg: '',
     client: 'Perotti Ev Gereçleri',
     location: 'İSTOÇ Ticaret Merkezi, İstanbul',
