@@ -2,16 +2,18 @@ name: Deploy to Hostinger
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
 
 jobs:
   build-and-deploy:
     name: Build & Deploy to Hostinger
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,7 +24,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci || npm install
@@ -36,4 +38,11 @@ jobs:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_REMOTE_PATH: .
-        run: node scripts/deploy.js
+        run: |
+          for i in 1 2 3; do
+            echo "FTP attempt $i"
+            node scripts/deploy.js && exit 0
+            echo "FTP failed, waiting 20s"
+            sleep 20
+          done
+          exit 1
