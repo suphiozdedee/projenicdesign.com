@@ -429,30 +429,39 @@ input[type=range]::-webkit-slider-thumb {
 
 /* ── PROJENIC OFFICIAL FOOTER BRAND SIGNATURE ────────────────────── */
 .footer-wordmark {
-  padding: 1.5rem 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2.25rem 1.5rem 1.25rem;
+  text-align: center;
   user-select: none;
 }
+.footer-wordmark > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 .footer-slogan {
-  display: block;
   font-family: "Plus Jakarta Sans", sans-serif;
-  font-size: 0.72rem;
+  font-size: clamp(1.05rem, 2.4vw, 1.55rem);
   font-weight: 500;
-  letter-spacing: 0.22em;
+  font-style: normal;
+  letter-spacing: 0.16em;
   text-transform: lowercase;
+  line-height: 1;
   color: var(--text);
-  opacity: 0.55;
+  opacity: 0.62;
+  margin: 0;
+  text-wrap: balance;
 }
 .footer-slogan strong {
   font-weight: 800;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   opacity: 1;
 }
 .footer-brand-logo {
-  height: clamp(3.25rem, 7vw, 5.75rem);
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  display: block;
+  display: none;
 }
 
 .footer-brand-wrap {
@@ -462,4 +471,19 @@ input[type=range]::-webkit-slider-thumb {
   justify-content: center;
   padding: 3.5rem 0 2rem;
   border-bottom: 1px solid var(--border);
+}
+
+footer > .grid.grid-cols-1.md\:grid-cols-12 {
+  align-items: start;
+}
+
+footer > .grid.grid-cols-1.md\:grid-cols-12 > div {
+  align-self: start;
+}
+
+footer > .grid.grid-cols-1.md\:grid-cols-12 > div > span {
+  display: block;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
 }
