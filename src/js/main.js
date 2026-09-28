@@ -296,7 +296,6 @@ function initProjectDetailModal() {
     const elClient = document.getElementById('modal-project-client');
     const elLoc = document.getElementById('modal-project-location');
     const elYear = document.getElementById('modal-project-year');
-    const elScopeList = document.getElementById('modal-project-scope-list');
     const elGalleryContainer = document.getElementById('modal-project-gallery');
 
     if (elTitle) elTitle.textContent = data.title;
@@ -317,10 +316,6 @@ function initProjectDetailModal() {
     if (elClient) elClient.textContent = data.client;
     if (elLoc) elLoc.textContent = data.location;
     if (elYear) elYear.textContent = data.year;
-
-    if (elScopeList) {
-      elScopeList.innerHTML = data.scope.map(s => `<li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[11px]">• ${s}</li>`).join('');
-    }
 
     if (elGalleryContainer && elGalleryContainer.parentElement) {
       if (data.gallery && data.gallery.length > 0) {
