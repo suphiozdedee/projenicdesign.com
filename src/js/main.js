@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactDrawer();
   initPortfolioFilter();
   initProjectDetailModal();
+  initAuroraThumbHeroSync();
   initImageLightbox();
   initBriefSubmission();
   initSmoothScroll();
@@ -207,67 +208,97 @@ const projectData = {
     title: 'ULAK Haberleşme',
     type: 'FUAR STANDI / SAVUNMA & TELEKOMÜNİKASYON / TÜYAP / 2023',
     lead: 'Türkiye’nin milli haberleşme teknolojileri kuruluşu için tasarlanan, yüksek teknoloji ve kurumsal otoriteyi yansıtan anahtar teslim IDEF fuar standı.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/ulak-haberlesme-hero.jpg',
     client: 'ULAK Haberleşme A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF 2023)',
     year: '2023',
     scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Lake Ahşap İmalat', 'Yerinde Montaj'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/ulak-haberlesme-gallery-1.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-2.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-3.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-4.jpg'
+    ]
   },
   yamaha: {
     title: 'Yamaha Marine',
     type: 'FUAR STANDI / DENİZCİLİK & MOTOR / BOAT SHOW / 2024',
     lead: 'Dünya denizcilik devi Yamaha için kurgulanan; ağır deniz motorlarını sergileyen güçlendirilmiş platform mimarisi ve lüks ağırlama üniteleri.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/aurora-hero-large.jpg',
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
     scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Monolitik Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/aurora-gallery-1.jpg',
+      '/assets/images/projects/aurora-gallery-2.jpg',
+      '/assets/images/projects/aurora-gallery-3.jpg',
+      '/assets/images/projects/aurora-gallery-4.jpg'
+    ]
   },
   dardanel: {
     title: 'Dardanel',
     type: 'FUAR STANDI / GIDA & PERAKENDE / WORLDFOOD / 2024',
     lead: 'Türkiye’nin gıda devi Dardanel için lezzet, tazelik ve çağdaş mimariyi bir araya getiren interaktif tadım, şef mutfağı ve karşılama standı.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/aurora-gallery-1.jpg',
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood Istanbul)',
     year: '2024',
     scope: ['Konsept Tasarım', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Lake Marangozluk', 'Anahtar Teslim'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/aurora-gallery-2.jpg',
+      '/assets/images/projects/aurora-gallery-3.jpg',
+      '/assets/images/projects/aurora-gallery-4.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-1.jpg'
+    ]
   },
   stm: {
     title: 'STM Savunma',
     type: 'FUAR STANDI / SAVUNMA SANAYİİ / SAHA EXPO / 2023',
     lead: 'Milli savunma sanayiinin öncülerinden STM için yüksek güvenlik ve prestij standartlarına uygun olarak üretilen fuar ve teknoloji standı.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg',
     client: 'STM Savunma Teknolojileri Mühendislik A.Ş.',
     location: 'İstanbul Fuar Merkezi (SAHA Expo 2023)',
     year: '2023',
     scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'VIP Toplantı Salonu', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/ulak-haberlesme-gallery-2.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-3.jpg',
+      '/assets/images/projects/ulak-haberlesme-gallery-4.jpg',
+      '/assets/images/projects/ulak-haberlesme-hero.jpg'
+    ]
   },
   mercedes: {
     title: 'Mercedes-Benz Türk',
     type: 'ETKİNLİK & STAND / OTOMOTİV / İSTANBUL / 2023',
     lead: 'Global otomotiv liderinin kurum kültürünü ve mühendislik mirasını yansıtan heykelsi, minimalist insan kaynakları ve deneyim standı.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/aurora-gallery-3.jpg',
     client: 'Mercedes-Benz Türk A.Ş.',
     location: 'İstanbul',
     year: '2023',
     scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Ahşap Banko & Mobilya', 'Modüler Sahne', 'Hassas Montaj'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/aurora-gallery-1.jpg',
+      '/assets/images/projects/aurora-gallery-2.jpg',
+      '/assets/images/projects/aurora-gallery-4.jpg',
+      '/assets/images/projects/aurora-gallery-3.jpg'
+    ]
   },
   perotti: {
     title: 'Perotti Showroom',
     type: 'SHOWROOM & İÇ MİMARİ / ZÜCCACİYE & YAŞAM / İSTOÇ / 2024',
     lead: 'Lüks sofra ve ev yaşam ürünleri için monolitik koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
-    heroImg: '',
+    heroImg: '/assets/images/projects/aurora-gallery-4.jpg',
     client: 'Perotti Ev Gereçleri',
     location: 'İSTOÇ Ticaret Merkezi, İstanbul',
     year: '2024',
     scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Lake Bankolar', 'Anahtar Teslim'],
-    gallery: []
+    gallery: [
+      '/assets/images/projects/aurora-gallery-1.jpg',
+      '/assets/images/projects/aurora-gallery-2.jpg',
+      '/assets/images/projects/aurora-gallery-3.jpg',
+      '/assets/images/projects/aurora-gallery-4.jpg'
+    ]
   }
 };
 
@@ -350,7 +381,20 @@ function initProjectDetailModal() {
   triggers.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      const slug = btn.dataset.openProject || 'aurora';
+      const slug = btn.dataset.openProject || 'ulak';
+      openProject(slug);
+    });
+  });
+
+  const triggerImages = document.querySelectorAll('[data-open-project] img');
+  triggerImages.forEach(img => {
+    img.addEventListener('click', (e) => {
+      const trigger = img.closest('[data-open-project]');
+      if (!trigger) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      const slug = trigger.dataset.openProject || 'ulak';
       openProject(slug);
     });
   });
@@ -365,6 +409,24 @@ function initProjectDetailModal() {
     if (e.key === 'Escape' && modal.classList.contains('is-open')) {
       closeModal();
     }
+  });
+}
+
+function initAuroraThumbHeroSync() {
+  const heroImg = document.querySelector('main section.my-12 img');
+  const thumbCards = document.querySelectorAll('main section.my-16 [data-lightbox]');
+
+  if (!heroImg || thumbCards.length === 0) return;
+
+  thumbCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const thumbSrc = card.dataset.lightbox || card.querySelector('img')?.src;
+      if (!thumbSrc) return;
+
+      const thumbAlt = card.querySelector('img')?.alt;
+      heroImg.src = thumbSrc;
+      if (thumbAlt) heroImg.alt = thumbAlt;
+    });
   });
 }
 
