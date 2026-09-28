@@ -34,7 +34,7 @@ if (fs.existsSync(envPath)) {
 const host = process.env.FTP_SERVER || process.env.FTP_HOST || process.argv[2];
 const user = process.env.FTP_USERNAME || process.env.FTP_USER || process.argv[3];
 const password = process.env.FTP_PASSWORD || process.argv[4];
-const preferredPath = process.env.FTP_REMOTE_PATH || process.argv[5];
+const targetDir = process.env.FTP_REMOTE_PATH || process.argv[5] || '.';
 const port = parseInt(process.env.FTP_PORT || '21', 10);
 
 if (!host || !user || !password) {
@@ -61,21 +61,10 @@ async function runDeploy() {
       secure: false
     });
 
-    console.log(`✓ FTP Bağlantısı başarılı!`);
-
-    let targetDir = preferredPath;
-    if (!targetDir) {
-      // Determine if domains/projenicdesign.com/public_html or public_html exists
-      try {
-        await client.cd('domains/projenicdesign.com/public_html');
-        targetDir = 'domains/projenicdesign.com/public_html';
-      } catch {
-        targetDir = 'public_html';
-      }
+    console.log(`✓ FTP Bağlantısı başarılı! Hedef dizin: ${targetDir}`);
+    if (targetDir !== '.' && targetDir !== './') {
+      await client.ensureDir(targetDir);
     }
-
-    console.log(`✓ Hedef dizin açılıyor: ${targetDir}`);
-    await client.ensureDir(targetDir);
 
     console.log(`📦 dist/ klasöründeki tüm dosyalar ve .htaccess yükleniyor...`);
     await client.uploadFromDir(distDir);
