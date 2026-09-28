@@ -219,119 +219,111 @@
 
     </section>
 
-    <!-- ── SECTION 2: FEATURED PROJECTS / SEÇİLMİŞ İŞLER ───────────────── -->
-    <section id="projects" class="py-24 px-6 sm:px-10 lg:px-16 max-w-[1440px] mx-auto border-b border-current/10">
+    <!-- ── SECTION 2: FEATURED PROJECTS / SEÇİLMİŞ PROJELER ───────────────── -->
+    <section id="projects" class="py-16 sm:py-24 max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 border-b border-current/10">
       
-      <!-- Section Header (Minimal) -->
-      <div class="flex items-end justify-between pb-8 border-b border-current/10">
-        <div>
-          <span class="font-mono text-xs uppercase tracking-widest text-[var(--text)] opacity-75 font-semibold block mb-2">
-            HAYATA GEÇEN ALANLAR —
-          </span>
-          <h2 class="projenic-h2">Seçilmiş Projeler</h2>
-        </div>
-        <a href="/projeler.html" class="font-mono text-xs hover:underline text-[var(--text)] font-semibold flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
-          <span>Tüm Projeler</span>
-          <span>→</span>
+      <!-- Başlık ve Tüm Projeler Linki -->
+      <div class="flex items-end justify-between mb-8 pb-4 border-b border-current/10">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight font-sans">
+          Seçilmiş Projeler
+        </h2>
+        <a href="/projeler.html" class="font-mono text-xs opacity-75 hover:opacity-100 hover:text-[#E84E1C] transition-colors flex items-center gap-1">
+          Tüm Projeler →
         </a>
       </div>
 
-      <!-- Üstte 1 Büyük Proje (16:9) -->
-      <div class="pt-10">
-        <a href="/proje-aurora.html" class="group block space-y-4 focus:outline-none">
-          <div class="aspect-[16/9] w-full overflow-hidden rounded-xl border border-current/10 bg-black/10 relative">
-            <img src="/assets/images/projects/ulak-haberlesme-hero.jpg" 
-                 alt="ULAK Haberleşme — TÜYAP '23" 
-                 class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          </div>
-          <div class="flex items-center justify-between pt-1">
-            <h3 class="text-xl sm:text-2xl font-bold font-sans group-hover:text-[var(--text)] flex items-center gap-2">
-              <span>ULAK Haberleşme — TÜYAP '23</span>
-              <span class="text-sm opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">↗</span>
-            </h3>
-            <span class="font-mono text-xs opacity-60 group-hover:opacity-100 transition-opacity">Vaka Detayı</span>
-          </div>
-        </a>
+      <!-- Üstteki Büyük Gerçek Proje Fotoğrafı (ULAK TÜYAP) -->
+      <div class="mb-12 rounded-2xl overflow-hidden border border-current/10 bg-black/5 shadow-md">
+        <img src="/assets/images/projects/ulak-haberlesme-hero.jpg" 
+             alt="ULAK Haberleşme IDEF Fuar Standı" 
+             class="w-full h-auto max-h-[650px] object-cover object-center">
       </div>
 
-      <!-- Altta 4 Küçük Görsel (Yan Yana 4 Sütun Grid) -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-10">
+      <!-- Filtre Butonları -->
+      <div class="flex flex-wrap items-center gap-2.5 mb-10 font-mono text-xs">
+        <button class="px-4 py-2 rounded-full border border-current font-bold bg-black/5 dark:bg-white/10">Tümü (6)</button>
+        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Fuar Standı</button>
+        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Showroom & İç Mimari</button>
+        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Etkinlikler</button>
+        <button class="px-4 py-2 rounded-full border border-current/15 opacity-70 hover:opacity-100 transition-opacity">Üretim & Uygulama</button>
+      </div>
+
+      <!-- 3'lü Proje Kart Izgarası -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 font-sans">
         
-        <!-- 01: Marine Stand — 240 m² -->
-        <div class="group space-y-3 cursor-pointer" data-lightbox="/assets/images/projects/aurora-hero-large.jpg" data-caption="Marine Stand — 240 m²">
-          <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-current/10 bg-black/10 relative">
-            <img src="/assets/images/projects/aurora-hero-large.jpg" 
-                 alt="Marine Stand — 240 m²" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="p-2 rounded-full bg-black/70 text-white font-mono text-[10px] backdrop-blur-sm border border-white/20 shadow-md">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-              </span>
+        <!-- Kart 1: ULAK -->
+        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-[11px]">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">İSTANBUL (TÜYAP)</span>
+              <span class="opacity-60 tabular-nums">2023</span>
             </div>
+            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / SAVUNMA & TELEKOM</div>
+            <a href="/proje-aurora.html" class="group block">
+              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+                <span>ULAK Haberleşme</span>
+                <span>→</span>
+              </h3>
+            </a>
+            <p class="text-xs opacity-75 leading-relaxed">
+              IDEF Savunma Sanayii Fuarı için milli haberleşme teknolojilerini yansıtan yüksek mimari disiplinli anahtar teslim fuar standı.
+            </p>
           </div>
-          <div class="flex items-center justify-between">
-            <h4 class="text-sm sm:text-base font-bold font-sans">Marine Stand — 240 m²</h4>
-            <span class="text-xs opacity-40 group-hover:opacity-100 transition-opacity">↗</span>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
+            <span>Sayısal Tünel & Ahşap Lake</span>
+            <a href="/proje-aurora.html" class="hover:underline font-bold">Projeyi incele →</a>
           </div>
         </div>
 
-        <!-- 02: Savunma Sistemleri — 210 m² -->
-        <div class="group space-y-3 cursor-pointer" data-lightbox="/assets/images/projects/ulak-haberlesme-gallery-1.jpg" data-caption="Savunma Sistemleri — 210 m²">
-          <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-current/10 bg-black/10 relative">
-            <img src="/assets/images/projects/ulak-haberlesme-gallery-1.jpg" 
-                 alt="Savunma Sistemleri — 210 m²" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="p-2 rounded-full bg-black/70 text-white font-mono text-[10px] backdrop-blur-sm border border-white/20 shadow-md">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-              </span>
+        <!-- Kart 2: Yamaha Marine -->
+        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-[11px]">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">MARİN FUARI</span>
+              <span class="opacity-60 tabular-nums">2024</span>
             </div>
+            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / DENİZCİLİK</div>
+            <a href="/projeler.html" class="group block">
+              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+                <span>Yamaha Marine</span>
+                <span>→</span>
+              </h3>
+            </a>
+            <p class="text-xs opacity-75 leading-relaxed">
+              Ağır deniz motorları teşhiri için tasarlanan güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.
+            </p>
           </div>
-          <div class="flex items-center justify-between">
-            <h4 class="text-sm sm:text-base font-bold font-sans">Savunma Sistemleri — 210 m²</h4>
-            <span class="text-xs opacity-40 group-hover:opacity-100 transition-opacity">↗</span>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
+            <span>Ağır Yük Platformu & Lake</span>
+            <a href="/projeler.html" class="hover:underline font-bold">Detaylar →</a>
           </div>
         </div>
 
-        <!-- 03: Gastronomi Pavyonu — 160 m² -->
-        <div class="group space-y-3 cursor-pointer" data-lightbox="/assets/images/projects/aurora-gallery-1.jpg" data-caption="Gastronomi Pavyonu — 160 m²">
-          <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-current/10 bg-black/10 relative">
-            <img src="/assets/images/projects/aurora-gallery-1.jpg" 
-                 alt="Gastronomi Pavyonu — 160 m²" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="p-2 rounded-full bg-black/70 text-white font-mono text-[10px] backdrop-blur-sm border border-white/20 shadow-md">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-              </span>
+        <!-- Kart 3: Dardanel -->
+        <div class="rounded-xl p-6 sm:p-7 bg-[#f6f5f3] dark:bg-white/5 border border-current/10 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between font-mono text-[11px]">
+              <span class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/10 font-semibold tracking-wider">İSTANBUL (ANFAŞ)</span>
+              <span class="opacity-60 tabular-nums">2023</span>
             </div>
+            <div class="font-mono text-[10px] uppercase tracking-wider opacity-60">FUAR STANDI / GIDA & PERAKENDE</div>
+            <a href="/projeler.html" class="group block">
+              <h3 class="text-xl font-bold flex items-center justify-between group-hover:text-[#E84E1C] transition-colors">
+                <span>Dardanel</span>
+                <span>→</span>
+              </h3>
+            </a>
+            <p class="text-xs opacity-75 leading-relaxed">
+              Canlı şef mutfağı, koku filtrasyonlu havalandırma kanalları ve arkadan aydınlatmalı pleksi ürün duvarlarıyla hibrit fuar standı.
+            </p>
           </div>
-          <div class="flex items-center justify-between">
-            <h4 class="text-sm sm:text-base font-bold font-sans">Gastronomi Pavyonu — 160 m²</h4>
-            <span class="text-xs opacity-40 group-hover:opacity-100 transition-opacity">↗</span>
-          </div>
-        </div>
-
-        <!-- 04: Showroom Konsepti — 300 m² -->
-        <div class="group space-y-3 cursor-pointer" data-lightbox="/assets/images/projects/aurora-gallery-4.jpg" data-caption="Showroom Konsepti — 300 m²">
-          <div class="aspect-[4/3] w-full overflow-hidden rounded-lg border border-current/10 bg-black/10 relative">
-            <img src="/assets/images/projects/aurora-gallery-4.jpg" 
-                 alt="Showroom Konsepti — 300 m²" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <div class="absolute inset-0 bg-black/25 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-              <span class="p-2 rounded-full bg-black/70 text-white font-mono text-[10px] backdrop-blur-sm border border-white/20 shadow-md">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
-              </span>
-            </div>
-          </div>
-          <div class="flex items-center justify-between">
-            <h4 class="text-sm sm:text-base font-bold font-sans">Showroom Konsepti — 300 m²</h4>
-            <span class="text-xs opacity-40 group-hover:opacity-100 transition-opacity">↗</span>
+          <div class="pt-4 border-t border-current/10 flex items-center justify-between font-mono text-[11px] opacity-75">
+            <span>Canlı Mutfak & Işıklı Pleksi</span>
+            <a href="/projeler.html" class="hover:underline font-bold">Detaylar →</a>
           </div>
         </div>
 
       </div>
-
     </section>
 
     <!-- ── SECTION 3: CAPABILITIES / YETKİNLİKLER ─────────────────────── -->
