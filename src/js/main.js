@@ -206,33 +206,49 @@ const projectData = {
   ulak: {
     title: 'ULAK Haberleşme',
     type: 'FUAR STANDI / IDEF 2023 / İSTANBUL',
-    lead: 'Milli haberleşme altyapıları ve 5G teknolojileri için geliştirilen taşıyıcı karkas, veri tüneli ve anahtar teslim stand uygulaması.',
+    lead: 'Milli haberleşme altyapıları ve 5G teknolojileri için geliştirilen taşıyıcı karkas, entegre veri tüneli ve anahtar teslim fuar stand uygulaması.',
     heroImg: '/assets/images/projects/ulak-haberlesme-hero.jpg',
+    heroCaption: 'ULAK Haberleşme — IDEF Savunma Sanayii Fuar Standı',
     client: 'ULAK Haberleşme A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF)',
     year: '2023',
-    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Özel İmalat', 'Yerinde Montaj'],
+    area: '185 m²',
+    fabrication: 'CNC Ahşap & Metal Taşıyıcı Karkas',
+    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'CNC Ahşap İmalat', 'Anahtar Teslim Montaj'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Monolitik Hacim Dili', desc: 'Milli teknolojinin gücünü yansıtan keskin açılı formlar, mat koyu paneller ve gizli lineer ışık hatları.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Hassas Karkas Üretimi', desc: 'Kendi atölyemizde CNC kesim modüller, metal profiller ve asma tavan yük dağılımının milimetrik üretimi.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Zamanında Anahtar Teslim', desc: 'TÜYAP fuar alanında sıfır toleransla, fuar açılışından önce eksiksiz montaj ve testler tamamlandı.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg', caption: 'ULAK Haberleşme — Ön Karşılama ve Işıklı Karkas' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-2.jpg', caption: 'ULAK Haberleşme — Sayısal Tünel & Detay' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-3.jpg', caption: 'ULAK Haberleşme — Teknoloji Teşhir Alanı' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-4.jpg', caption: 'ULAK Haberleşme — VIP Toplantı ve Yan Görünüm' }
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg', caption: 'Ön Karşılama ve Işıklı Taşıyıcı Karkas' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-2.jpg', caption: 'Sayısal Veri Tüneli & Teknoloji Koridoru' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-3.jpg', caption: 'Ürün Teşhir Odak Noktası' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-4.jpg', caption: 'VIP Toplantı Alanı ve Dış Görünüm' }
     ]
   },
   yamaha: {
     title: 'Yamaha Marine',
     type: 'FUAR STANDI / BOAT SHOW / İSTANBUL',
-    lead: 'Ağır deniz motorları sergilemesi için güçlendirilmiş podyum mimarisi ve lüks karşılama bankoları.',
+    lead: 'Ağır deniz motorları sergilemesi için tasarlanan güçlendirilmiş platform mimarisi, monolitik bankolar ve VIP ağırlama salonu.',
     heroImg: '/assets/images/projects/yamaha-hero.jpg',
+    heroCaption: 'Yamaha Marine — Bosphorus Boat Show Standı',
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
-    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Podyumu Statik Çözümü', 'Özel Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
+    area: '240 m²',
+    fabrication: 'Ağır Yük Podyumu & Özel Lake Bankolar',
+    scope: ['Marin Stand Mimarisi', 'Ağır Yük Podyum Statik Çözümü', 'Özel Lake Karşılama Bankosu', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Marin Dinamizmi & Prestij', desc: 'Denizcilik ruhunu yansıtan akışkan çizgiler, prestijli VIP salonu ve yüksek tavanlı açık sergileme aksı.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Güçlendirilmiş Platform', desc: 'Tonlarca ağırlıktaki dıştan takma motorları güvenle sergileyen özel çelik konstrüksiyon podyum imalatı.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Kusursuz Fuar Açılışı', desc: 'Marin fuar alanında vinç operasyonları ve platform montajı hatasız tamamlanarak anahtar teslim sunuldu.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/yamaha-gallery-1.jpg', caption: 'Yamaha Marine — Ana Podyum ve Teşhir' },
-      { src: '/assets/images/projects/yamaha-gallery-2.jpg', caption: 'Yamaha Marine — Karşılama Bankosu' },
-      { src: '/assets/images/projects/yamaha-gallery-3.jpg', caption: 'Yamaha Marine — Motor Teşhir Kaideleri' },
-      { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'Yamaha Marine — Genel Stand Perspektifi' }
+      { src: '/assets/images/projects/yamaha-gallery-1.jpg', caption: 'Ana Podyum ve Ağır Motor Teşhir Alanı' },
+      { src: '/assets/images/projects/yamaha-gallery-2.jpg', caption: 'Monolitik Karşılama ve Danışma Bankosu' },
+      { src: '/assets/images/projects/yamaha-gallery-3.jpg', caption: 'Özel Işıklandırmalı Ürün Kaideleri' },
+      { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'Genel Stand Perspektifi ve VIP Alanı' }
     ]
   },
   dardanel: {
@@ -240,15 +256,23 @@ const projectData = {
     type: 'FUAR STANDI / WORLDFOOD / İSTANBUL',
     lead: 'Canlı şef mutfağı, interaktif tadım alanları ve modern teşhir kurgusuyla tasarlanan fuar standı.',
     heroImg: '/assets/images/projects/dardanel-hero.jpg',
+    heroCaption: 'Dardanel — WorldFood Fuar Standı & Tadım İstasyonu',
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood)',
     year: '2024',
-    scope: ['Konsept Tasarım', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Özel Marangozluk', 'Anahtar Teslim'],
+    area: '160 m²',
+    fabrication: 'Canlı Şef Mutfağı & Pleksi Teşhir Duvarları',
+    scope: ['Konsept Stand Tasarımı', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Özel Marangozluk', 'Anahtar Teslim'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Gastronomi ve Mimari Buluşması', desc: 'Ziyaretçiyi içine çeken koku, tat ve görsel deneyimi entegre eden açık mutfak ve tadım adaları.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Hijyenik ve Fonksiyonel İmalat', desc: 'Paslanmaz tezgah entegrasyonu, su ve elektrik altyapısına uygun özel üretim ahşap modüller.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Eksiksiz Gastronomi Standı', desc: 'Havalandırma ve pişirme donanımları test edilerek açılış saatinde tam kapasite hazır hale getirildi.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/dardanel-gallery-1.jpg', caption: 'Dardanel — Canlı Şef Mutfak İstasyonu' },
-      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Dardanel — Ürün Teşhir Duvarları' },
-      { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Dardanel — Tadım & Bar Alanı' },
-      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Dardanel — Karşılama ve Genel Görünüm' }
+      { src: '/assets/images/projects/dardanel-gallery-1.jpg', caption: 'Canlı Şef Mutfak İstasyonu ve Pişirme Alanı' },
+      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Işıklı Pleksi Teşhir Duvarları' },
+      { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Tadım Barı ve Ziyaretçi Deneyim Odakları' },
+      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Karşılama Bankosu ve Genel Görünüm' }
     ]
   },
   stm: {
@@ -256,47 +280,71 @@ const projectData = {
     type: 'FUAR STANDI / SAHA EXPO / İSTANBUL',
     lead: 'Milli savunma teknolojileri için tasarlanan özel maket kaideleri, VIP toplantı odası ve prestijli fuar standı.',
     heroImg: '/assets/images/projects/stm-savunma-hero.jpg',
+    heroCaption: 'STM Savunma — SAHA Expo Fuar Standı',
     client: 'STM Savunma Teknolojileri Mühendislik A.Ş.',
     location: 'İstanbul Fuar Merkezi (SAHA Expo)',
     year: '2023',
-    scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'VIP Toplantı Salonu', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
+    area: '210 m²',
+    fabrication: 'Savunma Maket Kaidesi & Çelik Tavan Izgarası',
+    scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'Akustik VIP Toplantı Odası', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Stratejik ve Heykelsi Duruş', desc: 'Denizaltı ve askeri platform maketlerini odak noktasına alan, güven veren masif mimari çizgiler.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Hassas Maket Kaideleri', desc: 'Askeri standartlarda pleksi korumalı kaideler, gizli kablolama ve dayanıklı metal konstrüksiyon.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Protokol Seviyesinde Teslim', desc: 'Üst düzey heyetlerin ve uluslararası delegasyonların ağırlanacağı VIP bölümler tam vaktinde teslim edildi.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/stm-savunma-gallery-1.jpg', caption: 'STM Savunma — Askeri Maket Teşhir Kaideleri' },
-      { src: '/assets/images/projects/stm-savunma-gallery-2.jpg', caption: 'STM Savunma — VIP Toplantı Bölümü' },
-      { src: '/assets/images/projects/stm-savunma-gallery-3.jpg', caption: 'STM Savunma — Işıklı Tavan ve Karkas Detayı' },
-      { src: '/assets/images/projects/stm-savunma-gallery-4.jpg', caption: 'STM Savunma — Karşılama ve Yan Cephe' }
+      { src: '/assets/images/projects/stm-savunma-gallery-1.jpg', caption: 'Askeri Model ve Maket Teşhir Kaideleri' },
+      { src: '/assets/images/projects/stm-savunma-gallery-2.jpg', caption: 'Akustik Yalıtımlı VIP Toplantı Odası' },
+      { src: '/assets/images/projects/stm-savunma-gallery-3.jpg', caption: 'Işıklı Tavan Izgarası ve Taşıyıcı Karkas Detayı' },
+      { src: '/assets/images/projects/stm-savunma-gallery-4.jpg', caption: 'Karşılama Alanı ve Yan Cephe Perspektifi' }
     ]
   },
   mercedes: {
     title: 'Mercedes-Benz Türk',
-    type: 'ETKİNLİK STANDI / İSTANBUL',
-    lead: 'Global otomotiv liderinin mühendislik ve inovasyon vizyonunu yansıtan heykelsi, minimalist deneyim standı.',
+    type: 'ETKİNLİK STANDI / OTOMOTİV / İSTANBUL',
+    lead: 'Global otomotiv liderinin mühendislik ve inovasyon vizyonunu yansıtan minimalist ahşap hacimler, görüşme masaları ve akustik bölmeler.',
     heroImg: '/assets/images/projects/mercedes-benz-hero.jpg',
+    heroCaption: 'Mercedes-Benz Türk — Özel Etkinlik ve Deneyim Standı',
     client: 'Mercedes-Benz Türk A.Ş.',
     location: 'İstanbul',
     year: '2023',
-    scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Sahne', 'Hassas Montaj'],
+    area: '190 m²',
+    fabrication: 'Minimalist Ahşap Karkas & Akustik Paneller',
+    scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Podyum', 'Hassas Montaj'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Minimalist Lüks & Hassasiyet', desc: 'Mercedes-Benz tasarım felsefesine uygun yalın formlar, mat koyu yüzeyler ve keskin aydınlatma detayları.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Özel Ahşap ve Metal İmalat', desc: 'Kendi atölyemizde üretilen özel tasarım görüşme bankoları, akustik paneller ve kusursuz yüzey kalitesi.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Hızlı ve Sessiz Kurulum', desc: 'Etkinlik mekanında gece vardiyasında kusursuz montaj tamamlanarak sabah lansmana hazır edildi.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/mercedes-benz-gallery-1.jpg', caption: 'Mercedes-Benz Türk — Deneyim Standı' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Mercedes-Benz Türk — Karşılama Bankosu' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Mercedes-Benz Türk — Detay & Aydınlatma' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-4.jpg', caption: 'Mercedes-Benz Türk — Genel Perspektif' }
+      { src: '/assets/images/projects/mercedes-benz-gallery-1.jpg', caption: 'Deneyim Standı ve Karşılama Alanı' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Özel İmalat Danışma ve Görüşme Bankoları' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Akustik Bölme ve Mimari Aydınlatma Detayları' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-4.jpg', caption: 'Genel Perspektif ve Lansman Sahnesi' }
     ]
   },
   perotti: {
     title: 'Perotti Showroom',
     type: 'SHOWROOM & İÇ MİMARİ / İSTOÇ / İSTANBUL',
-    lead: 'Monolitik koyu yüzeyler ve gizli lineer ışık kurgusuyla tasarlanan lüks züccaciye ve sofra ürünleri showroomu.',
+    lead: 'Monolitik koyu yüzeyler, gizli lineer ışık kurgusu ve özel teşhir üniteleriyle tasarlanan lüks züccaciye ve sofra ürünleri showroomu.',
     heroImg: '/assets/images/projects/perotti-hero.jpg',
+    heroCaption: 'Perotti Showroom — İSTOÇ İç Mimari ve Teşhir Uygulaması',
     client: 'Perotti Ev Gereçleri',
     location: 'İSTOÇ Ticaret Merkezi, İstanbul',
     year: '2024',
+    area: '320 m²',
+    fabrication: 'Monolitik Lake Raflar & Gizli Lineer LED',
     scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Özel Bankolar', 'Anahtar Teslim'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Ürün Odaklı Monolitik Atmosfer', desc: 'Cam ve porselen ürünlerin parlamasını sağlayan mat antrasit zeminler ve odak aydınlatmalı nişler.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Özel Raf ve Modüler Teşhir', desc: 'Yüksek taşıma kapasiteli lake ve metal detaylı raf sistemleri kendi atölyemizde milimetrik üretildi.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Ticari Hayata Hazır Teslim', desc: 'Tüm elektrik, aydınlatma ve vitrin uygulamaları eksiksiz tamamlanarak anahtar teslim açıldı.' }
+    ],
     gallery: [
-      { src: '/assets/images/projects/perotti-gallery-1.jpg', caption: 'Perotti Showroom — Teşhir Reyonları ve LED Detayı' },
-      { src: '/assets/images/projects/perotti-gallery-2.jpg', caption: 'Perotti Showroom — Karşılama ve Ana Koridor' },
-      { src: '/assets/images/projects/perotti-gallery-3.jpg', caption: 'Perotti Showroom — Özel Ürün Odak Noktası' },
-      { src: '/assets/images/projects/perotti-gallery-4.jpg', caption: 'Perotti Showroom — Genel Mimari Atmosfer' }
+      { src: '/assets/images/projects/perotti-gallery-1.jpg', caption: 'Özel Teşhir Reyonları ve Gizli Lineer LED Kanalları' },
+      { src: '/assets/images/projects/perotti-gallery-2.jpg', caption: 'Monolitik Karşılama Bankosu ve Ana Koridor' },
+      { src: '/assets/images/projects/perotti-gallery-3.jpg', caption: 'Özel Koleksiyon Odak Noktası ve Aydınlatmalı Nişler' },
+      { src: '/assets/images/projects/perotti-gallery-4.jpg', caption: 'Showroom Genel Mimari Atmosferi ve Teşhir Bütünlüğü' }
     ]
   }
 };
@@ -323,15 +371,23 @@ function initProjectDetailModal() {
     const elType = document.getElementById('modal-project-type');
     const elLead = document.getElementById('modal-project-lead');
     const elHeroImg = document.getElementById('modal-project-hero-img');
+    const elHeroCaption = document.getElementById('modal-project-hero-caption');
     const elClient = document.getElementById('modal-project-client');
     const elLoc = document.getElementById('modal-project-location');
-    const elYear = document.getElementById('modal-project-year');
+    const elAreaYear = document.getElementById('modal-project-area-year');
+    const elFabrication = document.getElementById('modal-project-fabrication');
     const elScopeList = document.getElementById('modal-project-scope-list');
+    const elPillars = document.getElementById('modal-project-pillars');
     const elGalleryContainer = document.getElementById('modal-project-gallery');
 
     if (elTitle) elTitle.textContent = data.title;
     if (elType) elType.textContent = data.type;
     if (elLead) elLead.textContent = data.lead;
+    if (elClient) elClient.textContent = data.client;
+    if (elLoc) elLoc.textContent = data.location;
+    if (elAreaYear) elAreaYear.textContent = `${data.area} · ${data.year}`;
+    if (elFabrication) elFabrication.textContent = data.fabrication;
+
     if (elHeroImg && elHeroImg.parentElement) {
       if (data.heroImg) {
         elHeroImg.parentElement.style.display = '';
@@ -341,12 +397,31 @@ function initProjectDetailModal() {
         elHeroImg.parentElement.style.display = 'none';
       }
     }
-    if (elClient) elClient.textContent = data.client;
-    if (elLoc) elLoc.textContent = data.location;
-    if (elYear) elYear.textContent = data.year;
+    if (elHeroCaption) {
+      elHeroCaption.textContent = data.heroCaption || `${data.title} — Genel Saha Görünümü`;
+    }
 
     if (elScopeList) {
-      elScopeList.innerHTML = data.scope.map(s => `<li class="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 border border-current/10 text-[11px]">• ${s}</li>`).join('');
+      elScopeList.innerHTML = data.scope.map(s => `
+        <li class="px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 border border-current/10 text-[11px] font-medium">
+          • ${s}
+        </li>
+      `).join('');
+    }
+
+    if (elPillars) {
+      if (data.pillars && data.pillars.length > 0) {
+        if (elPillars.parentElement) elPillars.parentElement.style.display = '';
+        elPillars.innerHTML = data.pillars.map(p => `
+          <div class="p-5 space-y-2 rounded-xl border border-current/10 bg-black/[0.02] dark:bg-white/[0.02]">
+            <span class="font-mono text-[10px] uppercase opacity-50 block font-bold tracking-wider">${p.step}</span>
+            <h4 class="text-sm font-bold text-[var(--text)]">${p.title}</h4>
+            <p class="opacity-75 leading-relaxed text-xs font-sans">${p.desc}</p>
+          </div>
+        `).join('');
+      } else if (elPillars.parentElement) {
+        elPillars.parentElement.style.display = 'none';
+      }
     }
 
     if (elGalleryContainer && elGalleryContainer.parentElement) {
@@ -356,9 +431,9 @@ function initProjectDetailModal() {
           const src = typeof item === 'string' ? item : item.src;
           const caption = typeof item === 'object' && item.caption ? item.caption : `${data.title} Detay 0${idx + 1}`;
           return `
-            <div class="rounded-xl overflow-hidden border border-current/10 aspect-[16/10] bg-black/10 shadow-sm relative">
-              <img src="${src}" alt="${caption}" class="w-full h-full object-cover">
-              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-3">
+            <div class="rounded-xl overflow-hidden border border-current/10 aspect-[16/10] bg-black/10 shadow-sm relative group">
+              <img src="${src}" alt="${caption}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3.5">
                 <span class="text-white text-xs font-sans font-medium drop-shadow">${caption}</span>
               </div>
             </div>
