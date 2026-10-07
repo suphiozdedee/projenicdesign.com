@@ -205,69 +205,99 @@ function initPortfolioFilter() {
 const projectData = {
   ulak: {
     title: 'ULAK Haberleşme',
-    type: 'FUAR STANDI / SAVUNMA & TELEKOMÜNİKASYON / TÜYAP / 2023',
-    lead: 'Türkiye’nin milli haberleşme teknolojileri kuruluşu için tasarlanan, yüksek teknoloji ve kurumsal otoriteyi yansıtan anahtar teslim IDEF fuar standı.',
-    heroImg: '',
+    type: 'FUAR STANDI / IDEF 2023 / İSTANBUL',
+    lead: 'Milli haberleşme altyapıları ve 5G teknolojileri için geliştirilen taşıyıcı karkas, veri tüneli ve anahtar teslim stand uygulaması.',
+    heroImg: '/assets/images/projects/ulak-haberlesme-hero.jpg',
     client: 'ULAK Haberleşme A.Ş.',
-    location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF 2023)',
+    location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF)',
     year: '2023',
-    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Lake Ahşap İmalat', 'Yerinde Montaj'],
-    gallery: []
+    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'Özel İmalat', 'Yerinde Montaj'],
+    gallery: [
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg', caption: 'ULAK Haberleşme — Ön Karşılama ve Işıklı Karkas' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-2.jpg', caption: 'ULAK Haberleşme — Sayısal Tünel & Detay' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-3.jpg', caption: 'ULAK Haberleşme — Teknoloji Teşhir Alanı' },
+      { src: '/assets/images/projects/ulak-haberlesme-gallery-4.jpg', caption: 'ULAK Haberleşme — VIP Toplantı ve Yan Görünüm' }
+    ]
   },
   yamaha: {
     title: 'Yamaha Marine',
-    type: 'FUAR STANDI / DENİZCİLİK & MOTOR / BOAT SHOW / 2024',
-    lead: 'Dünya denizcilik devi Yamaha için kurgulanan; ağır deniz motorlarını sergileyen güçlendirilmiş platform mimarisi ve lüks ağırlama üniteleri.',
-    heroImg: '',
+    type: 'FUAR STANDI / BOAT SHOW / İSTANBUL',
+    lead: 'Ağır deniz motorları sergilemesi için güçlendirilmiş podyum mimarisi ve lüks karşılama bankoları.',
+    heroImg: '/assets/images/projects/yamaha-hero.jpg',
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
-    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Platformu Statik Çözümü', 'Monolitik Lake Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
-    gallery: []
+    scope: ['Fuar Stand Mimarisi', 'Ağır Yük Podyumu Statik Çözümü', 'Özel Bankolar', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
+    gallery: [
+      { src: '/assets/images/projects/yamaha-gallery-1.jpg', caption: 'Yamaha Marine — Ana Podyum ve Teşhir' },
+      { src: '/assets/images/projects/yamaha-gallery-2.jpg', caption: 'Yamaha Marine — Karşılama Bankosu' },
+      { src: '/assets/images/projects/yamaha-gallery-3.jpg', caption: 'Yamaha Marine — Motor Teşhir Kaideleri' },
+      { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'Yamaha Marine — Genel Stand Perspektifi' }
+    ]
   },
   dardanel: {
     title: 'Dardanel',
-    type: 'FUAR STANDI / GIDA & PERAKENDE / WORLDFOOD / 2024',
-    lead: 'Türkiye’nin gıda devi Dardanel için lezzet, tazelik ve çağdaş mimariyi bir araya getiren interaktif tadım, şef mutfağı ve karşılama standı.',
-    heroImg: '',
+    type: 'FUAR STANDI / WORLDFOOD / İSTANBUL',
+    lead: 'Canlı şef mutfağı, interaktif tadım alanları ve modern teşhir kurgusuyla tasarlanan fuar standı.',
+    heroImg: '/assets/images/projects/dardanel-hero.jpg',
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
-    location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood Istanbul)',
+    location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood)',
     year: '2024',
-    scope: ['Konsept Tasarım', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Lake Marangozluk', 'Anahtar Teslim'],
-    gallery: []
+    scope: ['Konsept Tasarım', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Özel Marangozluk', 'Anahtar Teslim'],
+    gallery: [
+      { src: '/assets/images/projects/dardanel-gallery-1.jpg', caption: 'Dardanel — Canlı Şef Mutfak İstasyonu' },
+      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Dardanel — Ürün Teşhir Duvarları' },
+      { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Dardanel — Tadım & Bar Alanı' },
+      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Dardanel — Karşılama ve Genel Görünüm' }
+    ]
   },
   stm: {
     title: 'STM Savunma',
-    type: 'FUAR STANDI / SAVUNMA SANAYİİ / SAHA EXPO / 2023',
-    lead: 'Milli savunma sanayiinin öncülerinden STM için yüksek güvenlik ve prestij standartlarına uygun olarak üretilen fuar ve teknoloji standı.',
-    heroImg: '',
+    type: 'FUAR STANDI / SAHA EXPO / İSTANBUL',
+    lead: 'Milli savunma teknolojileri için tasarlanan özel maket kaideleri, VIP toplantı odası ve prestijli fuar standı.',
+    heroImg: '/assets/images/projects/stm-savunma-hero.jpg',
     client: 'STM Savunma Teknolojileri Mühendislik A.Ş.',
-    location: 'İstanbul Fuar Merkezi (SAHA Expo 2023)',
+    location: 'İstanbul Fuar Merkezi (SAHA Expo)',
     year: '2023',
     scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'VIP Toplantı Salonu', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
-    gallery: []
+    gallery: [
+      { src: '/assets/images/projects/stm-savunma-gallery-1.jpg', caption: 'STM Savunma — Askeri Maket Teşhir Kaideleri' },
+      { src: '/assets/images/projects/stm-savunma-gallery-2.jpg', caption: 'STM Savunma — VIP Toplantı Bölümü' },
+      { src: '/assets/images/projects/stm-savunma-gallery-3.jpg', caption: 'STM Savunma — Işıklı Tavan ve Karkas Detayı' },
+      { src: '/assets/images/projects/stm-savunma-gallery-4.jpg', caption: 'STM Savunma — Karşılama ve Yan Cephe' }
+    ]
   },
   mercedes: {
     title: 'Mercedes-Benz Türk',
-    type: 'ETKİNLİK & STAND / OTOMOTİV / İSTANBUL / 2023',
-    lead: 'Global otomotiv liderinin kurum kültürünü ve mühendislik mirasını yansıtan heykelsi, minimalist insan kaynakları ve deneyim standı.',
-    heroImg: '',
+    type: 'ETKİNLİK STANDI / İSTANBUL',
+    lead: 'Global otomotiv liderinin mühendislik ve inovasyon vizyonunu yansıtan heykelsi, minimalist deneyim standı.',
+    heroImg: '/assets/images/projects/mercedes-benz-hero.jpg',
     client: 'Mercedes-Benz Türk A.Ş.',
     location: 'İstanbul',
     year: '2023',
-    scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Ahşap Banko & Mobilya', 'Modüler Sahne', 'Hassas Montaj'],
-    gallery: []
+    scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Sahne', 'Hassas Montaj'],
+    gallery: [
+      { src: '/assets/images/projects/mercedes-benz-gallery-1.jpg', caption: 'Mercedes-Benz Türk — Deneyim Standı' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Mercedes-Benz Türk — Karşılama Bankosu' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Mercedes-Benz Türk — Detay & Aydınlatma' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-4.jpg', caption: 'Mercedes-Benz Türk — Genel Perspektif' }
+    ]
   },
   perotti: {
     title: 'Perotti Showroom',
-    type: 'SHOWROOM & İÇ MİMARİ / ZÜCCACİYE & YAŞAM / İSTOÇ / 2024',
-    lead: 'Lüks sofra ve ev yaşam ürünleri için monolitik koyu dokular ve gizli lineer aydınlatmayla tasarlanan prestijli perakende showroom alanı.',
-    heroImg: '',
+    type: 'SHOWROOM & İÇ MİMARİ / İSTOÇ / İSTANBUL',
+    lead: 'Monolitik koyu yüzeyler ve gizli lineer ışık kurgusuyla tasarlanan lüks züccaciye ve sofra ürünleri showroomu.',
+    heroImg: '/assets/images/projects/perotti-hero.jpg',
     client: 'Perotti Ev Gereçleri',
     location: 'İSTOÇ Ticaret Merkezi, İstanbul',
     year: '2024',
-    scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Lake Bankolar', 'Anahtar Teslim'],
-    gallery: []
+    scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Özel Bankolar', 'Anahtar Teslim'],
+    gallery: [
+      { src: '/assets/images/projects/perotti-gallery-1.jpg', caption: 'Perotti Showroom — Teşhir Reyonları ve LED Detayı' },
+      { src: '/assets/images/projects/perotti-gallery-2.jpg', caption: 'Perotti Showroom — Karşılama ve Ana Koridor' },
+      { src: '/assets/images/projects/perotti-gallery-3.jpg', caption: 'Perotti Showroom — Özel Ürün Odak Noktası' },
+      { src: '/assets/images/projects/perotti-gallery-4.jpg', caption: 'Perotti Showroom — Genel Mimari Atmosfer' }
+    ]
   }
 };
 
@@ -443,7 +473,7 @@ function showLeadConfirmationModal({ name, company, email, mailtoUrl, waUrl }) {
         <div class="space-y-2">
           <h3 class="text-xl sm:text-2xl font-bold font-sans">Teşekkür Ederiz, Sayın <span id="brief-confirm-name"></span></h3>
           <p class="text-xs sm:text-sm opacity-80 leading-relaxed font-sans">
-            Talebiniz doğrudan Proje Direktörümüz <strong>Suphi Bey</strong>'e (<span class="font-mono">suphi@projenicdesign.com</span>) iletildi. Mimari ve teknik ekibimiz 24 saat içinde 3D konsept taslak ve teknik şartname ile dönüş sağlayacaktır.
+            Talebiniz Proje Direktörümüz <strong>Suphi Bey</strong>'e (<span class="font-mono">suphi@projenicdesign.com</span>) iletildi. Mimari ve teknik ekibimiz 24 saat içinde 3D konsept taslak ve teknik şartname ile dönüş sağlayacaktır.
           </p>
         </div>
         <div class="pt-4 border-t border-current/10 flex flex-col sm:flex-row gap-3 font-mono text-xs">
@@ -501,7 +531,7 @@ function initBriefSubmission() {
       const email = form.querySelector('[name="email"], #c-email')?.value || '';
       const fair = form.querySelector('[name="fair"], #c-event')?.value || 'Genel Proje';
       const area = form.querySelector('[name="area"], #c-area')?.value || '';
-      const type = form.querySelector('input[name="service"]:checked')?.value || form.querySelector('[name="type"]')?.value || 'Ahşap Lake Fuar Standı';
+      const type = form.querySelector('input[name="service"]:checked')?.value || form.querySelector('[name="type"]')?.value || 'Özel Tasarım Fuar Standı';
       const notes = form.querySelector('[name="notes"], #c-notes')?.value || '';
 
       const leadData = {

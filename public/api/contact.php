@@ -146,7 +146,7 @@ if ($mailSent) {
     http_response_code(200);
     echo json_encode([
         'success' => true,
-        'message' => 'Proje briefiniz doğrudan Suphi Bey\'e iletildi. En kısa sürede sizinle iletişime geçilecektir.'
+        'message' => 'Proje briefiniz Suphi Bey\'e iletildi. En kısa sürede sizinle iletişime geçilecektir.'
     ]);
 } else {
     // Mail fonksiyonu sunucuda kapalıysa veya yerel test ortamındaysa
@@ -154,6 +154,6 @@ if ($mailSent) {
     echo json_encode([
         'success' => true,
         'fallback' => true,
-        'message' => 'Brief kaydedildi. Doğrudan iletişim için yönlendiriliyorsunuz.'
+        'message' => 'Brief kaydedildi. İletişim için yönlendiriliyorsunuz.'
     ]);
 }
