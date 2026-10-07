@@ -97,22 +97,22 @@ function initHeroSlider() {
 
   const slides = [
     {
+      src: '/assets/images/brand/hero-projenic-monolith.jpg',
+      tag: 'SPACES · PEOPLE · BRANDS',
+      caption: 'Spaces that build stronger brands. Exhibition, spatial design and in-house build.'
+    },
+    {
+      src: '/assets/images/brand/site-installation-tablet.jpg',
+      tag: 'SAHA VE UYGULAMA DİSİPLİNİ',
+      caption: '3D mimari modelden fuar alanına: Kendi atölyemizde üretip sahada anahtar teslim kuruyoruz.'
+    },
+    {
       src: '/assets/images/brand/web-direction-hero.jpg',
       tag: 'DESIGN · PRODUCE · DELIVER · TOGETHER',
       caption: 'Fikirden deneyime. Markaları fuarlarda ve mimari yapılarda tasarlar, üretir ve hayata geçiririz.'
     },
     {
-      src: '/assets/images/brand/architecture-white-space.jpg',
-      tag: 'SPACES FOR A BRIGHTER TOMORROW',
-      caption: 'Mimari disiplin ve net tasarım hiyerarşisiyle şekillenen yapılar.'
-    },
-    {
       src: '/assets/images/projects/hero-architecture.jpg',
-      tag: 'MARKALAR İÇİN DAHA FAZLASI MÜMKÜN',
-      caption: 'Fuar ve etkinlik alanlarında insan ile marka arasında güçlü bağ kuran deneyimler.'
-    },
-    {
-      src: '/assets/images/brand/architecture-minimal-light.jpg',
       tag: 'MİMARİ DİSİPLİN VE SAHA GÜCÜ',
       caption: 'Tasarım vizyonunu ve teknik detayları sahada birebir gerçeğe dönüştürüyoruz.'
     }

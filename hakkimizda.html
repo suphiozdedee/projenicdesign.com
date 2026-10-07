@@ -121,8 +121,17 @@
         </div>
       </div>
 
-      <div class="lg:col-span-6 overflow-hidden rounded-xl bg-black/10 aspect-[4/3]">
-        <img src="/assets/images/projects/fair-crew-installation.jpg" alt="Projenic Fuar Saha Kurulum Ekibi" class="w-full h-full object-cover">
+      <div class="lg:col-span-6 overflow-hidden rounded-2xl border border-current/10 bg-black/5 dark:bg-white/5 shadow-2xl group relative">
+        <img src="/assets/images/brand/projenic-company-presentation.png" 
+             alt="Projenic - We create spaces that move brands forward" 
+             draggable="false" 
+             oncontextmenu="return false;"
+             class="w-full h-auto object-cover group-hover:scale-[1.02] transition-transform duration-700 ease-out select-none">
+        <div class="absolute bottom-3 right-3 sm:bottom-4 sm:right-4">
+          <span class="px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white font-mono text-[10px] sm:text-[11px] font-semibold tracking-wider uppercase shadow-lg">
+            PORTFOLIO & MANIFESTO · 2024
+          </span>
+        </div>
       </div>
     </section>
 
@@ -235,41 +244,62 @@
       </div>
     </section>
 
-    <!-- ── ULTRA-PREMIUM ARCHITECTURAL STATEMENT BANNER (WHAT'S NEXT) ── -->
-    <div class="mb-24 relative overflow-hidden rounded-2xl bg-[#0c0d10] text-white border border-white/10 shadow-2xl p-8 sm:p-14 lg:p-16">
-      <!-- Subtle Ambient Warm Glow -->
-      <div class="absolute -top-24 -right-24 w-96 h-96 bg-[#E84E1C]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- ── PROJENIC TEAM ARCHITECTURAL BANNER ──────────────────────────── -->
+    <section class="mb-20">
+      <!-- Desktop / Tablet: Ultra-High Resolution Team Banner -->
+      <div class="hidden sm:block overflow-hidden rounded-3xl border border-current/10 shadow-xl bg-black">
+        <img src="/assets/images/brand/projenic-team-banner.png" 
+             alt="Projenic Multidisciplinary Architectural Team" 
+             class="w-full h-auto object-cover select-none"
+             draggable="false" oncontextmenu="return false;">
+      </div>
 
-      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-        <!-- Col 1: Eyebrow -->
-        <div class="lg:col-span-3">
-          <div class="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-white/50 font-semibold">
+      <!-- Mobile Screen: Native High-Performance Card -->
+      <div class="sm:hidden rounded-2xl overflow-hidden border border-current/10 bg-[#0c0d10] text-white p-6 space-y-4">
+        <div class="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-white/60 font-semibold">
+          <span>OUR PEOPLE</span>
+          <span class="w-6 h-[1px] bg-white/30 inline-block"></span>
+        </div>
+        <h3 class="text-2xl font-black tracking-tight text-white leading-tight">
+          A multidisciplinary team with a shared belief in what spaces can do.
+        </h3>
+        <p class="text-xs text-white/70 leading-relaxed font-sans">
+          Designers, producers, makers and problem-solvers, working together to create experiences that move people and brands forward.
+        </p>
+        <div class="pt-2">
+          <a href="/iletisim.html" class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest font-bold text-white hover:text-[#E84E1C] transition-colors">
+            <span>MEET THE TEAM</span>
+            <span>→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── ULTRA-PREMIUM ARCHITECTURAL STATEMENT BANNER (WHAT'S NEXT) ── -->
+    <div class="mb-24 w-full relative overflow-hidden rounded-3xl sm:rounded-[2.5rem] bg-[#0c0d10] text-white border border-white/10 shadow-2xl p-8 sm:p-14 lg:p-16 transition-all duration-300">
+      <!-- Ambient Soft Glow -->
+      <div class="absolute -top-32 -right-32 w-[30rem] h-[30rem] bg-[#E84E1C]/15 rounded-full blur-[100px] pointer-events-none"></div>
+      <div class="absolute -bottom-32 -left-32 w-[30rem] h-[30rem] bg-white/[0.03] rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8 lg:gap-16">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-12">
+          <div class="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-white/50 font-semibold flex-shrink-0">
             <span>WHAT'S NEXT</span>
             <span class="w-8 h-[1px] bg-white/30 inline-block"></span>
           </div>
-        </div>
-
-        <!-- Col 2: Headline -->
-        <div class="lg:col-span-5">
           <h3 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-[1.08]">
-            Let's build<br class="hidden sm:inline"> what's next.
+            Let's build what's next.
           </h3>
         </div>
 
-        <!-- Col 3: Description & Action Link -->
-        <div class="lg:col-span-4 space-y-5 lg:pl-6 lg:border-l lg:border-white/10">
-          <p class="text-xs sm:text-sm text-white/70 leading-relaxed font-sans max-w-sm">
-            Fuar standlarından kurumsal marka deneyimlerine; kalıcı etki bırakan mimari alanları kendi atölyemizde üretip sahada anahtar teslim kuruyoruz.
-          </p>
-          <div class="flex flex-wrap items-center gap-6">
-            <a href="/iletisim.html" class="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest font-bold text-white hover:text-[#E84E1C] transition-colors group">
-              <span class="border-b border-white/30 pb-0.5 group-hover:border-[#E84E1C]">PROJE BAŞLAT</span>
-              <span class="group-hover:translate-x-1.5 transition-transform duration-200 text-sm">→</span>
-            </a>
-            <a href="tel:+905512047851" class="font-mono text-xs text-white/60 hover:text-white transition-colors tabular-nums">
-              +90 551 204 78 51
-            </a>
-          </div>
+        <div class="flex flex-wrap items-center gap-6 flex-shrink-0">
+          <a href="/iletisim.html" class="inline-flex items-center gap-3 font-mono text-xs uppercase tracking-widest font-bold text-white hover:text-[#E84E1C] transition-colors group">
+            <span class="border-b border-white/30 pb-0.5 group-hover:border-[#E84E1C]">PROJE BAŞLAT</span>
+            <span class="group-hover:translate-x-1.5 transition-transform duration-200 text-sm">→</span>
+          </a>
+          <a href="tel:+905512047851" class="font-mono text-xs text-white/60 hover:text-white transition-colors tabular-nums">
+            +90 551 204 78 51
+          </a>
         </div>
       </div>
     </div>
