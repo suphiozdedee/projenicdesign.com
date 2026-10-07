@@ -337,9 +337,6 @@ function initProjectDetailModal() {
         elHeroImg.parentElement.style.display = '';
         elHeroImg.src = data.heroImg;
         elHeroImg.alt = data.title;
-        elHeroImg.parentElement.setAttribute('data-lightbox', data.heroImg);
-        elHeroImg.parentElement.setAttribute('data-caption', `${data.title} — Ana Görünüm`);
-        elHeroImg.parentElement.classList.add('cursor-pointer');
       } else {
         elHeroImg.parentElement.style.display = 'none';
       }
@@ -359,11 +356,10 @@ function initProjectDetailModal() {
           const src = typeof item === 'string' ? item : item.src;
           const caption = typeof item === 'object' && item.caption ? item.caption : `${data.title} Detay 0${idx + 1}`;
           return `
-            <div class="rounded-xl overflow-hidden border border-current/10 aspect-[16/10] bg-black/10 group shadow-sm relative cursor-pointer" data-lightbox="${src}" data-caption="${caption}">
-              <img src="${src}" alt="${caption}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-              <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-3.5">
+            <div class="rounded-xl overflow-hidden border border-current/10 aspect-[16/10] bg-black/10 shadow-sm relative">
+              <img src="${src}" alt="${caption}" class="w-full h-full object-cover">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-3">
                 <span class="text-white text-xs font-sans font-medium drop-shadow">${caption}</span>
-                <span class="bg-white/20 text-white font-mono text-[10px] px-2 py-0.5 rounded backdrop-blur-sm">Büyüt ↗</span>
               </div>
             </div>
           `;
@@ -403,53 +399,9 @@ function initProjectDetailModal() {
   });
 }
 
-/* ── 6.1. FULLSCREEN IMAGE LIGHTBOX VIEWER ─────────────────────────────────── */
+/* ── 6.1. FULLSCREEN IMAGE LIGHTBOX VIEWER (DISABLED PER USER PREFERENCE) ── */
 function initImageLightbox() {
-  const lightbox = document.getElementById('image-lightbox-modal');
-  const lightboxImg = document.getElementById('lightbox-img');
-  const lightboxCaption = document.getElementById('lightbox-caption');
-  const lightboxClose = document.getElementById('lightbox-close');
-
-  if (!lightbox || !lightboxImg) return;
-
-  function openLightbox(src, caption) {
-    lightboxImg.src = src;
-    if (lightboxCaption) lightboxCaption.textContent = caption || '';
-    lightbox.classList.remove('hidden');
-    lightbox.classList.add('flex');
-  }
-
-  function closeLightbox() {
-    lightbox.classList.add('hidden');
-    lightbox.classList.remove('flex');
-    lightboxImg.src = '';
-  }
-
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-lightbox]');
-    if (trigger) {
-      e.preventDefault();
-      const src = trigger.dataset.lightbox || trigger.querySelector('img')?.src;
-      const caption = trigger.dataset.caption || trigger.querySelector('img')?.alt || '';
-      if (src) openLightbox(src, caption);
-    }
-  });
-
-  if (lightboxClose) {
-    lightboxClose.addEventListener('click', closeLightbox);
-  }
-
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox || e.target.id === 'lightbox-close' || e.target.closest('#lightbox-close')) {
-      closeLightbox();
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
-      closeLightbox();
-    }
-  });
+  // Disabled: photos remain embedded cleanly in the layout without opening fullscreen popups
 }
 
 /* ── 7. BRIEF FORM SUBMISSION & CONFIRMATION MODAL ────────────────────────── */
