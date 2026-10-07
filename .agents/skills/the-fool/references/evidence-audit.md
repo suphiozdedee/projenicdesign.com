@@ -1,19 +1,18 @@
 # Evidence Audit
 
-Falsificationism and evidence quality assessment for auditing whether claims are actually supported by evidence. Adapted from Karl Popper's falsificationism, the GRADE Evidence-to-Decision framework, and Annie Duke's probabilistic reasoning.
+Falsificationism and evidence quality assessment for auditing whether claims are actually supported by evidence.
 
 ## Core Principle
 
-Karl Popper's key insight: a claim is only meaningful if you can specify what would disprove it. The Evidence Audit mode extracts claims from proposals, designs falsification criteria, assesses evidence quality, identifies cognitive biases, and surfaces competing explanations. The goal is not to disprove — it is to determine whether the evidence actually supports the conclusion.
+Karl Popper's key insight: a claim is only meaningful if you can specify what would disprove it. The Evidence Audit mode extracts claims from proposals, designs falsification criteria, assesses evidence quality, and surfaces competing explanations. The goal is not to disprove — it is to determine whether the evidence actually supports the conclusion.
 
 ## Process
 
-1. **Extract claims** — Identify the specific claims being made (explicit and implicit)
+1. **Extract claims** — Identify the specific claims being made
 2. **Design falsification criteria** — For each claim, specify what would disprove it
-3. **Assess evidence quality** — Evaluate the evidence using the GRADE-adapted framework
-4. **Identify cognitive biases** — Check for systematic errors in reasoning (defer to `cognitive-bias-inventory.md` for the full inventory)
+3. **Assess evidence quality** — Evaluate the evidence supporting each claim
+4. **Identify cognitive biases** — Check for systematic errors in reasoning
 5. **Surface competing explanations** — Find alternative explanations for the same evidence
-6. **Render verdict** — Overall evidence strength with specific recommendations
 
 ## Claim Extraction
 
@@ -33,7 +32,6 @@ Proposals contain claims — often implicit. Extract them before evaluating.
 ### Extraction Method
 
 For each statement in the proposal:
-
 1. Is this a claim or a definition?
 2. If a claim, what type?
 3. What evidence is cited (or implied)?
@@ -48,7 +46,6 @@ Claims extracted:
 1. The pilot results are representative of production (Predictive)
 2. Kubernetes is the cause of the deployment time reduction (Causal)
 3. The 60% reduction will persist at scale (Quantitative)
-4. Deployment time is the right metric to optimize (Implicit — Comparative)
 ```
 
 ## Falsification Criteria
@@ -65,7 +62,7 @@ For each claim, design a test that would disprove it.
 
 ### Unfalsifiable Claims (Red Flag)
 
-Some claims cannot be falsified. These are red flags that require immediate attention.
+Some claims cannot be falsified. These are red flags.
 
 | Pattern | Example | Problem |
 |---------|---------|---------|
@@ -74,25 +71,11 @@ Some claims cannot be falsified. These are red flags that require immediate atte
 | Circular reasoning | "This is the best because it's what experts recommend" | Evidence is the claim restated |
 | Unfalsifiable hedge | "This might help in some cases" | True by definition |
 
-When you encounter unfalsifiable claims, ask: "What specific, measurable outcome would tell us this worked or didn't work, and by when?"
+When you encounter unfalsifiable claims, ask: "What specific, measurable outcome would tell us this worked or didn't work?"
 
-## Evidence Quality Assessment (GRADE-Adapted)
+## Evidence Quality Assessment
 
-The GRADE Evidence-to-Decision framework, adapted from medical research to tech/business decisions, provides structured evidence evaluation.
-
-### GRADE Decision Questions
-
-Apply these 9 questions to any proposal:
-
-1. **Is the problem a priority?** Is it worth solving at all?
-2. **How substantial are the desirable anticipated effects?** What's the upside?
-3. **How substantial are the undesirable anticipated effects?** What's the downside?
-4. **What is the certainty of the evidence?** How strong is our basis for believing this?
-5. **Is there important uncertainty about how stakeholders value outcomes?** Do different people want different things?
-6. **Does the balance of effects favor this option or the alternative?** Net positive or net negative?
-7. **How large are the resource requirements?** Total cost of ownership?
-8. **Is the option acceptable to key stakeholders?** Will people actually support this?
-9. **Is the option feasible to implement?** Can we actually do this?
+Not all evidence is equal. Assess each piece of evidence on these dimensions.
 
 ### Evidence Quality Matrix
 
@@ -109,11 +92,11 @@ Apply these 9 questions to any proposal:
 
 | Grade | Description | Reliability |
 |-------|-------------|------------|
-| **A** | Controlled experiment, large sample, reproducible | High confidence — proceed |
-| **B** | Observational data, reasonable sample, consistent with other evidence | Moderate confidence — proceed with monitoring |
-| **C** | Case study, small sample, or single source | Low confidence — needs corroboration before deciding |
+| **A** | Controlled experiment, large sample, reproducible | High confidence |
+| **B** | Observational data, reasonable sample, consistent with other evidence | Moderate confidence |
+| **C** | Case study, small sample, or single source | Low confidence — needs corroboration |
 | **D** | Anecdote, opinion, or vendor marketing material | Insufficient — do not base decisions on this alone |
-| **F** | No evidence cited | Claim is unsupported — flag immediately |
+| **F** | No evidence cited | Claim is unsupported |
 
 ### Common Weak Evidence Patterns
 
@@ -124,7 +107,21 @@ Apply these 9 questions to any proposal:
 | Vendor benchmarks | "Our tool is 3x faster" | Benchmarks optimized for vendor's strengths |
 | Appeal to authority | "Google does it this way" | Google's constraints are not your constraints |
 | Anchoring | "Industry average is X, we're at Y" | The average may not be the right benchmark |
-| N=1 generalization | "It worked at my last company" | Different context, team, scale, constraints |
+
+## Cognitive Bias Awareness
+
+Check for these biases in the reasoning chain.
+
+| Bias | Description | Detection Signal |
+|------|-------------|-----------------|
+| **Confirmation bias** | Seeking evidence that confirms existing belief | Only positive evidence cited; no counter-evidence considered |
+| **Survivorship bias** | Focusing on successes, ignoring failures | "All the successful companies do X" |
+| **Anchoring** | Over-relying on first piece of information | First estimate unchanged despite new data |
+| **Sunk cost fallacy** | Continuing because of past investment | "We've already spent 6 months on this" as justification |
+| **Availability heuristic** | Overweighting recent or vivid examples | Decision based on one memorable incident |
+| **Bandwagon effect** | "Everyone is doing it" | Trend adoption without fitness assessment |
+| **Dunning-Kruger** | Overconfidence in unfamiliar domain | Confident claims about areas outside expertise |
+| **Status quo bias** | Preferring current state despite evidence for change | "It's always been this way" |
 
 ## Competing Explanations (Abductive Reasoning)
 
@@ -135,7 +132,7 @@ For every conclusion, ask: "What else could explain this evidence?"
 1. State the evidence
 2. State the proposed explanation
 3. Generate 2-3 alternative explanations
-4. Compare explanatory power — which explanation accounts for the most evidence with the fewest assumptions?
+4. Compare explanatory power
 
 ### Example
 
@@ -148,7 +145,6 @@ Alternative explanations:
 1. The team also started doing more code review in the same period
 2. A particularly error-prone service was retired last month
 3. The team gained experience that would have improved results with any tool
-4. Deployment frequency dropped (fewer deploys = fewer failures, not better deploys)
 ```
 
 ## Output Template
@@ -158,24 +154,25 @@ Alternative explanations:
 
 ### Claims Extracted
 
-| # | Claim | Type | Evidence Cited | Falsifiable? |
-|---|-------|------|---------------|-------------|
-| 1 | [Specific claim] | Causal/Predictive/etc. | [What evidence supports it] | Yes/No |
-| 2 | [Specific claim] | Causal/Predictive/etc. | [What evidence supports it] | Yes/No |
+| # | Claim | Type | Evidence Cited |
+|---|-------|------|---------------|
+| 1 | [Specific claim] | Causal/Predictive/etc. | [What evidence supports it] |
+| 2 | [Specific claim] | Causal/Predictive/etc. | [What evidence supports it] |
+| 3 | [Specific claim] | Causal/Predictive/etc. | [What evidence supports it] |
 
 ### Falsification Criteria
 
-| Claim | What Would Disprove It | How to Test | Effort |
-|-------|----------------------|-------------|--------|
-| #1 | [Specific criterion] | [Concrete test] | Low/Med/High |
-| #2 | [Specific criterion] | [Concrete test] | Low/Med/High |
+| Claim | What Would Disprove It | How to Test |
+|-------|----------------------|-------------|
+| #1 | [Specific criterion] | [Concrete test] |
+| #2 | [Specific criterion] | [Concrete test] |
 
 ### Evidence Quality
 
-| Claim | Evidence Grade | Key Weakness | GRADE Assessment |
-|-------|--------------|--------------|-----------------|
-| #1 | A/B/C/D/F | [Primary concern] | [Which of the 9 questions is most concerning] |
-| #2 | A/B/C/D/F | [Primary concern] | [Which of the 9 questions is most concerning] |
+| Claim | Evidence Grade | Key Weakness |
+|-------|--------------|--------------|
+| #1 | A/B/C/D/F | [Primary concern] |
+| #2 | A/B/C/D/F | [Primary concern] |
 
 ### Bias Check
 
@@ -193,10 +190,7 @@ Alternative explanations:
 
 **Overall evidence strength:** Strong / Moderate / Weak / Insufficient
 
-**Confidence level:** [X%] — this forces probabilistic rather than binary thinking
-
 **Recommendations:**
 1. [Specific action to strengthen the weakest claim]
 2. [Specific action to test the riskiest assumption]
-3. [What would change this verdict — the Magic Question]
 ```

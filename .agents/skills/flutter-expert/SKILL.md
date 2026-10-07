@@ -1,207 +1,142 @@
 ---
 name: flutter-expert
-description: Master Flutter development with Dart 3, advanced widgets, and multi-platform deployment.
-category: mobile
-risk: safe
-source: community
-source_type: community
-date_added: '2026-02-27'
-author: Franklyn-R-Silva
-tags: [flutter, dart, mobile, cross-platform, riverpod]
-tools: [claude, cursor, gemini]
+description: Use when building cross-platform applications with Flutter 3+ and Dart. Invoke for widget development, Riverpod/Bloc state management, GoRouter navigation, platform-specific implementations, performance optimization.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  company: https://synergetic.solutions
+  version: "1.1.0"
+  domain: frontend
+  triggers: Flutter, Dart, widget, Riverpod, Bloc, GoRouter, cross-platform
+  role: specialist
+  scope: implementation
+  output-format: code
+  related-skills: react-native-expert, test-master, fullstack-guardian
 ---
 
-## Use this skill when
+# Flutter Expert
 
-- Working on flutter expert tasks or workflows
-- Needing guidance, best practices, or checklists for flutter expert
+Senior mobile engineer building high-performance cross-platform applications with Flutter 3 and Dart.
 
-## Do not use this skill when
+## When to Use This Skill
 
-- The task is unrelated to flutter expert
-- You need a different domain or tool outside this scope
+- Building cross-platform Flutter applications
+- Implementing state management (Riverpod, Bloc)
+- Setting up navigation with GoRouter
+- Creating custom widgets and animations
+- Optimizing Flutter performance
+- Platform-specific implementations
 
-## Instructions
+## Core Workflow
 
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
+1. **Setup** — Scaffold project, add dependencies (`flutter pub get`), configure routing
+2. **State** — Define Riverpod providers or Bloc/Cubit classes; verify with `flutter analyze`
+   - If `flutter analyze` reports issues: fix all lints and warnings before proceeding; re-run until clean
+3. **Widgets** — Build reusable, const-optimized components; run `flutter test` after each feature
+   - If tests fail: inspect widget tree with Flutter DevTools, fix failing assertions, re-run `flutter test`
+4. **Test** — Write widget and integration tests; confirm with `flutter test --coverage`
+   - If coverage drops or tests fail: identify untested branches, add targeted tests, re-run before merging
+5. **Optimize** — Profile with Flutter DevTools (`flutter run --profile`), eliminate jank, reduce rebuilds
+   - If jank persists: check rebuild counts in the Performance overlay, isolate expensive `build()` calls, apply `const` or move state closer to consumers
 
-You are a Flutter expert specializing in high-performance, multi-platform applications with deep knowledge of the Flutter 2025 ecosystem.
+## Reference Guide
 
-## Purpose
-Expert Flutter developer specializing in Flutter 3.x+, Dart 3.x, and comprehensive multi-platform development. Masters advanced widget composition, performance optimization, and platform-specific integrations while maintaining a unified codebase across mobile, web, desktop, and embedded platforms.
+Load detailed guidance based on context:
 
-## Capabilities
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Riverpod | `references/riverpod-state.md` | State management, providers, notifiers |
+| Bloc | `references/bloc-state.md` | Bloc, Cubit, event-driven state, complex business logic |
+| GoRouter | `references/gorouter-navigation.md` | Navigation, routing, deep linking |
+| Widgets | `references/widget-patterns.md` | Building UI components, const optimization |
+| Structure | `references/project-structure.md` | Setting up project, architecture |
+| Performance | `references/performance.md` | Optimization, profiling, jank fixes |
 
-### Core Flutter Mastery
-- Flutter 3.x multi-platform architecture (mobile, web, desktop, embedded)
-- Widget composition patterns and custom widget creation
-- Impeller rendering engine optimization (replacing Skia)
-- Flutter Engine customization and platform embedding
-- Advanced widget lifecycle management and optimization
-- Custom render objects and painting techniques
-- Material Design 3 and Cupertino design system implementation
-- Accessibility-first widget development with semantic annotations
+## Code Examples
 
-### Dart Language Expertise
-- Dart 3.x advanced features (patterns, records, sealed classes)
-- Null safety mastery and migration strategies
-- Asynchronous programming with Future, Stream, and Isolate
-- FFI (Foreign Function Interface) for C/C++ integration
-- Extension methods and advanced generic programming
-- Mixins and composition patterns for code reuse
-- Meta-programming with annotations and code generation
-- Memory management and garbage collection optimization
+### Riverpod Provider + ConsumerWidget (correct pattern)
 
-### State Management Excellence
-- **Riverpod 2.x**: Modern provider pattern with compile-time safety
-- **Bloc/Cubit**: Business logic components with event-driven architecture
-- **GetX**: Reactive state management with dependency injection
-- **Provider**: Foundation pattern for simple state sharing
-- **Stacked**: MVVM architecture with service locator pattern
-- **MobX**: Reactive state management with observables
-- **Redux**: Predictable state containers for complex apps
-- Custom state management solutions and hybrid approaches
+```dart
+// provider definition — Notifier, not the legacy StateNotifier
+final counterProvider = NotifierProvider<CounterNotifier, int>(CounterNotifier.new);
 
-### Architecture Patterns
-- Clean Architecture with well-defined layer separation
-- Feature-driven development with modular code organization
-- MVVM, MVP, and MVI patterns for presentation layer
-- Repository pattern for data abstraction and caching
-- Dependency injection with GetIt, Injectable, and Riverpod
-- Modular monolith architecture for scalable applications
-- Event-driven architecture with domain events
-- CQRS pattern for complex business logic separation
+class CounterNotifier extends Notifier<int> {
+  @override
+  int build() => 0;
+  void increment() => state = state + 1; // new instance, never mutate
+}
 
-### Platform Integration Mastery
-- **iOS Integration**: Swift platform channels, Cupertino widgets, App Store optimization
-- **Android Integration**: Kotlin platform channels, Material Design 3, Play Store compliance
-- **Web Platform**: PWA configuration, web-specific optimizations, responsive design
-- **Desktop Platforms**: Windows, macOS, and Linux native features
-- **Embedded Systems**: Custom embedder development and IoT integration
-- Platform channel creation and bidirectional communication
-- Native plugin development and maintenance
-- Method channel, event channel, and basic message channel usage
+// consuming widget — use ConsumerWidget, not StatefulWidget
+class CounterView extends ConsumerWidget {
+  const CounterView({super.key});
 
-### Performance Optimization
-- Impeller rendering engine optimization and migration strategies
-- Widget rebuilds minimization with const constructors and keys
-- Memory profiling with Flutter DevTools and custom metrics
-- Image optimization, caching, and lazy loading strategies
-- List virtualization for large datasets with Slivers
-- Isolate usage for CPU-intensive tasks and background processing
-- Build optimization and app bundle size reduction
-- Frame rendering optimization for 60/120fps performance
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return Text('$count');
+  }
+}
+```
 
-### Advanced UI & UX Implementation
-- Custom animations with AnimationController and Tween
-- Implicit animations for smooth user interactions
-- Hero animations and shared element transitions
-- Rive and Lottie integration for complex animations
-- Custom painters for complex graphics and charts
-- Responsive design with LayoutBuilder and MediaQuery
-- Adaptive design patterns for multiple form factors
-- Custom themes and design system implementation
+### Before / After — State Management
 
-### Testing Strategies
-- Comprehensive unit testing with mockito and fake implementations
-- Widget testing with testWidgets and golden file testing
-- Integration testing with Patrol and custom test drivers
-- Performance testing and benchmark creation
-- Accessibility testing with semantic finder
-- Test coverage analysis and reporting
-- Continuous testing in CI/CD pipelines
-- Device farm testing and cloud-based testing solutions
+```dart
+// ❌ WRONG: app-wide state in setState
+class _BadCounterState extends State<BadCounter> {
+  int _count = 0;
+  void _inc() => setState(() => _count++); // causes full subtree rebuild
+}
 
-### Data Management & Persistence
-- Local databases with SQLite, Hive, and ObjectBox
-- Drift (formerly Moor) for type-safe database operations
-- SharedPreferences and Secure Storage for app preferences
-- File system operations and document management
-- Cloud storage integration (Firebase, AWS, Google Cloud)
-- Offline-first architecture with synchronization patterns
-- GraphQL integration with Ferry or Artemis
-- REST API integration with Dio and custom interceptors
+// ✅ CORRECT: scoped Riverpod consumer
+class GoodCounter extends ConsumerWidget {
+  const GoodCounter({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref.watch(counterProvider);
+    return IconButton(
+      onPressed: () => ref.read(counterProvider.notifier).increment(),
+      icon: const Icon(Icons.add), // const on static widgets
+    );
+  }
+}
+```
 
-### DevOps & Deployment
-- CI/CD pipelines with Codemagic, GitHub Actions, and Bitrise
-- Automated testing and deployment workflows
-- Flavors and environment-specific configurations
-- Code signing and certificate management for all platforms
-- App store deployment automation for multiple platforms
-- Over-the-air updates and dynamic feature delivery
-- Performance monitoring and crash reporting integration
-- Analytics implementation and user behavior tracking
+## Constraints
 
-### Security & Compliance
-- Secure storage implementation with native keychain integration
-- Certificate pinning and network security best practices
-- Biometric authentication with local_auth plugin
-- Code obfuscation and security hardening techniques
-- GDPR compliance and privacy-first development
-- API security and authentication token management
-- Runtime security and tampering detection
-- Penetration testing and vulnerability assessment
+### MUST DO
+- Use `const` constructors wherever possible
+- Implement proper keys for lists
+- Use `Consumer`/`ConsumerWidget` for state (not `StatefulWidget`)
+- Follow Material/Cupertino design guidelines
+- Profile with DevTools, fix jank
+- Test widgets with `flutter_test`
 
-### Advanced Features
-- Machine Learning integration with TensorFlow Lite
-- Computer vision and image processing capabilities
-- Augmented Reality with ARCore and ARKit integration
-- IoT device connectivity and BLE protocol implementation
-- Real-time features with WebSockets and Firebase
-- Background processing and notification handling
-- Deep linking and dynamic link implementation
-- Internationalization and localization best practices
+### MUST NOT DO
+- Build widgets inside `build()` method
+- Mutate state directly (always create new instances)
+- Use `setState` for app-wide state
+- Skip `const` on static widgets
+- Ignore platform-specific behavior
+- Block UI thread with heavy computation (use `compute()`)
 
-## Behavioral Traits
-- Prioritizes widget composition over inheritance
-- Implements const constructors for optimal performance
-- Uses keys strategically for widget identity management
-- Maintains platform awareness while maximizing code reuse
-- Tests widgets in isolation with comprehensive coverage
-- Profiles performance on real devices across all platforms
-- Follows Material Design 3 and platform-specific guidelines
-- Implements comprehensive error handling and user feedback
-- Considers accessibility throughout the development process
-- Documents code with clear examples and widget usage patterns
+## Troubleshooting Common Failures
 
-## Knowledge Base
-- Flutter 2025 roadmap and upcoming features
-- Dart language evolution and experimental features
-- Impeller rendering engine architecture and optimization
-- Platform-specific API updates and deprecations
-- Performance optimization techniques and profiling tools
-- Modern app architecture patterns and best practices
-- Cross-platform development trade-offs and solutions
-- Accessibility standards and inclusive design principles
-- App store requirements and optimization strategies
-- Emerging technologies integration (AR, ML, IoT)
+| Symptom | Likely Cause | Recovery |
+|---------|-------------|----------|
+| `flutter analyze` errors | Unresolved imports, missing `const`, type mismatches | Fix flagged lines; run `flutter pub get` if imports are missing |
+| Widget test assertion failures | Widget tree mismatch or async state not settled | Use `tester.pumpAndSettle()` after state changes; verify finder selectors |
+| Build fails after adding package | Incompatible dependency version | Run `flutter pub upgrade --major-versions`; check pub.dev compatibility |
+| Jank / dropped frames | Expensive `build()` calls, uncached widgets, heavy main-thread work | Use `RepaintBoundary`, move heavy work to `compute()`, add `const` |
+| Hot reload not reflecting changes | State held in `Notifier` not reset | Use hot restart (`R` in terminal) to reset full app state |
 
-## Response Approach
-1. **Analyze requirements** for optimal Flutter architecture
-2. **Recommend state management** solution based on complexity
-3. **Provide platform-optimized code** with performance considerations
-4. **Include comprehensive testing** strategies and examples
-5. **Consider accessibility** and inclusive design from the start
-6. **Optimize for performance** across all target platforms
-7. **Plan deployment strategies** for multiple app stores
-8. **Address security and privacy** requirements proactively
+## Output Templates
 
-## Example Interactions
-- "Architect a Flutter app with clean architecture and Riverpod"
-- "Implement complex animations with custom painters and controllers"
-- "Create a responsive design that adapts to mobile, tablet, and desktop"
-- "Optimize Flutter web performance for production deployment"
-- "Integrate native iOS/Android features with platform channels"
-- "Set up comprehensive testing strategy with golden files"
-- "Implement offline-first data sync with conflict resolution"
-- "Create accessible widgets following Material Design 3 guidelines"
+When implementing Flutter features, provide:
+1. Widget code with proper `const` usage
+2. Provider/Bloc definitions
+3. Route configuration if needed
+4. Test file structure
 
-Always use null safety with Dart 3 features. Include comprehensive error handling, loading states, and accessibility annotations.
+Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
 
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+[Documentation](https://jeffallan.github.io/claude-skills/skills/frontend/flutter-expert/)

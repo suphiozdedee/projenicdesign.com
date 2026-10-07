@@ -6,15 +6,12 @@ Hegelian dialectic with steel manning for constructing the strongest possible co
 
 The dialectic is not about winning. It is about producing a stronger position than either thesis or antithesis alone. The Fool's job is to argue the other side so well that the user is forced to either refine their position or acknowledge a genuine trade-off.
 
-Key distinction: steel manning is epistemic (genuinely trying to find out if you're wrong), devil's advocacy is role-based (assigned to argue against). Apply both: steel man first, then construct the antithesis.
-
 ## Process
 
 1. **Restate the thesis** — Steelman the user's position first
 2. **Construct the antithesis** — Build the strongest opposing argument
 3. **Present the clash** — Show where thesis and antithesis genuinely conflict
 4. **Drive toward synthesis** — Propose a position that incorporates the best of both
-5. **Assess confidence** — Rate the synthesis and identify remaining risks
 
 ## Steel Manning Technique
 
@@ -27,16 +24,14 @@ Steel manning is the opposite of straw manning. Restate the user's position in i
 | 1. Identify the core claim | Strip away weak framing | "We should use microservices" → "Independent deployment and scaling of components will accelerate team velocity" |
 | 2. Add the strongest evidence | Supply what the user implied | "...especially given 4 teams working on different release cycles" |
 | 3. Acknowledge real benefits | Name what's genuinely good | "This would eliminate the current deploy queue bottleneck" |
-| 4. Confirm with user | "Is this a fair restatement?" | Ensures you're attacking the real position, not a fabrication |
+| 4. Confirm with user | "Is this a fair restatement?" | Ensures you're attacking the real position |
 
 ### Steelman Checklist
 
-Before proceeding to the antithesis, verify:
-
-- Have I made the position stronger, not weaker?
-- Would the user recognize this as their view (or better)?
-- Have I included the strongest evidence for their side?
-- Am I about to attack this version, not an easier one?
+- [ ] Have I made the position stronger, not weaker?
+- [ ] Would the user recognize this as their view (or better)?
+- [ ] Have I included the strongest evidence for their side?
+- [ ] Am I attacking this version, not an easier one?
 
 ## Antithesis Construction
 
@@ -51,7 +46,6 @@ Build the antithesis by asking: "If a smart, informed person disagreed, what wou
 | Alternative that solves the same problem | "A modular monolith gets 80% of the benefit at 20% of the cost" |
 | Precedent from similar situations | "Company X tried this and reverted after 2 years" |
 | Stakeholder the thesis doesn't serve | "The junior developers will struggle with the added complexity" |
-| The null hypothesis | "Doing nothing and investing the effort elsewhere yields higher ROI" |
 
 ### Reductio ad Absurdum (Supporting Technique)
 
@@ -64,16 +58,6 @@ Take the thesis to its logical extreme to reveal hidden limits.
 | "We should move fast" | "Then skip code review and testing" | Speed has a quality floor |
 
 Use sparingly. Reductio highlights the boundary of a principle, not its invalidity.
-
-### Probabilistic Framing (Annie Duke)
-
-Force probability estimates to make uncertainty explicit:
-
-- "How confident are you in this? 60%? 90%?"
-- "What would move your confidence from 70% to 90%?"
-- "What's the probability the antithesis is right?"
-
-This prevents binary thinking and enables calibration.
 
 ## Synthesis Patterns
 
@@ -111,7 +95,7 @@ Example: "Use the microservices deployment model (independent containers) but ke
 
 ## Confidence Assessment
 
-Rate the synthesis outcome honestly.
+Rate the synthesis outcome.
 
 | Level | Meaning | Action |
 |-------|---------|--------|
@@ -129,7 +113,6 @@ Rate the synthesis outcome honestly.
 | Thesis bias | Synthesis suspiciously close to original position | Check if antithesis was genuinely engaged |
 | Complexity creep | Synthesis is more complex than either original | Simpler synthesis is usually better |
 | Fence-sitting | "It depends" without specifying on what | Name the exact conditions for each path |
-| Resulting bias | Judging decision quality by outcome | Evaluate the process, not the result (Duke) |
 
 ## Output Template
 
@@ -139,7 +122,6 @@ Rate the synthesis outcome honestly.
 [User's position restated in strongest form]
 
 **Strongest evidence for:** [1-2 supporting points]
-**User's confidence:** [X%]
 
 ## Antithesis
 
@@ -166,5 +148,4 @@ Rate the synthesis outcome honestly.
 
 **Confidence:** HIGH / MEDIUM / LOW / PIVOT
 **If MEDIUM:** Test [riskiest assumption] by [experiment]
-**If PIVOT:** [Concrete recommendation to reconsider]
 ```

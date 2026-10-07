@@ -1,66 +1,137 @@
 ---
 name: javascript-pro
-description: Master modern JavaScript with ES6+, async patterns, and Node.js APIs. Handles promises, event loops, and browser/Node compatibility.
-risk: safe
-source: community
-date_added: '2026-02-27'
+description: Writes, debugs, and refactors JavaScript code using modern ES2023+ features, async/await patterns, ESM module systems, and Node.js APIs. Use when building vanilla JavaScript applications, implementing Promise-based async flows, optimising browser or Node.js performance, working with Web Workers or Fetch API, or reviewing .js/.mjs/.cjs files for correctness and best practices.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  company: https://synergetic.solutions
+  version: "1.1.0"
+  domain: language
+  triggers: JavaScript, ES2023, async await, Node.js, vanilla JavaScript, Web Workers, Fetch API, browser API, module system
+  role: specialist
+  scope: implementation
+  output-format: code
+  related-skills: fullstack-guardian
 ---
-You are a JavaScript expert specializing in modern JS and async programming.
 
-## Use this skill when
+# JavaScript Pro
 
-- Building modern JavaScript for Node.js or browsers
-- Debugging async behavior, event loops, or performance
-- Migrating legacy JS to modern ES standards
+## When to Use This Skill
 
-## Do not use this skill when
+- Building vanilla JavaScript applications
+- Implementing async/await patterns and Promise handling
+- Working with modern module systems (ESM/CJS)
+- Optimizing browser performance and memory usage
+- Developing Node.js backend services
+- Implementing Web Workers, Service Workers, or browser APIs
 
-- You need TypeScript architecture guidance
-- You are working in a non-JS runtime
-- The task requires backend architecture decisions
+## Core Workflow
 
-## Instructions
+1. **Analyze requirements** — Review `package.json`, module system, Node version, browser targets; confirm `.js`/`.mjs`/`.cjs` conventions
+2. **Design architecture** — Plan modules, async flows, and error handling strategies
+3. **Implement** — Write ES2023+ code with proper patterns and optimisations
+4. **Validate** — Run linter (`eslint --fix`); if linter fails, fix all reported issues and re-run before proceeding. Check for memory leaks with DevTools or `--inspect`, verify bundle size; if leaks are found, resolve them before continuing
+5. **Test** — Write comprehensive tests with Jest achieving 85%+ coverage; if coverage falls short, add missing cases and re-run. Confirm no unhandled Promise rejections
 
-1. Identify runtime targets and constraints.
-2. Choose async patterns and module system.
-3. Implement with robust error handling.
-4. Validate performance and compatibility.
+## Reference Guide
 
-## Focus Areas
+Load detailed guidance based on context:
 
-- ES6+ features (destructuring, modules, classes)
-- Async patterns (promises, async/await, generators)
-- Event loop and microtask queue understanding
-- Node.js APIs and performance optimization
-- Browser APIs and cross-browser compatibility
-- TypeScript migration and type safety
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Modern Syntax | `references/modern-syntax.md` | ES2023+ features, optional chaining, private fields |
+| Async Patterns | `references/async-patterns.md` | Promises, async/await, error handling, event loop |
+| Modules | `references/modules.md` | ESM vs CJS, dynamic imports, package.json exports |
+| Browser APIs | `references/browser-apis.md` | Fetch, Web Workers, Storage, IntersectionObserver |
+| Node Essentials | `references/node-essentials.md` | fs/promises, streams, EventEmitter, worker threads |
 
-## Approach
+## Constraints
 
-1. Prefer async/await over promise chains
-2. Use functional patterns where appropriate
-3. Handle errors at appropriate boundaries
-4. Avoid callback hell with modern patterns
-5. Consider bundle size for browser code
+### MUST DO
+- Use ES2023+ features exclusively
+- Use `X | null` or `X | undefined` patterns
+- Use optional chaining (`?.`) and nullish coalescing (`??`)
+- Use async/await for all asynchronous operations
+- Use ESM (`import`/`export`) for new projects
+- Implement proper error handling with try/catch
+- Add JSDoc comments for complex functions
+- Follow functional programming principles
 
-## Output
+### MUST NOT DO
+- Use `var` (always use `const` or `let`)
+- Use callback-based patterns (prefer Promises)
+- Mix CommonJS and ESM in the same module
+- Ignore memory leaks or performance issues
+- Skip error handling in async functions
+- Use synchronous I/O in Node.js
+- Mutate function parameters
+- Create blocking operations in the browser
 
-- Modern JavaScript with proper error handling
-- Async code with race condition prevention
-- Module structure with clean exports
-- Jest tests with async test patterns
-- Performance profiling results
-- Polyfill strategy for browser compatibility
+## Key Patterns with Examples
 
-Support both Node.js and browser environments. Include JSDoc comments.
+### Async/Await Error Handling
+```js
+// ✅ Correct — always handle async errors explicitly
+async function fetchUser(id) {
+  try {
+    const response = await fetch(`/api/users/${id}`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    return await response.json();
+  } catch (err) {
+    console.error("fetchUser failed:", err);
+    return null;
+  }
+}
 
-## Example
+// ❌ Incorrect — unhandled rejection, no null guard
+async function fetchUser(id) {
+  const response = await fetch(`/api/users/${id}`);
+  return response.json();
+}
+```
 
-**User request:**
+### Optional Chaining & Nullish Coalescing
+```js
+// ✅ Correct
+const city = user?.address?.city ?? "Unknown";
 
-> Build modern JavaScript for Node.js or browsers.
+// ❌ Incorrect — throws if address is undefined
+const city = user.address.city || "Unknown";
+```
 
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+### ESM Module Structure
+```js
+// ✅ Correct — named exports, no default-only exports for libraries
+// utils/math.mjs
+export const add = (a, b) => a + b;
+export const multiply = (a, b) => a * b;
+
+// consumer.mjs
+import { add } from "./utils/math.mjs";
+
+// ❌ Incorrect — mixing require() with ESM
+const { add } = require("./utils/math.mjs");
+```
+
+### Avoid var / Prefer const
+```js
+// ✅ Correct
+const MAX_RETRIES = 3;
+let attempts = 0;
+
+// ❌ Incorrect
+var MAX_RETRIES = 3;
+var attempts = 0;
+```
+
+## Output Templates
+
+When implementing JavaScript features, provide:
+1. Module file with clean exports
+2. Test file with comprehensive coverage
+3. JSDoc documentation for public APIs
+4. Brief explanation of patterns used
+
+Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+
+[Documentation](https://jeffallan.github.io/claude-skills/skills/language/javascript-pro/)

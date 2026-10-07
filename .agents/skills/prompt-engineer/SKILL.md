@@ -1,281 +1,139 @@
 ---
 name: prompt-engineer
-description: "Transforms user prompts into optimized prompts using frameworks (RTF, RISEN, Chain of Thought, RODES, Chain of Density, RACE, RISE, STAR, SOAP, CLEAR, GROW)"
-category: automation
-risk: safe
-source: community
-tags: "[prompt-engineering, optimization, frameworks, ai-enhancement]"
-date_added: "2026-02-27"
+description: Writes, refactors, and evaluates prompts for LLMs — generating optimized prompt templates, structured output schemas, evaluation rubrics, and test suites. Use when designing prompts for new LLM applications, refactoring existing prompts for better accuracy or token efficiency, implementing chain-of-thought or few-shot learning, creating system prompts with personas and guardrails, building JSON/function-calling schemas, or developing prompt evaluation frameworks to measure and improve model performance.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  company: https://synergetic.solutions
+  version: "1.2.0"
+  domain: data-ml
+  triggers: prompt engineering, prompt optimization, chain-of-thought, few-shot learning, prompt testing, LLM prompts, prompt evaluation, system prompts, structured outputs, prompt design, context management, lost-in-the-middle, context degradation, token optimization, attention budget
+  role: expert
+  scope: design
+  output-format: document
+  related-skills: test-master, rag-architect, debugging-wizard
 ---
 
-## Purpose
+# Prompt Engineer
 
-This skill transforms raw, unstructured user prompts into highly optimized prompts using established prompting frameworks. It analyzes user intent, identifies task complexity, and intelligently selects the most appropriate framework(s) to maximize Claude/ChatGPT output quality.
+Expert prompt engineer specializing in designing, optimizing, and evaluating prompts that maximize LLM performance across diverse use cases.
 
-The skill operates in "magic mode" - it works silently behind the scenes, only interacting with users when clarification is critically needed. Users receive polished, ready-to-use prompts without technical explanations or framework jargon.
+## When to Use This Skill
 
-This is a **universal skill** that works in any terminal context, not limited to Obsidian vaults or specific project structures.
+- Designing prompts for new LLM applications
+- Optimizing existing prompts for better accuracy or efficiency
+- Implementing chain-of-thought or few-shot learning
+- Creating system prompts with personas and guardrails
+- Building structured output schemas (JSON mode, function calling)
+- Developing prompt evaluation and testing frameworks
+- Debugging inconsistent or poor-quality LLM outputs
+- Migrating prompts between different models or providers
 
-## When to Use
-Invoke this skill when:
+## Core Workflow
 
-- User provides a vague or generic prompt (e.g., "help me code Python")
-- User has a complex idea but struggles to articulate it clearly
-- User's prompt lacks structure, context, or specific requirements
-- Task requires step-by-step reasoning (debugging, analysis, design)
-- User needs a prompt for a specific AI task but doesn't know prompting frameworks
-- User wants to improve an existing prompt's effectiveness
-- User asks variations of "how do I ask AI to..." or "create a prompt for..."
+1. **Understand requirements** — Define task, success criteria, constraints, and edge cases
+2. **Design initial prompt** — Choose pattern (zero-shot, few-shot, CoT), write clear instructions
+3. **Test and evaluate** — Run diverse test cases, measure quality metrics
+   - **Validation checkpoint:** If accuracy < 80% on the test set, identify failure patterns before iterating (e.g., ambiguous instructions, missing examples, edge case gaps)
+4. **Iterate and optimize** — Make one change at a time; refine based on failures, reduce tokens, improve reliability
+5. **Document and deploy** — Version prompts, document behavior, monitor production
 
-## Workflow
+## Reference Guide
 
-### Step 1: Analyze Intent
+Load detailed guidance based on context:
 
-**Objective:** Understand what the user truly wants to accomplish.
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Prompt Patterns | `references/prompt-patterns.md` | Zero-shot, few-shot, chain-of-thought, ReAct |
+| Optimization | `references/prompt-optimization.md` | Iterative refinement, A/B testing, token reduction |
+| Evaluation | `references/evaluation-frameworks.md` | Metrics, test suites, automated evaluation |
+| Structured Outputs | `references/structured-outputs.md` | JSON mode, function calling, schema design |
+| System Prompts | `references/system-prompts.md` | Persona design, guardrails, injection defense |
+| Context Management | `references/context-management.md` | Attention budget, degradation patterns, context optimization |
 
-**Actions:**
-1. Read the raw prompt provided by the user
-2. Detect task characteristics:
-   - **Type:** coding, writing, analysis, design, learning, planning, decision-making, creative, etc.
-   - **Complexity:** simple (one-step), moderate (multi-step), complex (requires reasoning/design)
-   - **Clarity:** clear intention vs. ambiguous/vague
-   - **Domain:** technical, business, creative, academic, personal, etc.
-3. Identify implicit requirements:
-   - Does user need examples?
-   - Is output format specified?
-   - Are there constraints (time, resources, scope)?
-   - Is this exploratory or execution-focused?
+## Prompt Examples
 
-**Detection Patterns:**
-- **Simple tasks:** Short prompts (<50 chars), single verb, no context
-- **Complex tasks:** Long prompts (>200 chars), multiple requirements, conditional logic
-- **Ambiguous tasks:** Generic verbs ("help", "improve"), missing object/context
-- **Structured tasks:** Mentions steps, phases, deliverables, stakeholders
+### Zero-shot vs. Few-shot
 
-
-### Step 2: Ask Clarifying Questions (Conditional)
-
-**Objective:** Gather missing information only when it is critical to framework selection or prompt quality.
-
-**Trigger Conditions** — ask only if:
-- Task type is completely ambiguous (cannot determine coding vs. writing vs. analysis)
-- Target audience is unknown and materially affects the output
-- Scope is undefined and choosing wrong scope would invalidate the prompt
-- Requested output format conflicts or is missing and cannot be inferred
-
-**Question Limits:**
-- Maximum 3 questions per invocation
-- Combine related questions into one when possible
-- If enough context exists, skip this step entirely (most cases)
-
-**Example Clarifying Exchange:**
-
+**Zero-shot (baseline):**
 ```
-User: "help me with AI"
+Classify the sentiment of the following review as Positive, Negative, or Neutral.
 
-Step 2 (triggered — task type ambiguous):
-"To craft the best prompt, I need one quick clarification:
-1. What do you want to do with AI — build something, learn about it, or use an AI tool for a task?"
+Review: {{review}}
+Sentiment:
 ```
 
-**Critical Rule:** When in doubt, skip clarification and generate the best prompt with available context. Over-asking breaks the "magic mode" experience.
+**Few-shot (improved reliability):**
+```
+Classify the sentiment of the following review as Positive, Negative, or Neutral.
 
+Review: "The battery life is incredible, lasts all day."
+Sentiment: Positive
 
-### Step 3: Select Framework(s)
+Review: "Stopped working after two weeks. Very disappointed."
+Sentiment: Negative
 
-**Objective:** Map task characteristics to optimal prompting framework(s).
+Review: "It arrived on time and matches the description."
+Sentiment: Neutral
 
-**Framework Mapping Logic:**
-
-| Task Type | Recommended Framework(s) | Rationale |
-|-----------|-------------------------|-----------|
-| **Role-based tasks** (act as expert, consultant) | **RTF** (Role-Task-Format) | Clear role definition + task + output format |
-| **Step-by-step reasoning** (debugging, proof, logic) | **Chain of Thought** | Encourages explicit reasoning steps |
-| **Structured projects** (multi-phase, deliverables) | **RISEN** (Role, Instructions, Steps, End goal, Narrowing) | Comprehensive structure for complex work |
-| **Complex design/analysis** (systems, architecture) | **RODES** (Role, Objective, Details, Examples, Sense check) | Balances detail with validation |
-| **Summarization** (compress, synthesize) | **Chain of Density** | Iterative refinement to essential info |
-| **Communication** (reports, presentations, storytelling) | **RACE** (Role, Audience, Context, Expectation) | Audience-aware messaging |
-| **Investigation/analysis** (research, diagnosis) | **RISE** (Research, Investigate, Synthesize, Evaluate) | Systematic analytical approach |
-| **Contextual situations** (problem-solving with background) | **STAR** (Situation, Task, Action, Result) | Context-rich problem framing |
-| **Documentation** (medical, technical, records) | **SOAP** (Subjective, Objective, Assessment, Plan) | Structured information capture |
-| **Goal-setting** (OKRs, objectives, targets) | **CLEAR** (Collaborative, Limited, Emotional, Appreciable, Refinable) | Goal clarity and actionability |
-| **Coaching/development** (mentoring, growth) | **GROW** (Goal, Reality, Options, Will) | Developmental conversation structure |
-
-**Blending Strategy:**
-- **Combine 2-3 frameworks** when task spans multiple types
-- Example: Complex technical project → **RODES + Chain of Thought** (structure + reasoning)
-- Example: Leadership decision → **CLEAR + GROW** (goal clarity + development)
-
-**Selection Criteria:**
-- Primary framework = best match to core task type
-- Secondary framework(s) = address additional complexity dimensions
-- Avoid over-engineering: simple tasks get simple frameworks
-
-**Critical Rule:** This selection happens **silently** - do not explain framework choice to user.
-
-Role: You are a senior software architect. [RTF - Role]
-
-Objective: Design a microservices architecture for [system]. [RODES - Objective]
-
-Approach this step-by-step: [Chain of Thought]
-1. Analyze current monolithic constraints
-2. Identify service boundaries
-3. Design inter-service communication
-4. Plan data consistency strategy
-
-Details: [RODES - Details]
-- Expected traffic: [X]
-- Data volume: [Y]
-- Team size: [Z]
-
-Output Format: [RTF - Format]
-Provide architecture diagram description, service definitions, and migration roadmap.
-
-Sense Check: [RODES - Sense check]
-Validate that services are loosely coupled, independently deployable, and aligned with business domains.
+Review: {{review}}
+Sentiment:
 ```
 
-**4.5. Language Adaptation**
-- If original prompt is in Portuguese, generate prompt in Portuguese
-- If original prompt is in English, generate prompt in English
-- If mixed, default to English (more universal for AI models)
+### Before/After Optimization
 
-**4.6. Quality Checks**
-Before finalizing, verify:
-- [ ] Prompt is self-contained (no external context needed)
-- [ ] Task is specific and measurable
-- [ ] Output format is clear
-- [ ] No ambiguous language
-- [ ] Appropriate level of detail for task complexity
-
-
-## Critical Rules
-
-### **NEVER:**
-
-- ❌ Assume information that wasn't provided - ALWAYS ask if critical details are missing
-- ❌ Explain which framework was selected or why (magic mode - keep it invisible)
-- ❌ Generate generic, one-size-fits-all prompts - always customize to context
-- ❌ Use technical jargon in the final prompt (unless user's domain is technical)
-- ❌ Ask more than 3 clarifying questions (avoid user fatigue)
-- ❌ Include meta-commentary in the output ("This prompt uses...", "Note that...")
-- ❌ Present output without code block formatting
-- ❌ Mix languages inconsistently (if user writes in PT, respond in PT)
-
-### **ALWAYS:**
-
-- ✅ Analyze intent before generating (Step 1 is mandatory)
-- ✅ Ask clarifying questions if critical information is ambiguous (Step 2 conditional)
-- ✅ Select framework(s) based on task type and complexity (Step 3 mapping)
-- ✅ Blend multiple frameworks when it improves prompt quality
-- ✅ Adapt prompt length to original input complexity (simple → short, complex → detailed)
-- ✅ Include output format specification in generated prompts
-- ✅ Present final prompt in clean Markdown code block
-- ✅ Make prompts self-contained (no dependency on external context)
-- ✅ Use examples in complex prompts to illustrate expected output
-- ✅ Validate prompt completeness before presenting (quality checks in Step 4.6)
-
-
-### **Example 2: Complex Clear Prompt → RODES + Chain of Thought (No Clarification)**
-
-**User Input:**
+**Before (vague, inconsistent outputs):**
 ```
-copilot> create prompt for: I need to build a product recommendation system considering purchase history, user preferences, and market trends
+Summarize this document.
+
+{{document}}
 ```
 
-**Skill Internal Process:**
-1. **Analyze:** Clear intent, complex task (ML system design), technical domain
-2. **Clarify:** Skip (sufficient information)
-3. **Select:** RODES (complex design) + Chain of Thought (reasoning needed)
-
-**Skill Output:**
-
-````markdown
+**After (structured, token-efficient):**
 ```
-Role: You are a senior machine learning engineer specializing in recommendation systems.
+Summarize the document below in exactly 3 bullet points. Each bullet must be one sentence and start with an action verb. Do not include opinions or information not present in the document.
 
-Objective: Design a product recommendation system that combines user purchase history, preferences, and market trends.
+Document:
+{{document}}
 
-Details:
-- Input data sources: user transaction logs, preference surveys, market trend APIs
-- Algorithm considerations: collaborative filtering, content-based filtering, hybrid approaches
-- Performance metrics: precision, recall, diversity, novelty
-- Scalability: system must handle 100k+ users
-- Real-time constraints: recommendations updated within 500ms
-
-Approach step-by-step:
-1. Analyze the three data sources and their relationships
-2. Propose 2-3 algorithm approaches with trade-offs analysis
-3. Design data pipeline architecture (ingestion, processing, serving)
-4. Define evaluation metrics and A/B testing strategy
-5. Outline implementation roadmap with phases
-
-Examples:
-- Show pseudocode for core recommendation logic
-- Illustrate data flow diagram
-- Provide sample API response structure
-
-Sense Check: Validate that the proposed solution balances personalization with discovery, scales to production load, and incorporates real-time market trends effectively.
-
-Output format: Technical design document with architecture diagrams, algorithm justification, and implementation roadmap.
-```
-````
-
-
-### **Example 4: Code Debugging → Chain of Thought**
-
-**User Input:**
-```
-copilot> optimize prompt: my Python code isn't working, needs debugging
+Summary:
 ```
 
-**Skill Internal Process:**
-1. **Analyze:** Debugging task, needs step-by-step reasoning
-2. **Clarify:** Skip (user will provide code context later)
-3. **Select:** Chain of Thought
+## Constraints
 
-**Skill Output:**
+### MUST DO
+- Test prompts with diverse, realistic inputs including edge cases
+- Measure performance with quantitative metrics (accuracy, consistency)
+- Version prompts and track changes systematically
+- Document expected behavior and known limitations
+- Use few-shot examples that match target distribution
+- Validate structured outputs against schemas
+- Consider token costs and latency in design
+- Test across model versions before production deployment
 
-````markdown
-```
-You are an expert Python debugger.
+### MUST NOT DO
+- Deploy prompts without systematic evaluation on test cases
+- Use few-shot examples that contradict instructions
+- Ignore model-specific capabilities and limitations
+- Skip edge case testing (empty inputs, unusual formats)
+- Make multiple changes simultaneously when debugging
+- Hardcode sensitive data in prompts or examples
+- Assume prompts transfer perfectly between models
+- Neglect monitoring for prompt degradation in production
 
-Task: Debug the Python code provided by the user by analyzing it step-by-step.
+## Output Templates
 
-Debugging approach:
-1. Read and understand the code's intended purpose
-2. Identify the error or unexpected behavior
-3. Trace variable states at each execution step
-4. Locate the root cause of the issue
-5. Propose fix with explanation
-6. Suggest preventive measures to avoid similar bugs
+When delivering prompt work, provide:
+1. Final prompt with clear sections (role, task, constraints, format)
+2. Test cases and evaluation results
+3. Usage instructions (temperature, max tokens, model version)
+4. Performance metrics and comparison with baselines
+5. Known limitations and edge cases
 
-For each step, show your reasoning:
-- What you're checking
-- What you found
-- Why it matters
+## Coverage Note
 
-Output format:
-- **Issue identified:** [Describe the bug]
-- **Root cause:** [Why it's happening]
-- **Fix:** [Corrected code with comments]
-- **Prevention:** [Best practices to avoid this in the future]
+Reference files cover major prompting techniques (zero-shot, few-shot, CoT, ReAct, tree-of-thoughts), structured output patterns (JSON mode, function calling), context management (attention budgets, degradation mitigation, optimization), and model-specific guidance for GPT-4, Claude, and Gemini families. Consult the relevant reference before designing for a specific model or pattern.
 
-Include a working example to verify the fix.
-```
-````
+Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
 
-
-## Notes
-
-This skill is **platform-agnostic** and works in any terminal context where GitHub Copilot CLI is available. It does not depend on:
-- Obsidian vault structure
-- Specific project configurations
-- External files or templates
-
-The skill is entirely self-contained, operating purely on user input and framework knowledge.
-
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+[Documentation](https://jeffallan.github.io/claude-skills/skills/data-ml/prompt-engineer/)

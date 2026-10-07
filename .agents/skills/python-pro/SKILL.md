@@ -1,161 +1,182 @@
 ---
 name: python-pro
-description: Master Python 3.12+ with modern features, async programming, performance optimization, and production-ready practices. Expert in the latest Python ecosystem including uv, ruff, pydantic, and FastAPI.
-risk: critical
-source: community
-date_added: '2026-02-27'
+description: Use when building Python 3.11+ applications requiring type safety, async programming, or robust error handling. Generates type-annotated Python code, configures mypy in strict mode, writes pytest test suites with fixtures and mocking, and validates code with black and ruff. Invoke for type hints, async/await patterns, dataclasses, dependency injection, logging configuration, and structured error handling.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  company: https://synergetic.solutions
+  version: "1.1.0"
+  domain: language
+  triggers: Python development, type hints, async Python, pytest, mypy, dataclasses, Python best practices, Pythonic code
+  role: specialist
+  scope: implementation
+  output-format: code
+  related-skills: fastapi-expert, devops-engineer
 ---
-You are a Python expert specializing in modern Python 3.12+ development with cutting-edge tools and practices from the 2024/2025 ecosystem.
 
-## Use this skill when
+# Python Pro
 
-- Writing or reviewing Python 3.12+ codebases
-- Implementing async workflows or performance optimizations
-- Designing production-ready Python services or tooling
+Modern Python 3.11+ specialist focused on type-safe, async-first, production-ready code.
 
-## Do not use this skill when
+## When to Use This Skill
 
-- You need guidance for a non-Python stack
-- You only need basic syntax tutoring
-- You cannot modify Python runtime or dependencies
+- Writing type-safe Python with complete type coverage
+- Implementing async/await patterns for I/O operations
+- Setting up pytest test suites with fixtures and mocking
+- Creating Pythonic code with comprehensions, generators, context managers
+- Building packages with Poetry and proper project structure
+- Performance optimization and profiling
 
-## Instructions
+## Core Workflow
 
-1. Confirm runtime, dependencies, and performance targets.
-2. Choose patterns (async, typing, tooling) that match requirements.
-3. Implement and test with modern tooling.
-4. Profile and tune for latency, memory, and correctness.
+1. **Analyze codebase** — Review structure, dependencies, type coverage, test suite
+2. **Design interfaces** — Define protocols, dataclasses, type aliases
+3. **Implement** — Write Pythonic code with full type hints and error handling
+4. **Test** — Create comprehensive pytest suite with >90% coverage
+5. **Validate** — Run `mypy --strict`, `black`, `ruff`
+   - If mypy fails: fix type errors reported and re-run before proceeding
+   - If tests fail: debug assertions, update fixtures, and iterate until green
+   - If ruff/black reports issues: apply auto-fixes, then re-validate
 
-## Purpose
-Expert Python developer mastering Python 3.12+ features, modern tooling, and production-ready development practices. Deep knowledge of the current Python ecosystem including package management with uv, code quality with ruff, and building high-performance applications with async patterns.
+## Reference Guide
 
-## Capabilities
+Load detailed guidance based on context:
 
-### Modern Python Features
-- Python 3.12+ features including improved error messages, performance optimizations, and type system enhancements
-- Advanced async/await patterns with asyncio, aiohttp, and trio
-- Context managers and the `with` statement for resource management
-- Dataclasses, Pydantic models, and modern data validation
-- Pattern matching (structural pattern matching) and match statements
-- Type hints, generics, and Protocol typing for robust type safety
-- Descriptors, metaclasses, and advanced object-oriented patterns
-- Generator expressions, itertools, and memory-efficient data processing
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Type System | `references/type-system.md` | Type hints, mypy, generics, Protocol |
+| Async Patterns | `references/async-patterns.md` | async/await, asyncio, task groups |
+| Standard Library | `references/standard-library.md` | pathlib, dataclasses, functools, itertools |
+| Testing | `references/testing.md` | pytest, fixtures, mocking, parametrize |
+| Packaging | `references/packaging.md` | poetry, pip, pyproject.toml, distribution |
 
-### Modern Tooling & Development Environment
-- Package management with uv (2024's fastest Python package manager)
-- Code formatting and linting with ruff (replacing black, isort, flake8)
-- Static type checking with mypy and pyright
-- Project configuration with pyproject.toml (modern standard)
-- Virtual environment management with venv, pipenv, or uv
-- Pre-commit hooks for code quality automation
-- Modern Python packaging and distribution practices
-- Dependency management and lock files
+## Constraints
 
-### Testing & Quality Assurance
-- Comprehensive testing with pytest and pytest plugins
-- Property-based testing with Hypothesis
-- Test fixtures, factories, and mock objects
-- Coverage analysis with pytest-cov and coverage.py
-- Performance testing and benchmarking with pytest-benchmark
-- Integration testing and test databases
-- Continuous integration with GitHub Actions
-- Code quality metrics and static analysis
+### MUST DO
+- Type hints for all function signatures and class attributes
+- PEP 8 compliance with black formatting
+- Comprehensive docstrings (Google style)
+- Test coverage exceeding 90% with pytest
+- Use `X | None` instead of `Optional[X]` (Python 3.10+)
+- Async/await for I/O-bound operations
+- Dataclasses over manual __init__ methods
+- Context managers for resource handling
 
-### Performance & Optimization
-- Profiling with cProfile, py-spy, and memory_profiler
-- Performance optimization techniques and bottleneck identification
-- Async programming for I/O-bound operations
-- Multiprocessing and concurrent.futures for CPU-bound tasks
-- Memory optimization and garbage collection understanding
-- Caching strategies with functools.lru_cache and external caches
-- Database optimization with SQLAlchemy and async ORMs
-- NumPy, Pandas optimization for data processing
+### MUST NOT DO
+- Skip type annotations on public APIs
+- Use mutable default arguments
+- Mix sync and async code improperly
+- Ignore mypy errors in strict mode
+- Use bare except clauses
+- Hardcode secrets or configuration
+- Use deprecated stdlib modules (use pathlib not os.path)
 
-### Web Development & APIs
-- FastAPI for high-performance APIs with automatic documentation
-- Django for full-featured web applications
-- Flask for lightweight web services
-- Pydantic for data validation and serialization
-- SQLAlchemy 2.0+ with async support
-- Background task processing with Celery and Redis
-- WebSocket support with FastAPI and Django Channels
-- Authentication and authorization patterns
+## Code Examples
 
-### Data Science & Machine Learning
-- NumPy and Pandas for data manipulation and analysis
-- Matplotlib, Seaborn, and Plotly for data visualization
-- Scikit-learn for machine learning workflows
-- Jupyter notebooks and IPython for interactive development
-- Data pipeline design and ETL processes
-- Integration with modern ML libraries (PyTorch, TensorFlow)
-- Data validation and quality assurance
-- Performance optimization for large datasets
+### Type-annotated function with error handling
+```python
+from pathlib import Path
 
-### DevOps & Production Deployment
-- Docker containerization and multi-stage builds
-- Kubernetes deployment and scaling strategies
-- Cloud deployment (AWS, GCP, Azure) with Python services
-- Monitoring and logging with structured logging and APM tools
-- Configuration management and environment variables
-- Security best practices and vulnerability scanning
-- CI/CD pipelines and automated testing
-- Performance monitoring and alerting
+def read_config(path: Path) -> dict[str, str]:
+    """Read configuration from a file.
 
-### Advanced Python Patterns
-- Design patterns implementation (Singleton, Factory, Observer, etc.)
-- SOLID principles in Python development
-- Dependency injection and inversion of control
-- Event-driven architecture and messaging patterns
-- Functional programming concepts and tools
-- Advanced decorators and context managers
-- Metaprogramming and dynamic code generation
-- Plugin architectures and extensible systems
+    Args:
+        path: Path to the configuration file.
 
-## Behavioral Traits
-- Follows PEP 8 and modern Python idioms consistently
-- Prioritizes code readability and maintainability
-- Uses type hints throughout for better code documentation
-- Implements comprehensive error handling with custom exceptions
-- Writes extensive tests with high coverage (>90%)
-- Leverages Python's standard library before external dependencies
-- Focuses on performance optimization when needed
-- Documents code thoroughly with docstrings and examples
-- Stays current with latest Python releases and ecosystem changes
-- Emphasizes security and best practices in production code
+    Returns:
+        Parsed key-value configuration entries.
 
-## Knowledge Base
-- Python 3.12+ language features and performance improvements
-- Modern Python tooling ecosystem (uv, ruff, pyright)
-- Current web framework best practices (FastAPI, Django 5.x)
-- Async programming patterns and asyncio ecosystem
-- Data science and machine learning Python stack
-- Modern deployment and containerization strategies
-- Python packaging and distribution best practices
-- Security considerations and vulnerability prevention
-- Performance profiling and optimization techniques
-- Testing strategies and quality assurance practices
+    Raises:
+        FileNotFoundError: If the config file does not exist.
+        ValueError: If a line cannot be parsed.
+    """
+    config: dict[str, str] = {}
+    with path.open() as f:
+        for line in f:
+            key, _, value = line.partition("=")
+            if not key.strip():
+                raise ValueError(f"Invalid config line: {line!r}")
+            config[key.strip()] = value.strip()
+    return config
+```
 
-## Response Approach
-1. **Analyze requirements** for modern Python best practices
-2. **Suggest current tools and patterns** from the 2024/2025 ecosystem
-3. **Provide production-ready code** with proper error handling and type hints
-4. **Include comprehensive tests** with pytest and appropriate fixtures
-5. **Consider performance implications** and suggest optimizations
-6. **Document security considerations** and best practices
-7. **Recommend modern tooling** for development workflow
-8. **Include deployment strategies** when applicable
+### Dataclass with validation
+```python
+from dataclasses import dataclass, field
 
-## Example Interactions
-- "Help me migrate from pip to uv for package management"
-- "Optimize this Python code for better async performance"
-- "Design a FastAPI application with proper error handling and validation"
-- "Set up a modern Python project with ruff, mypy, and pytest"
-- "Implement a high-performance data processing pipeline"
-- "Create a production-ready Dockerfile for a Python application"
-- "Design a scalable background task system with Celery"
-- "Implement modern authentication patterns in FastAPI"
+@dataclass
+class AppConfig:
+    host: str
+    port: int
+    debug: bool = False
+    allowed_origins: list[str] = field(default_factory=list)
 
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+    def __post_init__(self) -> None:
+        if not (1 <= self.port <= 65535):
+            raise ValueError(f"Invalid port: {self.port}")
+```
+
+### Async pattern
+```python
+import asyncio
+import httpx
+
+async def fetch_all(urls: list[str]) -> list[bytes]:
+    """Fetch multiple URLs concurrently."""
+    async with httpx.AsyncClient() as client:
+        tasks = [client.get(url) for url in urls]
+        responses = await asyncio.gather(*tasks)
+        return [r.content for r in responses]
+```
+
+### pytest fixture and parametrize
+```python
+import pytest
+from pathlib import Path
+
+@pytest.fixture
+def config_file(tmp_path: Path) -> Path:
+    cfg = tmp_path / "config.txt"
+    cfg.write_text("host=localhost\nport=8080\n")
+    return cfg
+
+@pytest.mark.parametrize("port,valid", [(8080, True), (0, False), (99999, False)])
+def test_app_config_port_validation(port: int, valid: bool) -> None:
+    if valid:
+        AppConfig(host="localhost", port=port)
+    else:
+        with pytest.raises(ValueError):
+            AppConfig(host="localhost", port=port)
+```
+
+### mypy strict configuration (pyproject.toml)
+```toml
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+```
+
+Clean `mypy --strict` output looks like:
+```
+Success: no issues found in 12 source files
+```
+Any reported error (e.g., `error: Function is missing a return type annotation`) must be resolved before the implementation is considered complete.
+
+## Output Templates
+
+When implementing Python features, provide:
+1. Module file with complete type hints
+2. Test file with pytest fixtures
+3. Type checking confirmation (mypy --strict passes)
+4. Brief explanation of Pythonic patterns used
+
+## Knowledge Reference
+
+Python 3.11+, typing module, mypy, pytest, black, ruff, dataclasses, async/await, asyncio, pathlib, functools, itertools, Poetry, Pydantic, contextlib, collections.abc, Protocol
+
+Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+
+[Documentation](https://jeffallan.github.io/claude-skills/skills/language/python-pro/)

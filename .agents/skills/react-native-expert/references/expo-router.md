@@ -1,16 +1,14 @@
 # Expo Router
 
-Patterns for Expo Router 4+ (SDK 53+) with file-based routing, native navigators, and typed routes.
-
 ## Project Structure
 
 ```
 app/
-├── _layout.tsx           # Root layout (Stack)
+├── _layout.tsx           # Root layout
 ├── index.tsx             # Home (/)
 ├── +not-found.tsx        # 404 page
 ├── (tabs)/               # Tab group
-│   ├── _layout.tsx       # Tab bar config (NativeTabs)
+│   ├── _layout.tsx       # Tab bar config
 │   ├── index.tsx         # First tab
 │   └── profile.tsx       # Profile tab
 ├── (auth)/               # Auth group (no tabs)
@@ -18,7 +16,7 @@ app/
 │   ├── login.tsx
 │   └── register.tsx
 ├── settings/
-│   ├── _layout.tsx       # Nested stack
+│   ├── _layout.tsx       # Stack layout
 │   ├── index.tsx         # Settings main
 │   └── notifications.tsx
 └── details/[id].tsx      # Dynamic route
@@ -26,95 +24,84 @@ app/
 
 ## Root Layout
 
-```tsx
+```typescript
 // app/_layout.tsx
-import { Stack } from 'expo-router'
-import { ThemeProvider, DarkTheme, DefaultTheme } from '@react-navigation/native'
-import { useColorScheme } from 'react-native'
+import { Stack } from 'expo-router';
+import { ThemeProvider } from '@react-navigation/native';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme()
-
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(auth)" />
-        <Stack.Screen name="details/[id]" options={{ presentation: 'modal' }} />
+        <Stack.Screen
+          name="details/[id]"
+          options={{ presentation: 'modal' }}
+        />
       </Stack>
     </ThemeProvider>
-  )
+  );
 }
 ```
 
-## Native Tabs (SDK 53+)
+## Tab Layout
 
-```tsx
+```typescript
 // app/(tabs)/_layout.tsx
-import { NativeTabs, Label } from 'expo-router/unstable-native-tabs'
+import { Tabs } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   return (
-    <NativeTabs minimizeBehavior="onScrollDown">
-      <NativeTabs.Trigger name="index">
-        <Label>Home</Label>
-        <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
-      </NativeTabs.Trigger>
-      <NativeTabs.Trigger name="profile">
-        <Label>Profile</Label>
-        <NativeTabs.Trigger.Icon sf="person.fill" md="person" />
-      </NativeTabs.Trigger>
-    </NativeTabs>
-  )
-}
-```
-
-On iOS, native tabs automatically enable `contentInsetAdjustmentBehavior` on the first ScrollView at the root of each tab screen.
-
-## JS Tabs (Fallback)
-
-If you need more customization than NativeTabs provides:
-
-```tsx
-// app/(tabs)/_layout.tsx
-import { Tabs } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
-
-export default function TabLayout() {
-  return (
-    <Tabs screenOptions={{ tabBarActiveTintColor: '#007AFF' }}>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: '#007AFF',
+        headerShown: true,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, size }) => <Ionicons name="home" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          ),
         }}
       />
     </Tabs>
-  )
+  );
 }
 ```
 
 ## Navigation
 
-```tsx
-import { router, useLocalSearchParams, Link } from 'expo-router'
+```typescript
+import { router, useLocalSearchParams, Link } from 'expo-router';
 
-// Programmatic
-router.push('/details/123')
-router.replace('/home')
-router.back()
-router.canGoBack()
-router.dismissAll()
+// Programmatic navigation
+router.push('/details/123');           // Push to stack
+router.replace('/home');               // Replace current
+router.back();                          // Go back
+router.canGoBack();                     // Check if can go back
 
 // With params
 router.push({
   pathname: '/details/[id]',
   params: { id: '123', title: 'Item' },
-})
+});
 
-// Link component (with prefetch for faster navigation)
-<Link href="/profile" prefetch asChild>
+// Link component
+<Link href="/profile" asChild>
   <Pressable>
     <Text>Go to Profile</Text>
   </Pressable>
@@ -122,49 +109,46 @@ router.push({
 
 // Reading params
 function DetailsScreen() {
-  const { id, title } = useLocalSearchParams<{ id: string; title?: string }>()
-  return <Text>Details for {id}</Text>
+  const { id, title } = useLocalSearchParams<{ id: string; title?: string }>();
+  return <Text>Details for {id}</Text>;
 }
 ```
 
 ## Protected Routes
 
-```tsx
+```typescript
 // app/(auth)/_layout.tsx
-import { Redirect, Stack } from 'expo-router'
-import { useAuth } from '@/hooks/useAuth'
+import { Redirect, Stack } from 'expo-router';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function AuthLayout() {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading } = useAuth();
 
-  if (isLoading) return <LoadingScreen />
-  if (user) return <Redirect href="/(tabs)" />
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
-  return <Stack screenOptions={{ headerShown: false }} />
+  if (user) {
+    return <Redirect href="/(tabs)" />;
+  }
+
+  return <Stack screenOptions={{ headerShown: false }} />;
 }
 
 // app/(tabs)/_layout.tsx
 export default function TabLayout() {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading } = useAuth();
 
-  if (isLoading) return <LoadingScreen />
-  if (!user) return <Redirect href="/(auth)/login" />
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
-  return <NativeTabs>...</NativeTabs>
+  if (!user) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
+  return <Tabs>...</Tabs>;
 }
-```
-
-## Native Form Sheets
-
-```tsx
-// app/_layout.tsx
-<Stack.Screen
-  name="details/[id]"
-  options={{
-    presentation: 'formSheet',
-    sheetAllowedDetents: 'fitToContents',
-  }}
-/>
 ```
 
 ## Deep Linking
@@ -174,62 +158,30 @@ export default function TabLayout() {
 {
   "expo": {
     "scheme": "myapp",
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "origin": "https://acme.com",
-          "asyncRoutes": {
-            "web": true,
-            "default": "development"
-          }
-        }
-      ]
-    ]
+    "web": {
+      "bundler": "metro"
+    }
   }
 }
 ```
 
-Dynamic routes handle deep links automatically: `myapp://details/123` → `app/details/[id].tsx`
-
-## Async Routes (Bundle Splitting)
-
-Enable async routes for production bundle splitting:
-
-```json
-// app.json
-{
-  "expo": {
-    "plugins": [
-      [
-        "expo-router",
-        {
-          "asyncRoutes": {
-            "web": true,
-            "default": "development"
-          }
-        }
-      ]
-    ]
-  }
-}
+```typescript
+// Handle: myapp://details/123
+// app/details/[id].tsx handles automatically
 ```
 
 ## Quick Reference
 
-| Component      | Purpose                        |
-| -------------- | ------------------------------ |
-| `<Stack>`      | Native stack navigator         |
-| `<Tabs>`       | JS tab navigator               |
-| `<NativeTabs>` | Native tab navigator (SDK 53+) |
-| `<Drawer>`     | Drawer navigator               |
-| `<Link>`       | Declarative navigation         |
-| `<Redirect>`   | Route redirect                 |
+| Component | Purpose |
+|-----------|---------|
+| `<Stack>` | Stack navigator |
+| `<Tabs>` | Tab navigator |
+| `<Drawer>` | Drawer navigator |
+| `<Link>` | Declarative navigation |
 
-| router method  | Behavior             |
-| -------------- | -------------------- |
-| `push()`       | Add to stack         |
-| `replace()`    | Replace current      |
-| `back()`       | Go back              |
-| `dismissAll()` | Dismiss all modals   |
-| `canGoBack()`  | Check if can go back |
+| router method | Behavior |
+|---------------|----------|
+| `push()` | Add to stack |
+| `replace()` | Replace current |
+| `back()` | Go back |
+| `dismissAll()` | Dismiss modals |

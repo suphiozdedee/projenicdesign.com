@@ -1,9 +1,8 @@
 ---
 name: vercel-optimize
-description: "Audit deployed Vercel apps for cost and performance issues using metrics, project config, code scans, and version-aware recommendations."
-risk: safe
-source: "https://github.com/vercel-labs/agent-skills"
-date_added: "2026-06-02"
+description: "Use for Vercel cost and performance optimization on deployed projects, especially Next.js, SvelteKit, Nuxt, and limited Astro apps. Collect Vercel metrics, usage, project config, and code scan results first; investigate only metric-backed candidates; produce ranked recommendations grounded in verified files and version-aware Vercel/framework docs. Trigger for Vercel bill reduction, slow or expensive routes, caching opportunities, Function Invocations, Build Minutes, Fast Data Transfer, Core Web Vitals, Bot Management, Fluid compute, or cost breakdown requests."
+metadata:
+  version: "1.2.0"
 ---
 
 # Vercel Optimize
@@ -17,9 +16,6 @@ Core doctrine: read [references/doctrine.md](references/doctrine.md) if any rule
 - Candidate-bound scope. Read only files named by a candidate or a route-local import chain.
 - Version-aware citations. Use only `references/docs-library.json`; invalid or version-mismatched citations are stripped.
 - Customer copy. Read [references/voice.md](references/voice.md) before writing report text or chat output.
-
-## When to Use
-- Use this skill when the task matches this description: Audit deployed Vercel apps for cost and performance issues using metrics, project config, code scans, and version-aware recommendations.
 
 ## Prerequisites
 
@@ -324,8 +320,3 @@ Use these messages without adding sales copy or process detail.
 **Most route-to-file mappings failed:**
 
 > The route inventory matched fewer than half of the routes we saw in observability. This is common in monorepos with custom routing. I've surfaced what I can match; the rest appear in the "Not investigated in this run" section.
-
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.

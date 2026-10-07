@@ -1,13 +1,12 @@
 // Pure async claim verifier. No LLM, no network — fs + grep only.
 
-import { readFile, access, readdir, realpath } from 'node:fs/promises';
+import { readFile, access, readdir } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
-import { dirname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
+import { dirname, isAbsolute, join, normalize } from 'node:path';
 import { promisify } from 'node:util';
 import { isKnownUrl, sanitizeCitations } from './citations.mjs';
 import { findRecContradictions } from './project-facts.mjs';
 import { canonicalizeRoute } from './route-normalize.mjs';
-import { escapeRegex } from './util.mjs';
 
 const execFileP = promisify(execFile);
 const cacheInvalidationFileCache = new Map();
@@ -1204,8 +1203,14 @@ function escapeRegExp(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Supports `/pattern/flags` literal-regex form OR plain escaped string. Caller flags merge with embedded flags via Set dedup.
 function compilePattern(pattern, flags) {
-  return new RegExp(escapeRegex(String(pattern ?? '')), flags);
+  const m = pattern.match(/^\/(.+)\/([gimsu]*)$/);
+  if (m) {
+    const mergedFlags = [...new Set(((m[2] || '') + (flags || '')).split(''))].join('');
+    return new RegExp(m[1], mergedFlags);
+  }
+  return new RegExp(pattern.replace(/[.+^${}()|[\]\\?*]/g, '\\$&'), flags);
 }
 
 async function readClaimFile(claim) {
@@ -1215,17 +1220,10 @@ async function readClaimFile(claim) {
 
 async function firstAccessiblePath({ repoRoot = '.', file, projectRootDirectory = null }) {
   let lastErr;
-  const resolvedRoot = resolve(repoRoot);
-  const canonicalRoot = await realpath(resolvedRoot).catch(() => resolvedRoot);
   for (const p of repoPaths(repoRoot, file, projectRootDirectory)) {
     try {
       await access(p);
-      const canonicalPath = await realpath(p);
-      if (!pathIsWithin(canonicalRoot, canonicalPath)) {
-        lastErr = new Error(`claim path escapes repoRoot: ${file}`);
-        continue;
-      }
-      return canonicalPath;
+      return p;
     } catch (err) {
       lastErr = err;
     }
@@ -1235,21 +1233,14 @@ async function firstAccessiblePath({ repoRoot = '.', file, projectRootDirectory 
 
 function repoPaths(repoRoot, file, projectRootDirectory = null) {
   if (!file) return [];
-  const rawFile = String(file);
-  if (isAbsolute(rawFile) || /^[A-Za-z]:[\\/]/.test(rawFile) || rawFile.includes('\0')) return [];
-  const root = resolve(repoRoot);
-  const out = [resolve(root, rawFile)];
+  if (isAbsolute(file)) return [file];
+  const out = [join(repoRoot, file)];
   const projectRoot = normalizeProjectRootDirectory(projectRootDirectory);
-  const normalizedFile = normalizeProjectRootDirectory(rawFile);
+  const normalizedFile = normalizeProjectRootDirectory(file);
   if (projectRoot && normalizedFile && !normalizedFile.startsWith(`${projectRoot}/`)) {
-    out.push(resolve(root, projectRoot, rawFile));
+    out.push(join(repoRoot, projectRoot, file));
   }
-  return Array.from(new Set(out.map((p) => normalize(p)).filter((p) => pathIsWithin(root, p))));
-}
-
-function pathIsWithin(root, candidate) {
-  const rel = relative(root, candidate);
-  return rel === '' || (rel !== '..' && !rel.startsWith(`..${sep}`) && !isAbsolute(rel));
+  return Array.from(new Set(out.map((p) => normalize(p))));
 }
 
 function normalizeProjectRootDirectory(value) {

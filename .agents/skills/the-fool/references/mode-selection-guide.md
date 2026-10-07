@@ -18,9 +18,6 @@ Analyze the user's language and context to identify which mode fits best.
 | "This will definitely work" | Pre-mortem Analysis | Overconfidence signals need for failure imagination |
 | "No one would ever..." | Red Team | Assumptions about adversary behavior |
 | "Studies show..." | Evidence Audit | Cited evidence needs quality assessment |
-| "I have a gut feeling..." | Evidence Audit | Intuition needs evidence grounding |
-| "We've always done it this way" | Socratic Questioning | Historical pattern assumed optimal |
-| "The vendor says..." | Evidence Audit | Interested party evidence needs scrutiny |
 
 ## Decision Type Mapping
 
@@ -33,11 +30,9 @@ Analyze the user's language and context to identify which mode fits best.
 | Data-driven conclusion | Evidence Audit | Socratic Questioning |
 | Process/workflow design | Pre-mortem Analysis | Socratic Questioning |
 | Hiring/team decision | Socratic Questioning | Dialectic Synthesis |
-| Vendor selection | Evidence Audit | Pre-mortem Analysis |
+| Vendor selection | Pre-mortem Analysis | Dialectic Synthesis |
 | Trade-off resolution | Dialectic Synthesis | Socratic Questioning |
 | Risk assessment | Red Team | Pre-mortem Analysis |
-| Investment/budget decision | Evidence Audit | Dialectic Synthesis |
-| Product direction | Socratic Questioning | Dialectic Synthesis |
 
 ## Domain Mapping
 
@@ -50,8 +45,6 @@ Analyze the user's language and context to identify which mode fits best.
 | Business | Dialectic Synthesis | Strategy benefits from strongest counter |
 | Architecture | Pre-mortem Analysis | Systems fail at integration points |
 | Legal/Compliance | Evidence Audit | Claims must withstand scrutiny |
-| AI/ML | Red Team | Adversarial robustness is critical |
-| People/Org | Socratic Questioning | Hidden assumptions about behavior |
 
 ## Multi-Mode Sequencing
 
@@ -65,23 +58,19 @@ Some situations benefit from running 2 modes in sequence.
 | Pre-mortem → Red Team | High-stakes system launch. Find internal failures, then external attacks. |
 | Evidence Audit → Socratic | Data-driven proposal. Audit the evidence, then question the interpretation. |
 | Dialectic → Pre-mortem | Strategic decision. Argue the counter, then stress-test the surviving position. |
-| Socratic → Evidence Audit | Proposal with many "obvious" claims. Surface assumptions, then grade the evidence. |
 
 ### When to Suggest Multi-Mode
 
 Recommend a second pass when:
-
 - The first mode reveals a category of risk the user hadn't considered
 - The thesis survives the first challenge largely intact (it may need harder testing)
 - The domain spans two mapping categories (e.g., a security architecture decision)
-- The user's confidence increased after the first pass — a different mode may reveal new angles
 
 ### When NOT to Suggest Multi-Mode
 
 - The user's question is narrow and specific
 - The first mode already surfaced actionable changes
 - The user signals they want to move on
-- The synthesis already reached HIGH confidence with clear next steps
 
 ## Auto-Recommendation Format
 
@@ -95,19 +84,13 @@ After that, a follow-up with **[Secondary Mode]** would [1-sentence benefit].
 ```
 
 Then confirm with `AskUserQuestion`:
-
 - Option 1: Recommended mode (with "(Recommended)" label)
 - Option 2: Secondary mode if applicable
 - Option 3: "Let me pick" — return to the full mode selection
 
 ## Edge Cases
 
-| Situation | Default Mode | Rationale |
-|-----------|-------------|-----------|
-| Vague context | Socratic Questioning | It surfaces what matters through questions |
-| Multiple concerns | Pre-mortem Analysis | It covers breadth naturally through failure narratives |
-| User is emotional/frustrated | Dialectic Synthesis | Steel manning validates their position before challenging |
-| Technical vs business split | Match the mode to which side the user emphasizes | Follow the energy, address the unspoken second |
-| User wants to challenge code/PR | Socratic Questioning | Read the code first, then probe assumptions behind design choices |
-| User presents a completed decision | Evidence Audit | Auditing evidence is less confrontational for past decisions |
-| Multi-stakeholder decision | Dialectic Synthesis | Different stakeholders embody the thesis and antithesis naturally |
+- **Vague context**: Default to Socratic Questioning — it surfaces what matters
+- **Multiple concerns**: Recommend Pre-mortem Analysis — it covers breadth naturally
+- **User is emotional/frustrated**: Default to Dialectic Synthesis — steel manning validates their position before challenging it
+- **Technical vs business split**: Match the mode to which side the user emphasizes

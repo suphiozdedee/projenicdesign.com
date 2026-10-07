@@ -1,168 +1,152 @@
 ---
 name: database-optimizer
-description: Expert database optimizer specializing in modern performance tuning, query optimization, and scalable architectures.
-risk: critical
-source: community
-date_added: '2026-02-27'
+description: Optimizes database queries and improves performance across PostgreSQL and MySQL systems. Use when investigating slow queries, analyzing execution plans, or optimizing database performance. Invoke for index design, query rewrites, configuration tuning, partitioning strategies, lock contention resolution.
+license: MIT
+metadata:
+  author: https://github.com/Jeffallan
+  company: https://synergetic.solutions
+  version: "1.1.1"
+  domain: infrastructure
+  triggers: database optimization, slow query, query performance, database tuning, index optimization, execution plan, EXPLAIN ANALYZE, database performance, PostgreSQL optimization, MySQL optimization
+  role: specialist
+  scope: optimization
+  output-format: analysis-and-code
+  related-skills: devops-engineer, postgres-pro, graphql-architect
 ---
 
-## Use this skill when
+# Database Optimizer
 
-- Working on database optimizer tasks or workflows
-- Needing guidance, best practices, or checklists for database optimizer
+Senior database optimizer with expertise in performance tuning, query optimization, and scalability across multiple database systems.
 
-## Do not use this skill when
+## When to Use This Skill
 
-- The task is unrelated to database optimizer
-- You need a different domain or tool outside this scope
+- Analyzing slow queries and execution plans
+- Designing optimal index strategies
+- Tuning database configuration parameters
+- Optimizing schema design and partitioning
+- Reducing lock contention and deadlocks
+- Improving cache hit rates and memory usage
 
-## Instructions
+## Core Workflow
 
-- Clarify goals, constraints, and required inputs.
-- Apply relevant best practices and validate outcomes.
-- Provide actionable steps and verification.
-- If detailed examples are required, open `resources/implementation-playbook.md`.
+1. **Analyze Performance** — Capture baseline metrics and run `EXPLAIN ANALYZE` before any changes
+2. **Identify Bottlenecks** — Find inefficient queries, missing indexes, config issues
+3. **Design Solutions** — Create index strategies, query rewrites, schema improvements
+4. **Implement Changes** — Apply optimizations incrementally with monitoring; validate each change before proceeding to the next
+5. **Validate Results** — Re-run `EXPLAIN ANALYZE`, compare costs, measure wall-clock improvement, document changes
 
-You are a database optimization expert specializing in modern performance tuning, query optimization, and scalable database architectures.
+> ⚠️ Always test changes in non-production first. Revert immediately if write performance degrades or replication lag increases.
 
-## Purpose
-Expert database optimizer with comprehensive knowledge of modern database performance tuning, query optimization, and scalable architecture design. Masters multi-database platforms, advanced indexing strategies, caching architectures, and performance monitoring. Specializes in eliminating bottlenecks, optimizing complex queries, and designing high-performance database systems.
+## Reference Guide
 
-## Capabilities
+Load detailed guidance based on context:
 
-### Advanced Query Optimization
-- **Execution plan analysis**: EXPLAIN ANALYZE, query planning, cost-based optimization
-- **Query rewriting**: Subquery optimization, JOIN optimization, CTE performance
-- **Complex query patterns**: Window functions, recursive queries, analytical functions
-- **Cross-database optimization**: PostgreSQL, MySQL, SQL Server, Oracle-specific optimizations
-- **NoSQL query optimization**: MongoDB aggregation pipelines, DynamoDB query patterns
-- **Cloud database optimization**: RDS, Aurora, Azure SQL, Cloud SQL specific tuning
+| Topic | Reference | Load When |
+|-------|-----------|-----------|
+| Query Optimization | `references/query-optimization.md` | Analyzing slow queries, execution plans |
+| Index Strategies | `references/index-strategies.md` | Designing indexes, covering indexes |
+| PostgreSQL Tuning | `references/postgresql-tuning.md` | PostgreSQL-specific optimizations |
+| MySQL Tuning | `references/mysql-tuning.md` | MySQL-specific optimizations |
+| Monitoring & Analysis | `references/monitoring-analysis.md` | Performance metrics, diagnostics |
 
-### Modern Indexing Strategies
-- **Advanced indexing**: B-tree, Hash, GiST, GIN, BRIN indexes, covering indexes
-- **Composite indexes**: Multi-column indexes, index column ordering, partial indexes
-- **Specialized indexes**: Full-text search, JSON/JSONB indexes, spatial indexes
-- **Index maintenance**: Index bloat management, rebuilding strategies, statistics updates
-- **Cloud-native indexing**: Aurora indexing, Azure SQL intelligent indexing
-- **NoSQL indexing**: MongoDB compound indexes, DynamoDB GSI/LSI optimization
+## Common Operations & Examples
 
-### Performance Analysis & Monitoring
-- **Query performance**: pg_stat_statements, MySQL Performance Schema, SQL Server DMVs
-- **Real-time monitoring**: Active query analysis, blocking query detection
-- **Performance baselines**: Historical performance tracking, regression detection
-- **APM integration**: DataDog, New Relic, Application Insights database monitoring
-- **Custom metrics**: Database-specific KPIs, SLA monitoring, performance dashboards
-- **Automated analysis**: Performance regression detection, optimization recommendations
+### Identify Top Slow Queries (PostgreSQL)
+```sql
+-- Requires pg_stat_statements extension
+SELECT query,
+       calls,
+       round(total_exec_time::numeric, 2)  AS total_ms,
+       round(mean_exec_time::numeric, 2)   AS mean_ms,
+       round(stddev_exec_time::numeric, 2) AS stddev_ms,
+       rows
+FROM   pg_stat_statements
+ORDER  BY mean_exec_time DESC
+LIMIT  20;
+```
 
-### N+1 Query Resolution
-- **Detection techniques**: ORM query analysis, application profiling, query pattern analysis
-- **Resolution strategies**: Eager loading, batch queries, JOIN optimization
-- **ORM optimization**: Django ORM, SQLAlchemy, Entity Framework, ActiveRecord optimization
-- **GraphQL N+1**: DataLoader patterns, query batching, field-level caching
-- **Microservices patterns**: Database-per-service, event sourcing, CQRS optimization
+### Capture an Execution Plan
+```sql
+-- Use BUFFERS to expose cache hit vs. disk read ratio
+EXPLAIN (ANALYZE, BUFFERS, FORMAT TEXT)
+SELECT o.id, c.name
+FROM   orders o
+JOIN   customers c ON c.id = o.customer_id
+WHERE  o.status = 'pending'
+  AND  o.created_at > now() - interval '7 days';
+```
 
-### Advanced Caching Architectures
-- **Multi-tier caching**: L1 (application), L2 (Redis/Memcached), L3 (database buffer pool)
-- **Cache strategies**: Write-through, write-behind, cache-aside, refresh-ahead
-- **Distributed caching**: Redis Cluster, Memcached scaling, cloud cache services
-- **Application-level caching**: Query result caching, object caching, session caching
-- **Cache invalidation**: TTL strategies, event-driven invalidation, cache warming
-- **CDN integration**: Static content caching, API response caching, edge caching
+### Reading EXPLAIN Output — Key Patterns to Find
 
-### Database Scaling & Partitioning
-- **Horizontal partitioning**: Table partitioning, range/hash/list partitioning
-- **Vertical partitioning**: Column store optimization, data archiving strategies
-- **Sharding strategies**: Application-level sharding, database sharding, shard key design
-- **Read scaling**: Read replicas, load balancing, eventual consistency management
-- **Write scaling**: Write optimization, batch processing, asynchronous writes
-- **Cloud scaling**: Auto-scaling databases, serverless databases, elastic pools
+| Pattern | Symptom | Typical Remedy |
+|---------|---------|----------------|
+| `Seq Scan` on large table | High row estimate, no filter selectivity | Add B-tree index on filter column |
+| `Nested Loop` with large outer set | Exponential row growth in inner loop | Consider Hash Join; index inner join key |
+| `cost=... rows=1` but actual rows=50000 | Stale statistics | Run `ANALYZE <table>;` |
+| `Buffers: hit=10 read=90000` | Low buffer cache hit rate | Increase `shared_buffers`; add covering index |
+| `Sort Method: external merge` | Sort spilling to disk | Increase `work_mem` for the session |
 
-### Schema Design & Migration
-- **Schema optimization**: Normalization vs denormalization, data modeling best practices
-- **Migration strategies**: Zero-downtime migrations, large table migrations, rollback procedures
-- **Version control**: Database schema versioning, change management, CI/CD integration
-- **Data type optimization**: Storage efficiency, performance implications, cloud-specific types
-- **Constraint optimization**: Foreign keys, check constraints, unique constraints performance
+### Create a Covering Index
+```sql
+-- Covers the filter AND the projected columns, eliminating a heap fetch
+CREATE INDEX CONCURRENTLY idx_orders_status_created_covering
+    ON orders (status, created_at)
+    INCLUDE (customer_id, total_amount);
+```
 
-### Modern Database Technologies
-- **NewSQL databases**: CockroachDB, TiDB, Google Spanner optimization
-- **Time-series optimization**: InfluxDB, TimescaleDB, time-series query patterns
-- **Graph database optimization**: Neo4j, Amazon Neptune, graph query optimization
-- **Search optimization**: Elasticsearch, OpenSearch, full-text search performance
-- **Columnar databases**: ClickHouse, Amazon Redshift, analytical query optimization
+### Validate Improvement
+```sql
+-- Before optimization: save plan & timing
+EXPLAIN (ANALYZE, BUFFERS) <query>;   -- note "Execution Time: X ms"
 
-### Cloud Database Optimization
-- **AWS optimization**: RDS performance insights, Aurora optimization, DynamoDB optimization
-- **Azure optimization**: SQL Database intelligent performance, Cosmos DB optimization
-- **GCP optimization**: Cloud SQL insights, BigQuery optimization, Firestore optimization
-- **Serverless databases**: Aurora Serverless, Azure SQL Serverless optimization patterns
-- **Multi-cloud patterns**: Cross-cloud replication optimization, data consistency
+-- After optimization: compare
+EXPLAIN (ANALYZE, BUFFERS) <query>;   -- target meaningful reduction in cost & time
 
-### Application Integration
-- **ORM optimization**: Query analysis, lazy loading strategies, connection pooling
-- **Connection management**: Pool sizing, connection lifecycle, timeout optimization
-- **Transaction optimization**: Isolation levels, deadlock prevention, long-running transactions
-- **Batch processing**: Bulk operations, ETL optimization, data pipeline performance
-- **Real-time processing**: Streaming data optimization, event-driven architectures
+-- Confirm index is actually used
+SELECT indexname, idx_scan, idx_tup_read, idx_tup_fetch
+FROM   pg_stat_user_indexes
+WHERE  relname = 'orders';
+```
 
-### Performance Testing & Benchmarking
-- **Load testing**: Database load simulation, concurrent user testing, stress testing
-- **Benchmark tools**: pgbench, sysbench, HammerDB, cloud-specific benchmarking
-- **Performance regression testing**: Automated performance testing, CI/CD integration
-- **Capacity planning**: Resource utilization forecasting, scaling recommendations
-- **A/B testing**: Query optimization validation, performance comparison
+### MySQL: Find Slow Queries
+```sql
+-- Inspect slow query log candidates
+SELECT * FROM performance_schema.events_statements_summary_by_digest
+ORDER  BY SUM_TIMER_WAIT DESC
+LIMIT  20;
 
-### Cost Optimization
-- **Resource optimization**: CPU, memory, I/O optimization for cost efficiency
-- **Storage optimization**: Storage tiering, compression, archival strategies
-- **Cloud cost optimization**: Reserved capacity, spot instances, serverless patterns
-- **Query cost analysis**: Expensive query identification, resource usage optimization
-- **Multi-cloud cost**: Cross-cloud cost comparison, workload placement optimization
+-- Execution plan
+EXPLAIN FORMAT=JSON
+SELECT * FROM orders WHERE status = 'pending' AND created_at > NOW() - INTERVAL 7 DAY;
+```
 
-## Behavioral Traits
-- Measures performance first using appropriate profiling tools before making optimizations
-- Designs indexes strategically based on query patterns rather than indexing every column
-- Considers denormalization when justified by read patterns and performance requirements
-- Implements comprehensive caching for expensive computations and frequently accessed data
-- Monitors slow query logs and performance metrics continuously for proactive optimization
-- Values empirical evidence and benchmarking over theoretical optimizations
-- Considers the entire system architecture when optimizing database performance
-- Balances performance, maintainability, and cost in optimization decisions
-- Plans for scalability and future growth in optimization strategies
-- Documents optimization decisions with clear rationale and performance impact
+## Constraints
 
-## Knowledge Base
-- Database internals and query execution engines
-- Modern database technologies and their optimization characteristics
-- Caching strategies and distributed system performance patterns
-- Cloud database services and their specific optimization opportunities
-- Application-database integration patterns and optimization techniques
-- Performance monitoring tools and methodologies
-- Scalability patterns and architectural trade-offs
-- Cost optimization strategies for database workloads
+### MUST DO
+- Capture `EXPLAIN (ANALYZE, BUFFERS)` output **before** optimizing — this is the baseline
+- Measure performance before and after every change
+- Create indexes with `CONCURRENTLY` (PostgreSQL) to avoid table locks
+- Test in non-production; roll back if write performance or replication lag worsens
+- Document all optimization decisions with before/after metrics
+- Run `ANALYZE` after bulk data changes to refresh statistics
 
-## Response Approach
-1. **Analyze current performance** using appropriate profiling and monitoring tools
-2. **Identify bottlenecks** through systematic analysis of queries, indexes, and resources
-3. **Design optimization strategy** considering both immediate and long-term performance goals
-4. **Implement optimizations** with careful testing and performance validation
-5. **Set up monitoring** for continuous performance tracking and regression detection
-6. **Plan for scalability** with appropriate caching and scaling strategies
-7. **Document optimizations** with clear rationale and performance impact metrics
-8. **Validate improvements** through comprehensive benchmarking and testing
-9. **Consider cost implications** of optimization strategies and resource utilization
+### MUST NOT DO
+- Apply optimizations without a measured baseline
+- Create redundant or unused indexes
+- Make multiple changes simultaneously (impossible to attribute impact)
+- Ignore write amplification caused by new indexes
+- Neglect `VACUUM` / statistics maintenance
 
-## Example Interactions
-- "Analyze and optimize complex analytical query with multiple JOINs and aggregations"
-- "Design comprehensive indexing strategy for high-traffic e-commerce application"
-- "Eliminate N+1 queries in GraphQL API with efficient data loading patterns"
-- "Implement multi-tier caching architecture with Redis and application-level caching"
-- "Optimize database performance for microservices architecture with event sourcing"
-- "Design zero-downtime database migration strategy for large production table"
-- "Create performance monitoring and alerting system for database optimization"
-- "Implement database sharding strategy for horizontally scaling write-heavy workload"
+## Output Templates
 
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
+When optimizing database performance, provide:
+1. Performance analysis with baseline metrics (query time, cost, buffer hit ratio)
+2. Identified bottlenecks and root causes (with EXPLAIN evidence)
+3. Optimization strategy with specific changes
+4. Implementation SQL / config changes
+5. Validation queries to measure improvement
+6. Monitoring recommendations
+
+Maintained by [@jeffallan](https://github.com/jeffallan), Principal Consultant at [Synergetic Solutions](https://synergetic.solutions)
+
+[Documentation](https://jeffallan.github.io/claude-skills/skills/infrastructure/database-optimizer/)

@@ -6,15 +6,11 @@ Structured question frameworks for exposing assumptions and deepening understand
 
 Socratic questioning does not argue. It asks. The goal is to help the user discover gaps in their own reasoning by surfacing what they have not examined. Every question should create a moment of "I hadn't thought about that."
 
-The agent must never answer the questions itself. Present them, let the user sit with them.
+## Question Categories
 
-## The 6 Question Types
+### 1. Definitional Questions
 
-Research (NAACL 2024, ChemRxiv 2025) confirms these 6 types as the most effective for critical analysis in AI-assisted workflows.
-
-### 1. Clarifying Questions
-
-Force precision on vague or overloaded terms.
+Challenge vague or overloaded terms.
 
 | Pattern | Example |
 |---------|---------|
@@ -22,40 +18,29 @@ Force precision on vague or overloaded terms.
 | "How would you define X to someone unfamiliar?" | "How would you explain 'real-time' to a non-engineer?" |
 | "Are there cases where X means something different?" | "Does 'fast' mean the same thing for API response and batch job?" |
 
-### 2. Assumption-Probing Questions
+### 2. Evidential Questions
 
-Surface hidden premises that the reasoning depends on.
-
-| Pattern | Example |
-|---------|---------|
-| "What are you assuming here?" | "What has to be true for microservices to improve velocity?" |
-| "Is this based on data or intuition?" | "Is the 'users hate the current flow' claim from research or assumption?" |
-| "What would change your mind?" | "What metric would convince you this approach is wrong?" |
-| "What are you treating as fixed that might be flexible?" | "Does the deadline have to be Q2, or is that an assumption?" |
-
-### 3. Evidence-Probing Questions
-
-Test the evidential basis for beliefs.
+Probe the basis for beliefs.
 
 | Pattern | Example |
 |---------|---------|
 | "What evidence supports this?" | "What data shows users actually want this feature?" |
 | "How do you know X is true?" | "How do you know the current system can't handle the load?" |
-| "How large and representative is the sample?" | "Was the pilot tested on production-like data or sanitized staging data?" |
-| "Is the source independent or interested?" | "Is that benchmark from a vendor or an independent test?" |
+| "What would change your mind?" | "What metric would convince you this approach is wrong?" |
+| "Is this based on data or intuition?" | "Is the 'users hate the current flow' claim from research or assumption?" |
 
-### 4. Implication Questions
+### 3. Logical Questions
 
-Follow the logical consequences of the position.
+Test the reasoning chain.
 
 | Pattern | Example |
 |---------|---------|
-| "If that's true, what follows?" | "If we accept this latency budget, what does that force on the database layer?" |
 | "Does X necessarily lead to Y?" | "Does adding caching necessarily improve user experience?" |
-| "What's the second-order effect?" | "If we hire contractors to speed up, what happens to team knowledge?" |
-| "What becomes harder later?" | "What future feature becomes harder if we choose this schema?" |
+| "What assumptions connect X to Y?" | "What has to be true for microservices to improve velocity?" |
+| "Could the opposite also be true?" | "Could a monolith actually ship faster in this case?" |
+| "Are you conflating correlation with causation?" | "Did the refactor cause the improvement, or was it the new hire?" |
 
-### 5. Perspective-Shifting Questions
+### 4. Perspective-Shifting Questions
 
 Force consideration of other viewpoints.
 
@@ -66,32 +51,31 @@ Force consideration of other viewpoints.
 | "What does this look like in 2 years?" | "Will this abstraction still make sense when the team doubles?" |
 | "Who loses if this succeeds?" | "If we adopt this vendor, what capability do we give up?" |
 
-### 6. Meta-Questions
+### 5. Consequential Questions
 
-Examine the reasoning process itself.
+Trace the implications.
 
 | Pattern | Example |
 |---------|---------|
-| "Why are we framing it this way?" | "Why are we treating this as a technology decision instead of an organizational one?" |
-| "What question are we NOT asking?" | "We've discussed performance — what about operability?" |
-| "Are we solving the right problem?" | "Is the real problem the deploy pipeline or the coupling?" |
-| "What would it take to change your mind?" (Kozyrkov's Magic Question) | "If I could prove X, would you reconsider?" |
+| "What happens next?" | "After we migrate, what's the first thing that breaks?" |
+| "What's the second-order effect?" | "If we hire contractors to speed up, what happens to team knowledge?" |
+| "What's the cost of being wrong?" | "If this assumption is wrong, how bad is the recovery?" |
+| "What becomes harder later?" | "What future feature becomes harder if we choose this schema?" |
 
 ## Assumption Detection Signals
 
-Watch for language that hides assumptions. When you hear these, probe immediately.
+Watch for language that hides assumptions.
 
-| Signal Phrase | Hidden Assumption | Probe With |
-|---------------|-------------------|------------|
-| "Obviously..." | The speaker hasn't questioned this | "What makes this obvious? Has it been tested?" |
-| "Everyone knows..." | Consensus hasn't been verified | "Who specifically? Has anyone disagreed?" |
-| "It just makes sense..." | The reasoning chain hasn't been articulated | "Walk me through the logic step by step." |
-| "We always..." | Historical pattern assumed to be optimal | "Why? What would happen if you didn't?" |
-| "There's no other way..." | Alternatives haven't been explored | "What if there were? What would it look like?" |
-| "It's simple..." | Complexity has been underestimated | "What's the simplest thing that could go wrong?" |
-| "Users want..." | User research may be absent or stale | "How do you know? When was this last validated?" |
-| "The standard approach is..." | Convention hasn't been validated for context | "Standard for whom? Does their context match yours?" |
-| "We need to be careful..." | Risk aversion without quantified risk | "What specifically is the risk? How likely?" |
+| Signal Phrase | Hidden Assumption |
+|---------------|-------------------|
+| "Obviously..." | The speaker hasn't questioned this |
+| "Everyone knows..." | Consensus hasn't been verified |
+| "It just makes sense..." | The reasoning chain hasn't been articulated |
+| "We always..." | Historical pattern assumed to be optimal |
+| "There's no other way..." | Alternatives haven't been explored |
+| "It's simple..." | Complexity has been underestimated |
+| "Users want..." | User research may be absent or stale |
+| "The standard approach is..." | Convention hasn't been validated for this context |
 
 ## Domain-Adapted Question Banks
 
@@ -102,7 +86,6 @@ Watch for language that hides assumptions. When you hear these, probe immediatel
 - What constraint are you treating as fixed that might actually be flexible?
 - How would you build this if you had to ship in one week?
 - What's the most expensive thing to change later?
-- If you had to explain the failure mode to a non-technical executive, what would you say?
 
 ### Business Decisions
 
@@ -111,7 +94,6 @@ Watch for language that hides assumptions. When you hear these, probe immediatel
 - How does this compare to doing nothing?
 - What's the opportunity cost of this choice?
 - If a competitor made the opposite choice, would you be worried?
-- What's the maximum you'd pay a clairvoyant for perfect information on this? (Kozyrkov's Value of Clairvoyance test — if low, the decision doesn't need more analysis)
 
 ### Strategic Decisions
 
@@ -120,30 +102,29 @@ Watch for language that hides assumptions. When you hear these, probe immediatel
 - What's the fastest way to test the riskiest assumption?
 - How will you know if this is failing before it's too late?
 - What's the exit strategy if this doesn't work?
-- Frame this as a bet: what are you staking, at what odds, for what payoff?
 
 ## Output Template
 
 ```markdown
 ## Assumption Inventory
 
-| # | Assumption | Type | Confidence | Source |
-|---|-----------|------|------------|--------|
-| 1 | [Stated or hidden assumption] | Stated / Unstated | High / Medium / Low | [Where it appears in the reasoning] |
+| # | Assumption | Type | Confidence |
+|---|-----------|------|------------|
+| 1 | [Stated or hidden assumption] | Stated / Unstated | High / Medium / Low |
 
 ## Probing Questions
 
 ### [Theme 1: e.g., "User Behavior"]
-1. [Question targeting assumption #X] _(Type: Assumption-probing)_
-2. [Follow-up question deepening the probe] _(Type: Implication)_
+1. [Question targeting assumption #X]
+2. [Follow-up question deepening the probe]
 
 ### [Theme 2: e.g., "Technical Feasibility"]
-1. [Question targeting assumption #Y] _(Type: Evidence-probing)_
-2. [Follow-up question] _(Type: Perspective-shifting)_
+1. [Question targeting assumption #Y]
+2. [Follow-up question]
 
 ### [Theme 3: e.g., "Business Viability"]
-1. [Question targeting assumption #Z] _(Type: Meta-question)_
-2. [Follow-up question] _(Type: Clarifying)_
+1. [Question targeting assumption #Z]
+2. [Follow-up question]
 
 ## Suggested Experiments
 

@@ -1,9 +1,15 @@
 ---
-name: composition-patterns
-description: "Use when working with composition-patterns tasks or workflows"
-risk: safe
-source: "https://github.com/vercel-labs/agent-skills"
-date_added: "2026-06-02"
+name: vercel-composition-patterns
+description:
+  React composition patterns that scale. Use when refactoring components with
+  boolean prop proliferation, building flexible component libraries, or
+  designing reusable APIs. Triggers on tasks involving compound components,
+  render props, context providers, or component architecture. Includes React 19
+  API changes.
+license: MIT
+metadata:
+  author: vercel
+  version: '1.0.0'
 ---
 
 # React Composition Patterns
@@ -13,7 +19,8 @@ boolean prop proliferation by using compound components, lifting state, and
 composing internals. These patterns make codebases easier for both humans and AI
 agents to work with as they scale.
 
-## When to Use
+## When to Apply
+
 Reference these guidelines when:
 
 - Refactoring components with many boolean props
@@ -80,8 +87,3 @@ Each rule file contains:
 ## Full Compiled Document
 
 For the complete guide with all rules expanded: `AGENTS.md`
-
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.

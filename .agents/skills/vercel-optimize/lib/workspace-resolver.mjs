@@ -141,7 +141,6 @@ function buildPackageLookup(p) {
       if (key.includes('*')) {
         const keyStarIdx = key.indexOf('*');
         if (keyStarIdx !== key.lastIndexOf('*')) continue;
-        if ((target.match(/\*/g) ?? []).length > 1) continue;
         wildcards.push({
           keyPrefix: key.slice(0, keyStarIdx),
           keySuffix: key.slice(keyStarIdx + 1),
@@ -160,7 +159,7 @@ function buildPackageLookup(p) {
         if (subpath.startsWith(w.keyPrefix) && subpath.endsWith(w.keySuffix)) {
           const star = subpath.slice(w.keyPrefix.length, subpath.length - w.keySuffix.length);
           if (!star) continue;
-          const target = w.valueTemplate.replaceAll('*', star);
+          const target = w.valueTemplate.replace('*', star);
           return joinPackagePath(p.dir, target);
         }
       }

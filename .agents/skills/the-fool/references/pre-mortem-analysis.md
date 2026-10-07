@@ -1,30 +1,25 @@
 # Pre-Mortem Analysis
 
-Pre-mortem methodology (Gary Klein) with second-order thinking for identifying how plans fail before they fail.
+Pre-mortem methodology with second-order thinking for identifying how plans fail before they fail.
 
 ## Core Principle
 
 A pre-mortem inverts the question. Instead of "Will this work?" ask: **"It's 6 months from now and this has failed. Why?"** This psychological shift bypasses optimism bias by making failure the starting point, not the thing to be argued against.
 
-Research shows prospective hindsight increases correct failure identification by 30% compared to asking "what could go wrong?" directly.
-
 ## Process
 
 1. **Set the scene** — "Imagine it's [timeframe] from now. This plan has failed. Not a small setback — a clear failure."
-2. **Generate failure narratives** — Write specific stories about how it failed (silent individual generation first, then present)
+2. **Generate failure narratives** — Write specific stories about how it failed
 3. **Rank by likelihood and impact** — Not all failures are equal
 4. **Trace consequence chains** — First → second → third order effects
-5. **Identify early warning signs** — What would you see before the failure materializes?
-6. **Apply the inversion technique** — "What would guarantee this fails?" Then check if any conditions exist
-7. **Design mitigations** — Concrete actions, not vague "be careful"
+5. **Identify early warning signs** — What would you see before the failure?
+6. **Design mitigations** — Concrete actions, not vague "be careful"
 
 ## Failure Narrative Construction
 
 Failure narratives must be specific. "It didn't scale" is not a narrative. "At 50K concurrent users, the database connection pool exhausted, causing cascading timeouts across all services, which triggered the circuit breaker to reject all requests for 4 minutes during peak hours" is a narrative.
 
 ### Specificity Checklist
-
-Every narrative must pass all 5 checks:
 
 - [ ] Names a specific trigger (not "something goes wrong")
 - [ ] Includes a number or threshold
@@ -86,11 +81,10 @@ Trigger: Key engineer leaves during migration
 | Team member burns out | Knowledge concentrated in fewer people | Bus factor drops, risk increases |
 | Dependency breaks | Hotfix bypasses testing | New bugs introduced, confidence in releases drops |
 | Data quality issue | Downstream reports are wrong | Business decisions made on bad data |
-| Cost overrun | Budget pulled from other initiatives | Team morale drops, talent leaves |
 
 ## Inversion Technique
 
-Ask: **"What would guarantee this fails?"** Then check if any of those conditions exist today.
+Ask: **"What would guarantee this fails?"** Then check if any of those conditions exist.
 
 ### Guaranteed Failure Conditions
 
@@ -101,7 +95,6 @@ Ask: **"What would guarantee this fails?"** Then check if any of those condition
 | **Technology** | Untested at target scale, undocumented dependencies, version lock-in |
 | **Timeline** | No buffer for unknowns, dependencies on external teams with no SLA, parallel critical paths |
 | **Data** | Migration without validation, no data quality checks, schema changes without backward compatibility |
-| **Incentives** | Success metrics misaligned with actual goals, team rewarded for speed not quality |
 
 ## Domain-Specific Failure Patterns
 
@@ -114,7 +107,6 @@ Ask: **"What would guarantee this fails?"** Then check if any of those condition
 | Migration trap | "Just move the data" | Data loss, extended downtime, rollback impossible |
 | Dependency rot | Pinned to abandoned library | Security vulnerability with no upgrade path |
 | Config drift | Manual environment setup | "Works on my machine" becomes "works in no environment" |
-| Halfway house | Partial migration, two systems running | Worst of both worlds — double maintenance, inconsistent state |
 
 ### Business Failures
 
@@ -138,16 +130,15 @@ Ask: **"What would guarantee this fails?"** Then check if any of those condition
 
 ## Early Warning Signs
 
-| Warning Sign | What It Indicates | Check Frequency |
-|-------------|-------------------|-----------------|
-| "We'll figure that out later" repeated 3+ times | Critical decisions being deferred, not resolved | Every planning session |
-| No one can explain the rollback plan | Rollback hasn't been designed | Before launch |
-| Estimates keep growing | Hidden complexity being discovered incrementally | Weekly |
-| Key meetings keep getting rescheduled | Stakeholder alignment is weaker than assumed | Weekly |
-| "It works locally" | Environment parity is worse than assumed | Every sprint |
-| Testing phase compressed | Quality will be sacrificed | Mid-project checkpoint |
-| No metrics defined for success | No one will know if this worked | Before kickoff |
-| Team uses hedging language | Confidence is lower than stated | Ongoing |
+| Warning Sign | What It Indicates |
+|-------------|-------------------|
+| "We'll figure that out later" repeated 3+ times | Critical decisions being deferred, not resolved |
+| No one can explain the rollback plan | Rollback hasn't been designed |
+| Estimates keep growing | Hidden complexity being discovered incrementally |
+| Key meetings keep getting rescheduled | Stakeholder alignment is weaker than assumed |
+| "It works locally" | Environment parity is worse than assumed |
+| Testing phase compressed | Quality will be sacrificed |
+| No metrics defined for success | No one will know if this worked |
 
 ## Output Template
 
@@ -191,10 +182,6 @@ Ask: **"What would guarantee this fails?"** Then check if any of those condition
 
 ### Inversion Check
 
-**What would guarantee failure:**
-1. [Condition]
-2. [Condition]
-3. [Condition]
-
-**Do any exist now?** [Yes/No with specifics for each]
+**What would guarantee failure:** [List top 3 conditions]
+**Do any exist now?** [Yes/No with specifics]
 ```

@@ -1,9 +1,14 @@
 ---
-name: react-native-skills
-description: "Use when working with react-native-skills tasks or workflows"
-risk: safe
-source: "https://github.com/vercel-labs/agent-skills"
-date_added: "2026-06-02"
+name: vercel-react-native-skills
+description:
+  React Native and Expo best practices for building performant mobile apps. Use
+  when building React Native components, optimizing list performance,
+  implementing animations, or working with native modules. Triggers on tasks
+  involving React Native, Expo, mobile performance, or native platform APIs.
+license: MIT
+metadata:
+  author: vercel
+  version: '1.0.0'
 ---
 
 # React Native Skills
@@ -12,7 +17,8 @@ Comprehensive best practices for React Native and Expo applications. Contains
 rules across multiple categories covering performance, animations, UI patterns,
 and platform-specific optimizations.
 
-## When to Use
+## When to Apply
+
 Reference these guidelines when:
 
 - Building React Native or Expo apps
@@ -113,8 +119,3 @@ Each rule file contains:
 ## Full Compiled Document
 
 For the complete guide with all rules expanded: `AGENTS.md`
-
-## Limitations
-- Use this skill only when the task clearly matches the scope described above.
-- Do not treat the output as a substitute for environment-specific validation, testing, or expert review.
-- Stop and ask for clarification if required inputs, permissions, safety boundaries, or success criteria are missing.
