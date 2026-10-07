@@ -271,3 +271,14 @@ input[type=range]::-webkit-slider-thumb {
   object-fit: contain;
   transition: opacity 0.25s ease;
 }
+
+/* Image Protection: disable right-click save and dragging */
+img {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
+
