@@ -430,20 +430,9 @@ function initProjectDetailModal() {
         elGalleryContainer.parentElement.style.display = '';
         elGalleryContainer.innerHTML = data.gallery.map((item, idx) => {
           const src = typeof item === 'string' ? item : item.src;
-          const caption = typeof item === 'object' && item.caption ? item.caption : `${data.title} Detay 0${idx + 1}`;
-          const angleLabel = `AÇI 0${idx + 1}`;
           return `
             <div class="relative rounded-xl overflow-hidden border border-current/10 bg-black/5 dark:bg-white/5 aspect-[4/3] group shadow-sm transition-all duration-300 hover:border-current/30 hover:shadow-md">
-              <div class="absolute top-2.5 left-2.5 z-10 px-2 py-0.5 rounded-md bg-black/65 backdrop-blur-md border border-white/10 text-white font-mono text-[9px] tracking-widest font-semibold uppercase">
-                ${angleLabel}
-              </div>
-              <div class="absolute top-2.5 right-2.5 z-10 w-5 h-5 rounded-md bg-black/40 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-              </div>
-              <img src="${src}" alt="${caption}" draggable="false" oncontextmenu="return false;" class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out select-none pointer-events-none">
-              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent pt-8 pb-3 px-3 transition-opacity duration-300">
-                <span class="text-white text-[11px] sm:text-xs font-sans font-medium line-clamp-1 drop-shadow-sm">${caption}</span>
-              </div>
+              <img src="${src}" alt="${data.title} - Görsel 0${idx + 1}" draggable="false" oncontextmenu="return false;" class="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 ease-out select-none pointer-events-none">
             </div>
           `;
         }).join('');
