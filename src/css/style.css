@@ -245,16 +245,8 @@ input[type=range]::-webkit-slider-thumb {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 .footer-wordmark {
-  font-size: clamp(3.5rem, 16vw, 15rem);
-  font-weight: 900;
-  letter-spacing: -0.06em;
-  line-height: 1.05;
   padding: 1.25rem 0;
-  text-transform: lowercase;
-  color: var(--text);
-  opacity: 0.95;
   user-select: none;
-  overflow: visible;
 }
 .footer-brand-wrap {
   display: flex;
