@@ -47,6 +47,68 @@ if (!fs.existsSync(distDir)) {
   process.exit(1);
 }
 
+/** dist/ içindeki dosyaların göreli yolları (ör. "assets/main-abc.css", "index.html"). */
+function localFiles(dir, base = dir, out = new Set()) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) localFiles(full, base, out);
+    else out.add(path.relative(base, full).split(path.sep).join('/'));
+  }
+  return out;
+}
+
+async function remoteFiles(client, dir, out = []) {
+  for (const item of await client.list(dir)) {
+    if (item.name === '.' || item.name === '..') continue;
+    const rel = `${dir}/${item.name}`;
+    if (item.isDirectory) await remoteFiles(client, rel, out);
+    else out.push(rel);
+  }
+  return out;
+}
+
+/**
+ * Sunucudaki eski dosyaları temizler. Kapsam bilerek dar tutulur:
+ *  - assets/ altında yeni build'de olmayan dosyalar (site build'ine ait klasör)
+ *  - kök dizindeki, yeni build'de olmayan .html sayfaları
+ * api/, .htaccess ve diğer tüm sunucu klasörlerine dokunulmaz.
+ * PRUNE=0 ile kapatılabilir.
+ */
+async function pruneOldFiles(client, rootPath) {
+  if (process.env.PRUNE === '0') { console.log('↷ Temizlik kapalı (PRUNE=0).'); return; }
+  const keep = localFiles(distDir);
+  if ([...keep].filter(f => f.endsWith('.html')).length < 5) {
+    console.warn('⚠️ dist/ beklenenden küçük; güvenlik için temizlik atlandı.');
+    return;
+  }
+
+  await client.cd(rootPath);
+  const rootList = await client.list('.');
+  const candidates = rootList
+    .filter(i => !i.isDirectory && i.name.endsWith('.html') && !keep.has(i.name))
+    .map(i => i.name);
+  if (rootList.some(i => i.isDirectory && i.name === 'assets')) {
+    for (const f of await remoteFiles(client, 'assets')) if (!keep.has(f)) candidates.push(f);
+  }
+
+  if (candidates.length > 800) {
+    console.warn(`⚠️ ${candidates.length} dosya silinecekti; beklenmedik derecede fazla, temizlik atlandı.`);
+    return;
+  }
+  console.log(`🧹 Sunucuda eski ${candidates.length} dosya siliniyor...`);
+  for (const f of candidates) {
+    await client.remove(f);
+    console.log('  − ' + f);
+  }
+  // Boşalan alt klasörleri kaldır (en derinden başlayarak)
+  const dirs = [...new Set(candidates.filter(f => f.startsWith('assets/')).map(f => f.slice(0, f.lastIndexOf('/'))))]
+    .sort((a, b) => b.split('/').length - a.split('/').length);
+  for (const d of dirs) {
+    if (keep.has(d) || [...keep].some(f => f.startsWith(d + '/'))) continue;
+    try { await client.removeEmptyDir(d); console.log('  − ' + d + '/'); } catch { /* boş değilse kalsın */ }
+  }
+}
+
 async function runDeploy() {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -65,9 +127,13 @@ async function runDeploy() {
     if (targetDir !== '.' && targetDir !== './') {
       await client.ensureDir(targetDir);
     }
+    const rootPath = await client.pwd();
 
     console.log(`📦 dist/ klasöründeki tüm dosyalar ve .htaccess yükleniyor...`);
     await client.uploadFromDir(distDir);
+
+    // Önce yükle, sonra temizle: site hiçbir an eksik dosyayla kalmaz
+    await pruneOldFiles(client, rootPath);
 
     console.log(`\n🎉 BAŞARILI! Siteniz Hostinger üzerinde canlıya alındı.`);
     console.log(`🌐 Canlı Site: https://projenicdesign.com\n`);

@@ -5,15 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Yön D — Beyaz sinematik | Projenic prototip</title>
 <meta name="robots" content="noindex">
-<link rel="preconnect" href="https://api.fontshare.com">
-<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<link rel="preload" href="/assets/fonts/zodiak-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* Yerel fontlar (ITF Free Font License): dış servise bağımlılık yok */
+  @font-face{font-family:Zodiak;src:url(/assets/fonts/zodiak-400.woff2) format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:Satoshi;src:url(/assets/fonts/satoshi-400.woff2) format('woff2');font-weight:400;font-display:swap}
+  @font-face{font-family:Satoshi;src:url(/assets/fonts/satoshi-500.woff2) format('woff2');font-weight:500;font-display:swap}
+  @font-face{font-family:Satoshi;src:url(/assets/fonts/satoshi-700.woff2) format('woff2');font-weight:700;font-display:swap}
   :root{--bg:#FFFFFF;--stone:#F3F2EE;--ink:#151614;--muted:#8B8C87;--soft:#CFCFCA;--line:rgba(21,22,20,.12);--accent:#E84E1C;--ease:cubic-bezier(.32,.72,0,1)}
   *{box-sizing:border-box;margin:0;padding:0}
   html{background:var(--bg);color:var(--ink);font-family:Satoshi,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   img{display:block;width:100%;height:100%;object-fit:cover}
   a{color:inherit;text-decoration:none}
-  .cd{font-family:'Clash Display',Satoshi,sans-serif;font-weight:500;letter-spacing:-.035em;line-height:.92}
+  .cd{font-family:Zodiak,Georgia,serif;font-weight:400;letter-spacing:-.03em;line-height:.95}
   .wrap{max-width:1440px;margin:0 auto;padding:0 clamp(1rem,4vw,3.5rem)}
   .mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.75rem;letter-spacing:.02em}
 
@@ -30,7 +35,7 @@
 
   /* 1 · Hero: kart tam ekrana büyür */
   .hero{position:relative;height:100dvh;overflow:hidden}
-  .hero__title{position:absolute;left:clamp(1rem,4vw,3.5rem);top:clamp(6.5rem,16vh,9rem);z-index:2;font-size:clamp(3.2rem,8.6vw,8.8rem)}
+  .hero__title{position:absolute;left:clamp(1rem,4vw,3.5rem);top:clamp(6.5rem,16vh,9rem);z-index:2;font-size:clamp(3.2rem,8vw,8.4rem)}
   .hero__title .line{overflow:hidden;display:block}
   .hero__lead{position:absolute;left:clamp(1rem,4vw,3.5rem);bottom:clamp(1.5rem,5vh,3rem);max-width:40ch;color:#55564f;font-size:1.05rem;line-height:1.55;z-index:2}
   .hero__card{position:absolute;z-index:1;right:clamp(1rem,4vw,3.5rem);bottom:clamp(1.5rem,5vh,3rem);width:min(46vw,640px);height:min(56vh,520px);border-radius:1.4rem;overflow:hidden;will-change:clip-path}
@@ -64,7 +69,7 @@
   .story__count small{font-size:.22em;color:var(--muted);margin:.4em 0 0 .5em}
   .story__steps{position:relative;height:9.5rem;margin-top:1.5rem;overflow:hidden}
   .story__step{position:absolute;inset:0}
-  .story__step h3{font-family:'Clash Display';font-weight:500;font-size:clamp(1.8rem,3vw,2.8rem);letter-spacing:-.02em}
+  .story__step h3{font-family:Zodiak,Georgia,serif;font-weight:400;font-size:clamp(1.8rem,3vw,2.8rem);letter-spacing:-.02em}
   .story__step p{color:#55564f;max-width:38ch;line-height:1.55;margin-top:.6rem}
   .story__bar{height:2px;background:var(--line);margin-top:2rem;position:relative}
   .story__bar b{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(0)}
@@ -81,14 +86,14 @@
   .proj{width:clamp(260px,27vw,430px)}
   .proj__img{aspect-ratio:4/5;border-radius:1.2rem;overflow:hidden;transform:scale(.86);transform-origin:center bottom}
   .proj__meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:1rem}
-  .proj h3{font-family:'Clash Display';font-weight:500;font-size:clamp(1.5rem,2.2vw,2.1rem);letter-spacing:-.02em}
+  .proj h3{font-family:Zodiak,Georgia,serif;font-weight:400;font-size:clamp(1.5rem,2.2vw,2.1rem);letter-spacing:-.02em}
   .proj small{color:var(--muted)}
-  .proj__no{font-family:'Clash Display';color:var(--soft);font-size:1rem}
+  .proj__no{font-family:Zodiak,Georgia,serif;color:var(--soft);font-size:1rem}
   @media(max-width:900px){.work__pin{height:auto;padding:5rem 0}.work__track{overflow-x:auto;scroll-snap-type:x mandatory;width:auto;padding-right:1rem}.proj{scroll-snap-align:start;flex:0 0 78vw}.proj__img{transform:none}}
 
   /* 5 · Referans bandı (hıza tepki verir) */
   .marquee{border-block:1px solid var(--line);overflow:hidden;padding:1.6rem 0}
-  .marquee__track{display:flex;gap:4rem;width:max-content;font-family:'Clash Display';font-size:clamp(1.6rem,3vw,2.6rem);color:#2b2c29;white-space:nowrap}
+  .marquee__track{display:flex;gap:4rem;width:max-content;font-family:Zodiak,Georgia,serif;font-size:clamp(1.6rem,3vw,2.6rem);color:#2b2c29;white-space:nowrap}
   .marquee__track span::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-left:4rem;vertical-align:middle}
 
   /* 6 · Kapanış */

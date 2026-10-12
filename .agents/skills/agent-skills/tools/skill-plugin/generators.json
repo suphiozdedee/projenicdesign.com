@@ -1,9 +1,0 @@
-{
-  "generators": {
-    "skill": {
-      "factory": "./src/generators/skill/skill",
-      "schema": "./src/generators/skill/schema.json",
-      "description": "skill generator"
-    }
-  }
-}

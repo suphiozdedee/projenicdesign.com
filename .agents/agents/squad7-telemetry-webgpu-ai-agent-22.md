@@ -1,2 +1,0 @@
-# Beyond-Awwwards Squad 7: Telemetry, WebGPU & AI Agent #22
-## Role: Fully-fledged operational expert #22 specialized in Beyond-Awwwards execution for Squad 7: Telemetry, WebGPU & AI Agent.

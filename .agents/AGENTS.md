@@ -1,27 +1,12 @@
 # PlanicWorks & Projenic Design System Guidelines
 
-## Repo-Local Skill Kullanımı
+## Proje skill'leri
 
-* Projeye ait kalıcı skill paketleri `.agents/skills/*/SKILL.md` altında tutulur ve GitHub ile sürümlenir.
-* Bir görev bu skill'lerden birinin adı veya açıklamasıyla eşleştiğinde, işlem yapmadan önce ilgili `SKILL.md` dosyası tamamen okunmalıdır.
-* Yalnız görevle ilgili skill veya skill'ler yüklenmelidir; alakasız tüm skill'ler aynı anda kullanılmamalıdır.
-* Skill talimatları bu dosyadaki Projenic Design kurallarıyla birlikte uygulanır. Çelişki varsa daha güvenli ve daha dar kapsamlı kural geçerlidir.
-* Repo içindeki mevcut skill'lere ek olarak aşağıdaki ortak paketler de sürümlenir:
-  * `ui-ux-pro-max`
-  * `graphify`
-  * `design-system`
-  * `ui-styling`
-  * `frontend-ui-engineering`
-  * `performance-optimization`
-  * `browser-testing-with-devtools`
-  * `security-and-hardening`
-  * `test-driven-development`
-  * `code-review-and-quality`
-  * `code-simplification`
-  * `codexkit-bug-hunt`
-  * `codexkit-test-hardening`
-  * `codexkit-root-cause-analyzer`
-  * `iso-24495-style`
+* Projeye ait skill'ler `.claude/skills/*/SKILL.md` altında tutulur ve GitHub ile sürümlenir:
+  * `gsap-*` — GreenSock'un resmi GSAP skill'leri (MIT): ScrollTrigger, SplitText, performans.
+  * `apparel-logo-mockup` — kıyafet üzerine logo baskısı (IOPaint/LaMa + displacement).
+* Proje bilgisi `src/js/projects.js` içindedir; proje sayfaları `node scripts/build-project-pages.mjs` ile üretilir.
+* Sitede yalnızca gerçek proje fotoğrafları kullanılır; STM, TCDD, ULAK Haberleşme ve Alp Havacılık hiçbir yerde yer almaz.
 
 Tasarım kararlarında ve arayüz geliştirmelerinde aşağıdaki prensipler izlenmelidir:
 
