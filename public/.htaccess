@@ -16,8 +16,8 @@
   RewriteCond %{THE_REQUEST} \s/index\.html[\s?] [NC]
   RewriteRule ^index\.html$ https://projenicdesign.com/ [R=301,L]
 
-  # 4. Eski ULAK vaka sayfası yeni adresine taşındı
-  RewriteRule ^proje-aurora\.html$ https://projenicdesign.com/proje-ulak.html [R=301,L]
+  # 4. Yayından kaldırılan eski vaka sayfası proje listesine yönlenir
+  RewriteRule ^proje-aurora\.html$ https://projenicdesign.com/projeler.html [R=301,L]
 </IfModule>
 
 # ── 2. Güvenlik Başlıkları ─────────────────────────────────────────────

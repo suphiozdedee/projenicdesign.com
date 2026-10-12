@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yön D — Beyaz sinematik | Projenic prototip</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#FFFFFF;--stone:#F3F2EE;--ink:#151614;--muted:#8B8C87;--soft:#CFCFCA;--line:rgba(21,22,20,.12);--accent:#E84E1C;--ease:cubic-bezier(.32,.72,0,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:var(--bg);color:var(--ink);font-family:Satoshi,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  img{display:block;width:100%;height:100%;object-fit:cover}
+  a{color:inherit;text-decoration:none}
+  .cd{font-family:'Clash Display',Satoshi,sans-serif;font-weight:500;letter-spacing:-.035em;line-height:.92}
+  .wrap{max-width:1440px;margin:0 auto;padding:0 clamp(1rem,4vw,3.5rem)}
+  .mono{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:.75rem;letter-spacing:.02em}
+
+  /* Yüzen açık cam menü */
+  .nav{position:fixed;top:1.1rem;left:50%;transform:translateX(-50%);z-index:50;display:flex;align-items:center;gap:2rem;
+       padding:.5rem .5rem .5rem 1.3rem;border-radius:999px;background:rgba(255,255,255,.72);backdrop-filter:blur(16px) saturate(1.5);
+       border:1px solid rgba(21,22,20,.08);box-shadow:0 10px 30px -18px rgba(21,22,20,.35)}
+  .nav img{height:19px;width:auto}
+  .nav ul{display:flex;gap:1.5rem;list-style:none;font-size:.9rem}
+  .pill{display:inline-flex;align-items:center;gap:.6rem;padding:.5rem .5rem .5rem 1.05rem;border-radius:999px;background:var(--ink);color:#fff;font-weight:600;font-size:.88rem}
+  .pill i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.14);font-style:normal;transition:transform .5s var(--ease)}
+  .pill:hover i{transform:translate(2px,-2px) rotate(-8deg)}
+  @media(max-width:900px){.nav ul{display:none}.nav{gap:1rem}}
+
+  /* 1 · Hero: kart tam ekrana büyür */
+  .hero{position:relative;height:100dvh;overflow:hidden}
+  .hero__title{position:absolute;left:clamp(1rem,4vw,3.5rem);top:clamp(6.5rem,16vh,9rem);z-index:2;font-size:clamp(3.2rem,8.6vw,8.8rem)}
+  .hero__title .line{overflow:hidden;display:block}
+  .hero__lead{position:absolute;left:clamp(1rem,4vw,3.5rem);bottom:clamp(1.5rem,5vh,3rem);max-width:40ch;color:#55564f;font-size:1.05rem;line-height:1.55;z-index:2}
+  .hero__card{position:absolute;z-index:1;right:clamp(1rem,4vw,3.5rem);bottom:clamp(1.5rem,5vh,3rem);width:min(46vw,640px);height:min(56vh,520px);border-radius:1.4rem;overflow:hidden;will-change:clip-path}
+  .hero__card img{transform:scale(1.18)}
+  /* JS varsa kart tam ekran katmana dönüşür; görünür alan clip-path ile belirlenir */
+  .hero__frame{position:absolute;right:clamp(1rem,4vw,3.5rem);bottom:clamp(1.5rem,5vh,3rem);width:min(46vw,640px);height:min(56vh,520px);visibility:hidden}
+  .hero__card.is-clip{right:0;bottom:0;width:100%;height:100%;border-radius:0}
+  .hero__overlay{position:absolute;inset:0;z-index:3;pointer-events:none;color:#fff;opacity:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(1.5rem,5vw,4rem)}
+  .hero__overlay::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+  .hero__overlay > *{position:relative}
+  .hero__overlay h2{font-size:clamp(2.2rem,5vw,4.6rem)}
+  .dim{position:relative;height:16px;margin-bottom:1rem;color:#fff}
+  .dim::before{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:currentColor;transform-origin:left;transform:scaleX(var(--d,0))}
+  .dim span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);padding:0 .6rem;background:transparent;font-family:ui-monospace,Menlo,monospace;font-size:.8rem}
+  .scroll-hint{position:absolute;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:2;font-size:.75rem;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:.5rem}
+  .scroll-hint i{width:1px;height:38px;background:linear-gradient(var(--ink),transparent);animation:hint 2s var(--ease) infinite}
+  @keyframes hint{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @media(max-width:800px){.hero__card{left:1rem;right:1rem;width:auto;height:42vh;bottom:6.5rem}.hero__lead{bottom:1.5rem}.scroll-hint{display:none}}
+
+  /* 2 · Manifesto: kelimeler griden siyaha */
+  .manifesto{padding:clamp(7rem,20vh,14rem) 0}
+  .manifesto p{font-size:clamp(2rem,4.6vw,4.4rem);max-width:22ch}
+  .manifesto .word{color:var(--soft)}
+
+  /* 3 · Boş zeminden açılışa: sabitlenmiş hikâye */
+  .story{background:var(--stone)}
+  .story__pin{height:100dvh;display:grid;align-items:center}
+  .story__grid{display:grid;gap:2rem;align-items:center}
+  @media(min-width:1000px){.story__grid{grid-template-columns:5fr 7fr}}
+  .story__count{font-size:clamp(5rem,12vw,11rem);color:var(--ink);line-height:.85;display:flex;align-items:flex-start}
+  .story__count small{font-size:.22em;color:var(--muted);margin:.4em 0 0 .5em}
+  .story__steps{position:relative;height:9.5rem;margin-top:1.5rem;overflow:hidden}
+  .story__step{position:absolute;inset:0}
+  .story__step h3{font-family:'Clash Display';font-weight:500;font-size:clamp(1.8rem,3vw,2.8rem);letter-spacing:-.02em}
+  .story__step p{color:#55564f;max-width:38ch;line-height:1.55;margin-top:.6rem}
+  .story__bar{height:2px;background:var(--line);margin-top:2rem;position:relative}
+  .story__bar b{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(0)}
+  .story__stack{position:relative;aspect-ratio:4/3;border-radius:1.4rem;overflow:hidden;background:#e4e3df}
+  .story__stack figure{position:absolute;inset:0}
+  .story__stack figure:not(:first-child){clip-path:inset(100% 0 0 0)}
+  @media(max-width:999px){.story__pin{height:auto;padding:5rem 0}.story__steps{height:auto}.story__step{position:relative;margin-bottom:1.5rem}.story__stack figure{position:relative;clip-path:none!important;aspect-ratio:4/3;margin-bottom:.75rem}.story__stack{aspect-ratio:auto;background:none}}
+
+  /* 4 · Yatay projeler: ortaya gelen büyür */
+  .work__pin{height:100dvh;display:flex;flex-direction:column;justify-content:center;overflow:hidden;padding-top:5.5rem}
+  .work__head{display:flex;justify-content:space-between;align-items:end;margin-bottom:2rem;width:100%}
+  .work__head h2{font-size:clamp(2.6rem,6vw,5.6rem)}
+  .work__track{display:flex;gap:clamp(1rem,3vw,3rem);padding:0 30vw 0 clamp(1rem,4vw,3.5rem);width:max-content;align-items:center}
+  .proj{width:clamp(260px,27vw,430px)}
+  .proj__img{aspect-ratio:4/5;border-radius:1.2rem;overflow:hidden;transform:scale(.86);transform-origin:center bottom}
+  .proj__meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:1rem}
+  .proj h3{font-family:'Clash Display';font-weight:500;font-size:clamp(1.5rem,2.2vw,2.1rem);letter-spacing:-.02em}
+  .proj small{color:var(--muted)}
+  .proj__no{font-family:'Clash Display';color:var(--soft);font-size:1rem}
+  @media(max-width:900px){.work__pin{height:auto;padding:5rem 0}.work__track{overflow-x:auto;scroll-snap-type:x mandatory;width:auto;padding-right:1rem}.proj{scroll-snap-align:start;flex:0 0 78vw}.proj__img{transform:none}}
+
+  /* 5 · Referans bandı (hıza tepki verir) */
+  .marquee{border-block:1px solid var(--line);overflow:hidden;padding:1.6rem 0}
+  .marquee__track{display:flex;gap:4rem;width:max-content;font-family:'Clash Display';font-size:clamp(1.6rem,3vw,2.6rem);color:#2b2c29;white-space:nowrap}
+  .marquee__track span::after{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-left:4rem;vertical-align:middle}
+
+  /* 6 · Kapanış */
+  .cta{padding:clamp(7rem,20vh,13rem) 0}
+  .cta h2{font-size:clamp(3.4rem,10vw,10rem)}
+  .cta h2 .line{overflow:hidden;display:block}
+  .cta__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1.5rem;margin-top:3rem;padding-top:2rem;border-top:1px solid var(--line)}
+  .cta__row p{color:#55564f;max-width:44ch;line-height:1.55}
+  .btn-xl{display:inline-flex;align-items:center;gap:.9rem;padding:.8rem .8rem .8rem 1.6rem;border-radius:999px;background:var(--accent);color:#fff;font-weight:600;font-size:1.05rem}
+  .btn-xl i{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);font-style:normal;transition:transform .6s var(--ease)}
+  .btn-xl:hover i{transform:translate(3px,-3px) rotate(-10deg)}
+  .tag{position:fixed;left:1rem;bottom:1rem;z-index:60;background:var(--ink);color:#fff;font-size:.75rem;padding:.4rem .7rem;border-radius:999px}
+  @media(prefers-reduced-motion:reduce){.hero__card img{transform:none}.manifesto .word{color:var(--ink)}.story__stack figure:not(:first-child){clip-path:none}.scroll-hint i{animation:none}}
+</style>
+</head>
+<body>
+<span class="tag">Yön D · Beyaz sinematik</span>
+<nav class="nav" aria-label="Ana menü">
+  <img src="/assets/images/logo-black.png" alt="Projenic">
+  <ul><li><a href="#">Projeler</a></li><li><a href="#">Hizmetler</a></li><li><a href="#">Atölye</a></li><li><a href="#">İletişim</a></li></ul>
+  <a class="pill" href="#">Proje talebi <i>↗</i></a>
+</nav>
+
+<div id="smooth-wrapper"><div id="smooth-content">
+
+<section class="hero" aria-label="Giriş">
+  <h1 class="hero__title cd"><span class="line">Markanızın</span><span class="line">fuardaki</span><span class="line">mimarisi.</span></h1>
+  <p class="hero__lead">Fuar standı, showroom ve etkinlik alanlarını tasarlıyor, Küçükçekmece'deki kendi atölyemizde üretip sahada anahtar teslim kuruyoruz.</p>
+  <div class="hero__frame" aria-hidden="true"></div>
+  <div class="hero__card"><img src="/assets/images/opt/yamaha-gallery-4-1600.webp" alt="Yamaha Marine'in Boat Show 2024 standı"></div>
+  <div class="hero__overlay" aria-hidden="true">
+    <div class="dim"><span>240 m²</span></div>
+    <h2 class="cd">Yamaha Marine</h2>
+    <p class="mono" style="margin-top:.6rem;opacity:.85">Boat Show 2024 · İstanbul · Tasarım, atölye imalatı, saha kurulumu</p>
+  </div>
+  <div class="scroll-hint"><i></i>Kaydırın</div>
+</section>
+
+<section class="wrap manifesto">
+  <p class="cd" data-manifesto>Tasarım masasından fuar alanına: standınızı çiziyor, kendi atölyemizde üretiyor ve açılış sabahına kadar aynı ekiple sahada kuruyoruz.</p>
+</section>
+
+<section class="story" aria-label="Boş zeminden açılış gününe">
+  <div class="story__pin wrap">
+    <div class="story__grid">
+      <div>
+        <p class="mono" style="color:var(--muted)">Boş zeminden açılış gününe</p>
+        <div class="story__count cd"><span data-count>01</span><small>/ 04</small></div>
+        <div class="story__steps">
+          <div class="story__step"><h3>Zemin ve iskelet</h3><p>Fuar alanında boş zemine taşıyıcı truss ve karkas kurulur; ölçüler projeyle birebir kontrol edilir.</p></div>
+          <div class="story__step"><h3>Podyum ve konstrüksiyon</h3><p>Ağır yük podyumları ve metal taşıyıcılar atölyede hazırlanıp sahada birleştirilir.</p></div>
+          <div class="story__step"><h3>Atölye detayları</h3><p>Ahşap, lake ve gizli aydınlatma detayları Küçükçekmece'deki atölyemizde milimetrik üretilir.</p></div>
+          <div class="story__step"><h3>Açılış günü</h3><p>Stand açılıştan önce eksiksiz teslim edilir; ziyaretçi ilk adımda markayı görür.</p></div>
+        </div>
+        <div class="story__bar"><b></b></div>
+      </div>
+      <div class="story__stack">
+        <figure><img src="/assets/images/opt/le-murano-hero-1600.webp" alt="Boş zeminde kurulan truss iskeleti"></figure>
+        <figure><img src="/assets/images/opt/yamaha-hero-1600.webp" alt="Kurulum aşamasındaki ağır yük podyumu"></figure>
+        <figure><img src="/assets/images/opt/perotti-gallery-4-1600.webp" alt="Gizli LED'li masif ahşap raf detayı"></figure>
+        <figure><img src="/assets/images/opt/le-murano-gallery-3-1600.webp" alt="Aynı iskelet üzerinde tamamlanmış Le Murano standı"></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" aria-label="Projeler">
+  <div class="work__pin">
+    <div class="wrap work__head"><h2 class="cd">Sahada duran işler</h2><a class="pill" href="#">Tüm projeler <i>↗</i></a></div>
+    <div class="work__track">
+      <a class="proj" href="#"><div class="proj__img"><img src="/assets/images/opt/perotti-hero-1024.webp" alt="Perotti showroom"></div><div class="proj__meta"><h3>Perotti</h3><span class="proj__no">01</span></div><small>Showroom · İSTOÇ · 320 m²</small></a>
+      <a class="proj" href="#"><div class="proj__img"><img src="/assets/images/opt/yamaha-gallery-2-1024.webp" alt="Yamaha Marine standı"></div><div class="proj__meta"><h3>Yamaha Marine</h3><span class="proj__no">02</span></div><small>Boat Show 2024 · 240 m²</small></a>
+      <a class="proj" href="#"><div class="proj__img"><img src="/assets/images/opt/mercedes-benz-hero-1024.webp" alt="Mercedes-Benz Türk standı"></div><div class="proj__meta"><h3>Mercedes-Benz Türk</h3><span class="proj__no">03</span></div><small>Etkinlik · 190 m²</small></a>
+      <a class="proj" href="#"><div class="proj__img"><img src="/assets/images/opt/dardanel-hero-1024.webp" alt="Dardanel standı"></div><div class="proj__meta"><h3>Dardanel</h3><span class="proj__no">04</span></div><small>WorldFood 2024 · 160 m²</small></a>
+      <a class="proj" href="#"><div class="proj__img"><img src="/assets/images/opt/le-murano-gallery-3-1024.webp" alt="Le Murano standı"></div><div class="proj__meta"><h3>Le Murano</h3><span class="proj__no">05</span></div><small>Fuar standı</small></a>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-label="Birlikte çalıştığımız markalar"><div class="marquee__track">
+  <span>Mercedes-Benz Türk</span><span>Yamaha Marine</span><span>Dardanel</span><span>Perotti</span><span>Le Murano</span><span>İş Bankası</span><span>Škoda</span>
+  <span>Mercedes-Benz Türk</span><span>Yamaha Marine</span><span>Dardanel</span><span>Perotti</span><span>Le Murano</span><span>İş Bankası</span><span>Škoda</span>
+</div></div>
+
+<section class="wrap cta">
+  <h2 class="cd" data-cta><span class="line">Bir sonraki</span><span class="line">standınızı</span><span class="line">konuşalım.</span></h2>
+  <div class="cta__row">
+    <p>Fuar adını ve stand ölçüsünü yazın; mimari ekibimiz 24 saat içinde 3D konsept taslakla dönüş yapsın.</p>
+    <a class="btn-xl" href="#">Proje talebi gönderin <i>↗</i></a>
+  </div>
+</section>
+
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollSmoother.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!reduce) {
+  ScrollSmoother.create({ wrapper: '#smooth-wrapper', content: '#smooth-content', smooth: 1.1, effects: true });
+
+  // Açılış koreografisi
+  SplitText.create('.hero__title', { type: 'lines', mask: 'lines', onSplit(self) {
+    return gsap.from(self.lines, { yPercent: 110, duration: 1.3, ease: 'expo.out', stagger: .1, delay: .15 });
+  }});
+  // Kartı tam ekran katmana çevir, görünen alanı yer tutucunun ölçüsüne kırp
+  const card = document.querySelector('.hero__card');
+  const frameClip = () => {
+    const f = document.querySelector('.hero__frame').getBoundingClientRect();
+    const h = document.querySelector('.hero').getBoundingClientRect();
+    return `inset(${f.top - h.top}px ${h.right - f.right}px ${h.bottom - f.bottom}px ${f.left - h.left}px round 22px)`;
+  };
+  if (innerWidth > 800) {
+    card.classList.add('is-clip');
+    gsap.set(card, { clipPath: frameClip() });
+    gsap.from(card, { opacity: 0, duration: 1.4, ease: 'expo.out', delay: .3 });
+  }
+  gsap.to('.hero__card img', { scale: 1.08, duration: 2.2, ease: 'expo.out', delay: .35 });
+  gsap.from('.hero__lead', { opacity: 0, y: 16, duration: 1, ease: 'expo.out', delay: .9 });
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 801px)', () => {
+    // 1 · Kart tam ekrana büyür, başlık dağılır, ölçü çizgisi çizilir
+    gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=140%', scrub: 1, pin: true, invalidateOnRefresh: true } })
+      .fromTo(card, { clipPath: () => frameClip() }, { clipPath: 'inset(0px 0px 0px 0px round 0px)', ease: 'power2.inOut', duration: 1, immediateRender: false }, 0)
+      .to('.hero__card img', { scale: 1, ease: 'none', duration: 1 }, 0)
+      .to('.hero__title .line', { xPercent: i => (i % 2 ? 25 : -25), opacity: 0, ease: 'power1.in', duration: .55, stagger: .04 }, 0)
+      .to(['.hero__lead', '.scroll-hint'], { opacity: 0, y: -20, duration: .3 }, 0)
+      .to('.hero__overlay', { opacity: 1, duration: .25 }, .75)
+      .fromTo('.hero__overlay .dim', { '--d': 0 }, { '--d': 1, duration: .25, ease: 'power2.out' }, .8);
+
+    // 3 · Sabitlenmiş hikâye: fotoğraflar sırayla açılır
+    const figs = gsap.utils.toArray('.story__stack figure');
+    const steps = gsap.utils.toArray('.story__step');
+    gsap.set(steps.slice(1), { yPercent: 100, opacity: 0 });
+    const tl = gsap.timeline({ scrollTrigger: { trigger: '.story', start: 'top top', end: '+=' + (figs.length * 80) + '%', scrub: 1, pin: '.story__pin',
+      onUpdate: self => { document.querySelector('[data-count]').textContent = String(Math.min(figs.length, Math.floor(self.progress * figs.length) + 1)).padStart(2, '0'); } } });
+    tl.to('.story__bar b', { scaleX: 1, ease: 'none', duration: figs.length - 1 }, 0);
+    figs.slice(1).forEach((f, i) => {
+      tl.to(f, { clipPath: 'inset(0% 0 0 0)', ease: 'power2.inOut', duration: 1 }, i)
+        .fromTo(f.querySelector('img'), { scale: 1.25 }, { scale: 1, ease: 'power2.out', duration: 1 }, i)
+        .to(steps[i], { yPercent: -100, opacity: 0, duration: .5 }, i + .25)
+        .to(steps[i + 1], { yPercent: 0, opacity: 1, duration: .5 }, i + .4);
+    });
+
+    // 4 · Yatay galeri; ortaya gelen kart büyür
+    const track = document.querySelector('.work__track');
+    const scrollTween = gsap.to(track, { x: () => -(track.scrollWidth - innerWidth), ease: 'none',
+      scrollTrigger: { trigger: '.work', pin: '.work__pin', start: 'top top', end: () => '+=' + track.scrollWidth, scrub: 1, invalidateOnRefresh: true } });
+    gsap.utils.toArray('.proj__img').forEach(el => {
+      gsap.timeline({ scrollTrigger: { trigger: el, containerAnimation: scrollTween, start: 'left right', end: 'right left', scrub: true } })
+        .to(el, { scale: 1, ease: 'power1.out', duration: .5 }).to(el, { scale: .86, ease: 'power1.in', duration: .5 });
+    });
+  });
+
+  // 2 · Manifesto: kelimeler kaydırdıkça koyulaşır
+  SplitText.create('[data-manifesto]', { type: 'words', wordsClass: 'word', onSplit(self) {
+    return gsap.to(self.words, { color: '#151614', stagger: .1, ease: 'none',
+      scrollTrigger: { trigger: '.manifesto', start: 'top 75%', end: 'bottom 55%', scrub: true } });
+  }});
+
+  // 5 · Referans bandı: kaydırma hızına tepki verir
+  const mq = gsap.to('.marquee__track', { xPercent: -50, ease: 'none', duration: 30, repeat: -1 });
+  ScrollTrigger.create({ onUpdate: self => {
+    const v = gsap.utils.clamp(-6, 6, self.getVelocity() / 300);
+    gsap.to(mq, { timeScale: (self.direction || 1) * (1 + Math.abs(v)), duration: .2, overwrite: true });
+    gsap.to(mq, { timeScale: self.direction || 1, duration: 1.2, delay: .25 });
+  }});
+
+  // 6 · Kapanış başlığı satır satır yükselir
+  SplitText.create('[data-cta]', { type: 'lines', mask: 'lines', onSplit(self) {
+    return gsap.from(self.lines, { yPercent: 110, duration: 1.2, ease: 'expo.out', stagger: .1, scrollTrigger: { trigger: '.cta', start: 'top 70%' } });
+  }});
+}
+</script>
+</body>
+</html>

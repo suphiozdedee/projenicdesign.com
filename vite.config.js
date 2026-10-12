@@ -42,10 +42,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         projeler: resolve(__dirname, 'projeler.html'),
-        projeUlak: resolve(__dirname, 'proje-ulak.html'),
         projeYamaha: resolve(__dirname, 'proje-yamaha.html'),
         projePerotti: resolve(__dirname, 'proje-perotti.html'),
-        projeStm: resolve(__dirname, 'proje-stm.html'),
         projeMercedes: resolve(__dirname, 'proje-mercedes.html'),
         projeDardanel: resolve(__dirname, 'proje-dardanel.html'),
         yetkinlikler: resolve(__dirname, 'yetkinlikler.html'),

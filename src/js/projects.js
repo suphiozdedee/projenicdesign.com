@@ -1,29 +1,5 @@
 /* Proje verisi: scripts/build-project-pages.mjs bu dosyadan proje-*.html sayfalarını üretir. Rakam ve tarihler mevcut siteden aynen alınmıştır. */
 export const projectData = {
-  ulak: {
-    title: 'ULAK Haberleşme',
-    type: 'FUAR STANDI / IDEF 2023 / İSTANBUL',
-    lead: 'Milli haberleşme altyapıları ve 5G teknolojileri için geliştirilen taşıyıcı karkas, entegre veri tüneli ve anahtar teslim fuar stand uygulaması.',
-    heroImg: '/assets/images/projects/ulak-haberlesme-hero.jpg',
-    heroCaption: 'ULAK Haberleşme — IDEF Savunma Sanayii Fuar Standı',
-    client: 'ULAK Haberleşme A.Ş.',
-    location: 'TÜYAP Fuar ve Kongre Merkezi (IDEF)',
-    year: '2023',
-    area: '185 m²',
-    fabrication: 'CNC Ahşap & Metal Taşıyıcı Karkas',
-    scope: ['Mimari Stand Tasarımı', 'Sayısal Enstalasyon Duvarları', 'Statik Taşıyıcı Konstrüksiyon', 'CNC Ahşap İmalat', 'Anahtar Teslim Montaj'],
-    pillars: [
-      { step: '01 / MİMARİ KONSEPT', title: 'Monolitik Hacim Dili', desc: 'Milli teknolojinin gücünü yansıtan keskin açılı formlar, mat koyu paneller ve gizli lineer ışık hatları.' },
-      { step: '02 / ATÖLYE İMALATI', title: 'Hassas Karkas Üretimi', desc: 'Kendi atölyemizde CNC kesim modüller, metal profiller ve asma tavan yük dağılımının milimetrik üretimi.' },
-      { step: '03 / SAHA TESLİMİ', title: 'Zamanında Anahtar Teslim', desc: 'TÜYAP fuar alanında sıfır toleransla, fuar açılışından önce eksiksiz montaj ve testler tamamlandı.' }
-    ],
-    gallery: [
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-1.jpg', caption: 'Ön Karşılama ve Işıklı Taşıyıcı Karkas' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-2.jpg', caption: 'Sayısal Veri Tüneli & Teknoloji Koridoru' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-3.jpg', caption: 'Ürün Teşhir Odak Noktası' },
-      { src: '/assets/images/projects/ulak-haberlesme-gallery-4.jpg', caption: 'VIP Toplantı Alanı ve Dış Görünüm' }
-    ]
-  },
   yamaha: {
     title: 'Yamaha Marine',
     type: 'FUAR STANDI / BOAT SHOW / İSTANBUL',
@@ -69,30 +45,6 @@ export const projectData = {
       { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Işıklı Pleksi Teşhir Duvarları' },
       { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Tadım Barı ve Ziyaretçi Deneyim Odakları' },
       { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Karşılama Bankosu ve Genel Görünüm' }
-    ]
-  },
-  stm: {
-    title: 'STM Savunma',
-    type: 'FUAR STANDI / SAHA EXPO / İSTANBUL',
-    lead: 'Milli savunma teknolojileri için tasarlanan özel maket kaideleri, VIP toplantı odası ve prestijli fuar standı.',
-    heroImg: '/assets/images/projects/stm-savunma-hero.jpg',
-    heroCaption: 'STM Savunma — SAHA Expo Fuar Standı',
-    client: 'STM Savunma Teknolojileri Mühendislik A.Ş.',
-    location: 'İstanbul Fuar Merkezi (SAHA Expo)',
-    year: '2023',
-    area: '210 m²',
-    fabrication: 'Savunma Maket Kaidesi & Çelik Tavan Izgarası',
-    scope: ['Fuar Standı Projelendirme', 'Özel Maket Teşhir Kaideleri', 'Akustik VIP Toplantı Odası', 'Işıklı Karkas Sistemleri', 'Saha Yönetimi'],
-    pillars: [
-      { step: '01 / MİMARİ KONSEPT', title: 'Stratejik ve Heykelsi Duruş', desc: 'Denizaltı ve askeri platform maketlerini odak noktasına alan, güven veren masif mimari çizgiler.' },
-      { step: '02 / ATÖLYE İMALATI', title: 'Hassas Maket Kaideleri', desc: 'Askeri standartlarda pleksi korumalı kaideler, gizli kablolama ve dayanıklı metal konstrüksiyon.' },
-      { step: '03 / SAHA TESLİMİ', title: 'Protokol Seviyesinde Teslim', desc: 'Üst düzey heyetlerin ve uluslararası delegasyonların ağırlanacağı VIP bölümler tam vaktinde teslim edildi.' }
-    ],
-    gallery: [
-      { src: '/assets/images/projects/stm-savunma-gallery-1.jpg', caption: 'Askeri Model ve Maket Teşhir Kaideleri' },
-      { src: '/assets/images/projects/stm-savunma-gallery-2.jpg', caption: 'Akustik Yalıtımlı VIP Toplantı Odası' },
-      { src: '/assets/images/projects/stm-savunma-gallery-3.jpg', caption: 'Işıklı Tavan Izgarası ve Taşıyıcı Karkas Detayı' },
-      { src: '/assets/images/projects/stm-savunma-gallery-4.jpg', caption: 'Karşılama Alanı ve Yan Cephe Perspektifi' }
     ]
   },
   mercedes: {
