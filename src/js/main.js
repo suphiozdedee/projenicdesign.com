@@ -321,7 +321,7 @@ function initPortfolioFilter() {
 }
 
 /* ── 8. Proje iç sayfası: küçük görsel → büyük alan ──────────────────────── */
-const PROJECT_PAGE = { yamaha: '/proje-yamaha.html', perotti: '/proje-perotti.html', mercedes: '/proje-mercedes.html', dardanel: '/proje-dardanel.html' };
+const PROJECT_PAGE = { yamaha: '/proje-yamaha.html', mercedes: '/proje-mercedes.html', dardanel: '/proje-dardanel.html' };
 const toWebp = (src, w = 640) => src.replace('/projects/', '/opt/').replace(/\.jpg$/, `-${w}.webp`);
 const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 

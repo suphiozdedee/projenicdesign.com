@@ -18,7 +18,6 @@ export const projectData = {
       { step: '03 / SAHA TESLİMİ', title: 'Kusursuz Fuar Açılışı', desc: 'Marin fuar alanında vinç operasyonları ve platform montajı hatasız tamamlanarak anahtar teslim sunuldu.' }
     ],
     gallery: [
-      { src: '/assets/images/projects/yamaha-hero.jpg', caption: 'Kurulum aşaması: ağır yük podyumu ve karkas' },
       { src: '/assets/images/projects/yamaha-gallery-1.jpg', caption: 'Ana Podyum ve Ağır Motor Teşhir Alanı' },
       { src: '/assets/images/projects/yamaha-gallery-3.jpg', caption: 'Özel Işıklandırmalı Ürün Kaideleri' },
       { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'Genel Stand Perspektifi ve VIP Alanı' }
@@ -28,7 +27,7 @@ export const projectData = {
     title: 'Dardanel',
     type: 'FUAR STANDI / WORLDFOOD / İSTANBUL',
     lead: 'Canlı şef mutfağı, interaktif tadım alanları ve modern teşhir kurgusuyla tasarlanan fuar standı.',
-    heroImg: '/assets/images/projects/dardanel-hero.jpg',
+    heroImg: '/assets/images/projects/dardanel-gallery-3.jpg',
     heroCaption: 'Dardanel — WorldFood Fuar Standı & Tadım İstasyonu',
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood)',
@@ -43,7 +42,6 @@ export const projectData = {
     ],
     gallery: [
       { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Işıklı Pleksi Teşhir Duvarları' },
-      { src: '/assets/images/projects/dardanel-gallery-3.jpg', caption: 'Tadım Barı ve Ziyaretçi Deneyim Odakları' },
       { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Karşılama Bankosu ve Genel Görünüm' }
     ]
   },
@@ -65,33 +63,8 @@ export const projectData = {
       { step: '03 / SAHA TESLİMİ', title: 'Hızlı ve Sessiz Kurulum', desc: 'Etkinlik mekanında gece vardiyasında kusursuz montaj tamamlanarak sabah lansmana hazır edildi.' }
     ],
     gallery: [
-      { src: '/assets/images/projects/mercedes-benz-gallery-1.jpg', caption: 'Deneyim Standı ve Karşılama Alanı' },
       { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Özel İmalat Danışma ve Görüşme Bankoları' },
       { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Akustik Bölme ve Mimari Aydınlatma Detayları' }
-    ]
-  },
-  perotti: {
-    title: 'Perotti Showroom',
-    type: 'SHOWROOM & İÇ MİMARİ / İSTOÇ / İSTANBUL',
-    lead: 'Monolitik koyu yüzeyler, gizli lineer ışık kurgusu ve özel teşhir üniteleriyle tasarlanan lüks züccaciye ve sofra ürünleri showroomu.',
-    heroImg: '/assets/images/projects/perotti-hero.jpg',
-    heroCaption: 'Perotti Showroom — İSTOÇ İç Mimari ve Teşhir Uygulaması',
-    client: 'Perotti Ev Gereçleri',
-    location: 'İSTOÇ Ticaret Merkezi, İstanbul',
-    year: '2024',
-    area: '320 m²',
-    fabrication: 'Monolitik Lake Raflar & Gizli Lineer LED',
-    scope: ['Showroom İç Mimari Konsept', 'Özel Teşhir Rafları', 'Gizli Lineer LED Aydınlatma', 'Özel Bankolar', 'Anahtar Teslim'],
-    pillars: [
-      { step: '01 / MİMARİ KONSEPT', title: 'Ürün Odaklı Monolitik Atmosfer', desc: 'Cam ve porselen ürünlerin parlamasını sağlayan mat antrasit zeminler ve odak aydınlatmalı nişler.' },
-      { step: '02 / ATÖLYE İMALATI', title: 'Özel Raf ve Modüler Teşhir', desc: 'Yüksek taşıma kapasiteli lake ve metal detaylı raf sistemleri kendi atölyemizde milimetrik üretildi.' },
-      { step: '03 / SAHA TESLİMİ', title: 'Ticari Hayata Hazır Teslim', desc: 'Tüm elektrik, aydınlatma ve vitrin uygulamaları eksiksiz tamamlanarak anahtar teslim açıldı.' }
-    ],
-    gallery: [
-      { src: '/assets/images/projects/perotti-gallery-1.jpg', caption: 'Özel Teşhir Reyonları ve Gizli Lineer LED Kanalları' },
-      { src: '/assets/images/projects/perotti-gallery-2.jpg', caption: 'Monolitik Karşılama Bankosu ve Ana Koridor' },
-      { src: '/assets/images/projects/perotti-gallery-3.jpg', caption: 'Özel Koleksiyon Odak Noktası ve Aydınlatmalı Nişler' },
-      { src: '/assets/images/projects/perotti-gallery-4.jpg', caption: 'Showroom Genel Mimari Atmosferi ve Teşhir Bütünlüğü' }
     ]
   }
 };

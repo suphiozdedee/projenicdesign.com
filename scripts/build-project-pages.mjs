@@ -14,7 +14,6 @@ const SITE = 'https://projenicdesign.com';
 // Sıra = önceki / sonraki gezinmesi ve "01 / 06" numarası
 export const PROJECT_PAGES = [
   { key: 'yamaha', file: 'proje-yamaha.html', meta: 'Fuar standı · Boat Show 2024 · İstanbul' },
-  { key: 'perotti', file: 'proje-perotti.html', meta: 'Showroom · 2024 · İSTOÇ, İstanbul' },
   { key: 'mercedes', file: 'proje-mercedes.html', meta: 'Etkinlik standı · 2023 · İstanbul' },
   { key: 'dardanel', file: 'proje-dardanel.html', meta: 'Fuar standı · WorldFood 2024 · İstanbul' }
 ];
