@@ -1,4 +1,4 @@
-/* Proje dosyaları: kart ve modal içeriği. Rakam ve tarihler mevcut siteden aynen alınmıştır. */
+/* Proje verisi: scripts/build-project-pages.mjs bu dosyadan proje-*.html sayfalarını üretir. Rakam ve tarihler mevcut siteden aynen alınmıştır. */
 export const projectData = {
   ulak: {
     title: 'ULAK Haberleşme',

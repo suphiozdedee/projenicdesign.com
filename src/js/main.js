@@ -3,7 +3,6 @@
  * Tema, navigasyon, hero slider, proje vitrini ve modalı, proje talep formu,
  * kaydırma koreografisi. Her modül kendi DOM'u yoksa sessizce çıkar.
  */
-import { projectData } from './projects.js';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -22,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroSlider();
   initDrawer();
   initPortfolioFilter();
-  initProjectModal();
+  initProjectGallery();
   initBriefForms();
   initReveal();
   initProcessRail();
@@ -234,7 +233,7 @@ function initHeroSlider() {
   }, { passive: true });
 
   // Görsele tıklamak proje dosyasını açar
-  frame.addEventListener('click', () => openProjectBySlug(slides[index].dataset.project));
+  frame.addEventListener('click', () => { const url = PROJECT_PAGE[slides[index].dataset.project]; if (url) location.href = url; });
   frame.style.cursor = 'pointer';
 
   setPaused(userPaused);
@@ -268,12 +267,10 @@ function initDrawer() {
     if (!trigger) return;
     if (inlineForm) {            // ana sayfa ve iletişim: formun kendisine kaydır
       e.preventDefault();
-      closeProjectModal();
       $('#talep').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
       setTimeout(() => $('input', inlineForm)?.focus({ preventScroll: true }), reduceMotion.matches ? 0 : 600);
     } else if (drawer) {
       e.preventDefault();
-      closeProjectModal();
       open(trigger);
     }                             // ikisi de yoksa bağlantı /iletisim.html#talep'e gider
   });
@@ -320,89 +317,40 @@ function initPortfolioFilter() {
   $('[data-filter-reset]')?.addEventListener('click', (e) => { e.preventDefault(); apply('all'); });
 }
 
-/* ── 8. Proje dosyası modalı ─────────────────────────────────────────────── */
-let openProjectBySlug = () => {};
-let closeProjectModal = () => {};
-
+/* ── 8. Proje iç sayfası: küçük görsel → büyük alan ──────────────────────── */
+const PROJECT_PAGE = { ulak: '/proje-ulak.html', yamaha: '/proje-yamaha.html', perotti: '/proje-perotti.html', stm: '/proje-stm.html', mercedes: '/proje-mercedes.html', dardanel: '/proje-dardanel.html' };
 const toWebp = (src, w = 640) => src.replace('/projects/', '/opt/').replace(/\.jpg$/, `-${w}.webp`);
 const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-function initProjectModal() {
-  const modal = $('#project-detail-modal');
-  if (!modal) {
-    // Modal olmayan sayfada proje bağlantıları normal sayfa geçişi yapar
-    return;
-  }
-  const panel = $('[data-modal-panel]', modal);
-  let lastTrigger = null;
+function initProjectGallery() {
+  const main = $('[data-pp-main]');
+  const thumbs = $$('[data-pp-thumb]');
+  if (!main || !thumbs.length) return;
+  const img = $('img', main);
+  const source = $('source', main);
+  let current = 0;
 
-  const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
-
-  function render(data) {
-    set('modal-project-title', data.title);
-    set('modal-project-type', data.type);
-    set('modal-project-lead', data.lead);
-    set('modal-project-client', data.client);
-    set('modal-project-location', data.location);
-    set('modal-project-area-year', `${data.area} · ${data.year}`);
-    set('modal-project-fabrication', data.fabrication);
-
-    const hero = $('#modal-project-hero-img');
-    hero.srcset = `${toWebp(data.heroImg, 1024)} 1024w, ${toWebp(data.heroImg, 1600)} 1600w`;
-    hero.sizes = '(min-width: 1180px) 1180px, 100vw';
-    hero.src = data.heroImg;
-    hero.alt = data.heroCaption || data.title;
-
-    $('#modal-project-scope-list').innerHTML = data.scope.map(s => `<li>${escapeHtml(s)}</li>`).join('');
-    $('#modal-project-pillars').innerHTML = (data.pillars || []).map(p => `
-      <li><span class="t-data">${escapeHtml(p.step)}</span><h4>${escapeHtml(p.title)}</h4><p>${escapeHtml(p.desc)}</p></li>`).join('');
-    $('#modal-project-gallery').innerHTML = (data.gallery || []).map(item => `
-      <figure>
-        <picture><source type="image/webp" srcset="${toWebp(item.src, 640)} 640w, ${toWebp(item.src, 1024)} 1024w" sizes="(min-width: 1024px) 280px, 50vw">
-        <img src="${item.src}" alt="${escapeHtml(item.caption)}" width="640" height="480" loading="lazy" decoding="async"></picture>
-      </figure>`).join('');
-  }
-
-  openProjectBySlug = (slug, trigger) => {
-    const data = projectData[slug];
-    if (!data) return false;
-    lastTrigger = trigger || document.activeElement;
-    render(data);
-    modal.scrollTop = 0;
-    showLayer(modal);
-    lockScroll(true);
-    $('[data-close-project-modal]', modal)?.focus({ preventScroll: true });
-    return true;
-  };
-  closeProjectModal = () => {
-    if (modal.hidden) return;
-    hideLayer(modal);
-    lockScroll(false);
-    lastTrigger?.focus?.({ preventScroll: true });
+  const show = (i) => {
+    current = (i + thumbs.length) % thumbs.length;
+    const t = thumbs[current];
+    thumbs.forEach(b => b.setAttribute('aria-pressed', String(b === t)));
+    const apply = () => {
+      source.srcset = `${toWebp(t.dataset.src, 640)} 640w, ${toWebp(t.dataset.src, 1024)} 1024w, ${toWebp(t.dataset.src, 1600)} 1600w`;
+      img.src = t.dataset.src;
+      img.alt = t.dataset.alt;
+      const done = () => main.classList.remove('is-swapping');
+      img.complete ? done() : img.addEventListener('load', done, { once: true });
+    };
+    if (reduceMotion.matches) apply();
+    else { main.classList.add('is-swapping'); setTimeout(apply, 220); }
   };
 
-  // Kartlar gerçek bağlantıdır (JS yoksa sayfaya gider); JS varsa dosyayı modalda açar
-  document.addEventListener('click', (e) => {
-    const trigger = e.target.closest('[data-open-project]');
-    if (!trigger || e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
-    if (openProjectBySlug(trigger.dataset.openProject, trigger)) e.preventDefault();
-  });
-
-  $$('[data-close-project-modal]', modal).forEach(btn => btn.addEventListener('click', (e) => {
-    if (!btn.hasAttribute('data-open-drawer')) e.preventDefault();
-    closeProjectModal();
-  }));
-  modal.addEventListener('click', (e) => { if (!panel.contains(e.target)) closeProjectModal(); });
+  thumbs.forEach((b, i) => b.addEventListener('click', () => show(i)));
   document.addEventListener('keydown', (e) => {
-    if (modal.hidden) return;
-    if (e.key === 'Escape') closeProjectModal();
-    else trapFocus(modal, e);
+    if (e.target.closest('input, textarea, select') || document.body.classList.contains('is-locked')) return;
+    if (e.key === 'ArrowRight') show(current + 1);
+    if (e.key === 'ArrowLeft') show(current - 1);
   });
-
-  // projeler.html#perotti gibi doğrudan bağlantılar dosyayı açar
-  const openFromHash = () => { const slug = location.hash.slice(1); if (projectData[slug]) openProjectBySlug(slug); };
-  openFromHash();
-  window.addEventListener('hashchange', openFromHash);
 }
 
 /* ── 9. Proje talep formu ────────────────────────────────────────────────── */
