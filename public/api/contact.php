@@ -18,15 +18,30 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // JSON ve standart Form Data desteği
 $input = file_get_contents('php://input');
 $data = json_decode($input, true);
+$isFormPost = false;
 if (!$data) {
     $data = $_POST;
+    $isFormPost = true; // JavaScript kapalıyken gönderilen klasik form
+}
+
+/**
+ * Yanıtı döndürür. JS ile gelen isteklere JSON; klasik form gönderimine
+ * iletişim sayfasındaki sonuç mesajına yönlendirme (303).
+ */
+function respond(int $status, array $body, bool $isFormPost): void {
+    if ($isFormPost) {
+        $anchor = !empty($body['success']) ? 'talep-alindi' : 'talep-hatasi';
+        header('Location: /iletisim.html#' . $anchor, true, 303);
+        exit;
+    }
+    http_response_code($status);
+    echo json_encode($body);
+    exit;
 }
 
 // Güvenlik ve Honeypot kontrolü (Spam engelleme)
 if (!empty($data['website_trap']) || !empty($data['_gotcha'])) {
-    http_response_code(200);
-    echo json_encode(['success' => true, 'message' => 'Brief başarıyla alındı.']);
-    exit;
+    respond(200, ['success' => true, 'message' => 'Brief başarıyla alındı.'], $isFormPost);
 }
 
 // Alanları temizle ve hazırla
@@ -40,10 +55,8 @@ $service = htmlspecialchars(trim($data['type'] ?? $data['service'] ?? 'Fuar Stan
 $notes   = htmlspecialchars(trim($data['notes'] ?? 'Özel bir not iletilmedi.'), ENT_QUOTES, 'UTF-8');
 
 // Zorunlu alan kontrolü
-if (empty($name) || empty($phone)) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Lütfen ad soyad ve telefon alanlarını doldurunuz.']);
-    exit;
+if (empty(trim($data['name'] ?? '')) || empty(trim($data['phone'] ?? ''))) {
+    respond(400, ['success' => false, 'message' => 'Lütfen ad soyad ve telefon alanlarını doldurunuz.'], $isFormPost);
 }
 
 $to = 'suphi@projenicdesign.com';
@@ -143,17 +156,15 @@ $headers[] = 'X-Mailer: PHP/' . phpversion();
 $mailSent = @mail($to, $subject, $messageHtml, implode("\r\n", $headers));
 
 if ($mailSent) {
-    http_response_code(200);
-    echo json_encode([
+    respond(200, [
         'success' => true,
-        'message' => 'Proje briefiniz Suphi Bey\'e iletildi. En kısa sürede sizinle iletişime geçilecektir.'
-    ]);
-} else {
-    // Mail fonksiyonu sunucuda kapalıysa veya yerel test ortamındaysa
-    http_response_code(200);
-    echo json_encode([
-        'success' => true,
-        'fallback' => true,
-        'message' => 'Brief kaydedildi. İletişim için yönlendiriliyorsunuz.'
-    ]);
+        'message' => 'Proje briefiniz iletildi. En kısa sürede sizinle iletişime geçilecektir.'
+    ], $isFormPost);
 }
+
+// mail() başarısız: talep iletilmedi. Başarı gibi göstermek talebin kaybolmasına
+// yol açıyordu; artık hata dönülür ve ziyaretçiye telefon/WhatsApp yolu gösterilir.
+respond(502, [
+    'success' => false,
+    'message' => 'Talep e-posta ile iletilemedi.'
+], $isFormPost);

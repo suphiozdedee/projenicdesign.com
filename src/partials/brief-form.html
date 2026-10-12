@@ -1,0 +1,57 @@
+        <form class="brief-form" data-fair-brief-form action="/api/contact.php" method="post" novalidate>
+          <div class="brief-form__grid">
+            <div class="field">
+              <label for="f-company">Firma adı</label>
+              <input id="f-company" name="company" type="text" required autocomplete="organization" placeholder="Örn. ABC Makina A.Ş.">
+              <p class="field__error" id="f-company-err" hidden>Firma adını yazın.</p>
+            </div>
+            <div class="field">
+              <label for="f-name">Ad soyad</label>
+              <input id="f-name" name="name" type="text" required autocomplete="name">
+              <p class="field__error" id="f-name-err" hidden>Size nasıl hitap edeceğimizi yazın.</p>
+            </div>
+            <div class="field">
+              <label for="f-phone">Telefon / WhatsApp</label>
+              <input id="f-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="+90 5xx xxx xx xx" pattern="[0-9+()\s-]{10,}">
+              <p class="field__error" id="f-phone-err" hidden>Size ulaşabileceğimiz bir numara yazın (en az 10 rakam).</p>
+            </div>
+            <div class="field">
+              <label for="f-email">E-posta</label>
+              <input id="f-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="ad@firma.com">
+              <p class="field__error" id="f-email-err" hidden>Geçerli bir e-posta adresi yazın (ör. ad@firma.com).</p>
+            </div>
+            <div class="field">
+              <label for="f-fair">Fuar veya proje adı <span class="field__optional">isteğe bağlı</span></label>
+              <input id="f-fair" name="fair" type="text" placeholder="Örn. IDEF 2027, WIN Eurasia">
+            </div>
+            <div class="field">
+              <label for="f-area">Alan (m²) <span class="field__optional">isteğe bağlı</span></label>
+              <input id="f-area" name="area" type="text" inputmode="decimal" placeholder="Örn. 60" class="num">
+            </div>
+            <div class="field field--wide">
+              <label for="f-type">Hizmet</label>
+              <select id="f-type" name="type">
+                <option value="Özel tasarım fuar standı">Özel tasarım fuar standı</option>
+                <option value="Çift katlı stand">Çift katlı stand</option>
+                <option value="Showroom ve iç mimari">Showroom ve iç mimari</option>
+                <option value="Etkinlik ve lansman">Etkinlik ve lansman</option>
+                <option value="Yalnızca üretim ve kurulum">Yalnızca üretim ve kurulum</option>
+              </select>
+            </div>
+            <div class="field field--wide">
+              <label for="f-notes">Notlar <span class="field__optional">isteğe bağlı</span></label>
+              <textarea id="f-notes" name="notes" rows="4" placeholder="Fuar tarihi, toplantı odası, LED ekran, depo, marka kılavuzu…"></textarea>
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="f-website">Bu alanı boş bırakın</label>
+              <input id="f-website" name="website_trap" type="text" tabindex="-1" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="brief-form__actions">
+            <button type="submit" class="btn btn--primary btn--block">Talebi gönder</button>
+            <p class="brief-form__note">Talebiniz proje yöneticimize iletilir; 24 saat içinde 3D konsept taslak ile dönüş sağlanır. Bilgileriniz <a href="/aydinlatma-metni.html">aydınlatma metni</a> kapsamında işlenir.</p>
+          </div>
+
+          <div class="form-status" role="status" aria-live="polite" tabindex="-1" hidden></div>
+        </form>

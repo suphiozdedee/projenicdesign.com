@@ -1,0 +1,17 @@
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFFFFF">
+  <script>
+    /* İlk boyamadan önce: kayıtlı temayı uygula (beyaz flaşı önler) ve JS'in çalıştığını işaretle. */
+    (function () {
+      var d = document.documentElement, t = 'light';
+      try { t = localStorage.getItem('projenic_theme') || 'light'; } catch (e) {}
+      d.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+      d.classList.add('js');
+    })();
+  </script>
+  <link rel="icon" type="image/png" href="/assets/images/logo-black.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-black.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/style.css">
