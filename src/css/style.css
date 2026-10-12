@@ -409,7 +409,7 @@ main { padding-top: var(--header-h); }
 
 .hero-media__dim { margin-bottom: 0.75rem; color: var(--text); }
 .hero-media__caption {
-  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.5rem 1.5rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: flex-end; gap: 0.5rem 1.5rem;
   margin-top: 0.9rem;
 }
 .hero-media__client { font-weight: 700; font-size: 1.0625rem; letter-spacing: -0.01em; }

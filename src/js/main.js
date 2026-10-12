@@ -360,7 +360,6 @@ function initProjectModal() {
       <figure>
         <picture><source type="image/webp" srcset="${toWebp(item.src, 640)} 640w, ${toWebp(item.src, 1024)} 1024w" sizes="(min-width: 1024px) 280px, 50vw">
         <img src="${item.src}" alt="${escapeHtml(item.caption)}" width="640" height="480" loading="lazy" decoding="async"></picture>
-        <figcaption>${escapeHtml(item.caption)}</figcaption>
       </figure>`).join('');
   }
 
