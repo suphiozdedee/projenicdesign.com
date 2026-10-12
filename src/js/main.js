@@ -4,6 +4,8 @@
  * kaydırma koreografisi. Her modül kendi DOM'u yoksa sessizce çıkar.
  */
 
+import { initMotion } from './motion.js';
+
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const $ = (sel, root = document) => root.querySelector(sel);
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -25,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBriefForms();
   initReveal();
   initProcessRail();
+  initMotion();
   initImageProtection();
 });
 
