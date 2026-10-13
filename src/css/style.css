@@ -1439,3 +1439,16 @@ body[data-page="index"] .site-header:not(.is-scrolled) .site-nav__link { color: 
   .cpanel__dim { color: var(--text); }
   .cpanel__go { color: var(--text); border-color: color-mix(in srgb, var(--text) 25%, transparent); }
 }
+
+/* ══ İç sayfalar ══ */
+/* Tüm proje fotoğrafları aynı sakin tonda */
+main picture img, .service-row__thumb img, .pp-thumbs img { filter: saturate(.78) contrast(1.06) brightness(.97); }
+/* Projeler: kaydırmasız, eşit 3 sütun */
+@media (min-width: 900px) {
+  .work-grid--duo { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; column-gap: 1.5rem; }
+  .work-grid--duo .work-card:nth-child(even) { margin-top: 0 !important; }
+}
+.wa-float { border-radius: 999px; }
+/* Yetkinlikler: sade blok */
+.svc__inc { margin-top: 1.5rem; }
+@media (min-width: 900px) { .work-grid--duo .work-card { grid-column: auto !important; } }
