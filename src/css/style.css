@@ -1481,3 +1481,16 @@ p { text-wrap: pretty; }
   .service-row__thumb { display: none; }
 }
 .pill-btn:active, .cpanel__go:active { transform: scale(0.97); }
+
+/* Sayfalar arası geçiş: ani beyaz sıçrama yerine kısa yumuşak geçiş (View Transitions) */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 180ms cubic-bezier(0.4, 0, 1, 1) both vt-out; }
+::view-transition-new(root) { animation: 280ms cubic-bezier(0.16, 1, 0.3, 1) both vt-in; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { ::view-transition-old(root), ::view-transition-new(root) { animation: none; } }
+
+/* Menü: aşağı kaydırınca çekilir, yukarı kaydırınca geri gelir — fotoğraflar tam ekran kalır */
+.site-header { transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); }
+.site-header.is-tucked { transform: translateY(calc(-100% - 20px)); }
+.menu-open .site-header.is-tucked { transform: none; }

@@ -143,3 +143,20 @@ function cineWork(mm) {
     });
   });
 }
+
+/* Menü kaydırma yönüne göre gizlenir / görünür (yalnız transform) */
+export function tuckHeader() {
+  const header = document.querySelector('[data-site-header]');
+  if (!header) return;
+  let last = scrollY, ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = scrollY, d = y - last;
+      if (Math.abs(d) > 6) { header.classList.toggle('is-tucked', d > 0 && y > 160 && !document.body.classList.contains('is-locked')); last = y; }
+      ticking = false;
+    });
+  }, { passive: true });
+  header.addEventListener('focusin', () => header.classList.remove('is-tucked'));
+}
