@@ -1392,3 +1392,7 @@ body[data-page="index"] .site-header:not(.is-scrolled) .site-nav__link { color: 
   .cpanel__go { margin-left: 0; }
   .cpanel { height: 82svh; }
 }
+
+/* Logo daha belirgin */
+.site-header__brand .brand-logo { height: 24px !important; }
+@media (min-width: 640px) { .site-header__brand .brand-logo { height: 30px !important; } }
