@@ -95,7 +95,7 @@ PROJECT_PAGES.forEach((page, i) => {
           <div class="pp-thumbs" style="--n:${thumbs.length + 1}" role="group" aria-label="Proje görselleri">${mainThumb}${thumbHtml}
           </div>
           <div class="pp-cta">
-            <a href="/iletisim.html#talep" class="btn btn--primary" data-open-drawer>Benzer bir proje için yazın</a>
+            <a href="/iletisim.html#talep" class="btn btn--primary" data-open-drawer>Proje talebi gönderin</a>
           </div>
         </div>
 

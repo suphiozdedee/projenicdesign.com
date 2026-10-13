@@ -32,3 +32,10 @@ Aşağıdaki tüm temel öğeler, tek bir bütünleşik tasarım dili ve CSS de�
 * **Tipografik Hizalama**: Finansal ve teknik veriler (bütçe, m², kur vb.) KESİNLİKLE `tabular-nums` ve `font-mono` sınıfları ile kodlanmalıdır.
 * **Responsive Yükseklik ve Mobil Uyumluluk**: Mobil ekranlarda hiçbir taşma veya yatay kaydırma olmaksızın kusursuz görünmelidir.
 * **Doğrulama (Verification) Zorunluluğu**: Yazılan kod yerel ortamda derlenmeden ve hatasız çalıştığı doğrulanmadan görev tamamlandı sayılmaz.
+
+## Tasarım becerileri (.claude/skills)
+Her tasarım değişikliğinden önce bunlara göre denetle:
+- taste-skill, redesign-skill (Leonxlnx/taste-skill, MIT) — yapay zeka kalıplarını engelleyen kurallar
+- impeccable (pbakaus/impeccable, Apache-2.0) — reference/craft-floor.md kalite tabanı
+- hallmark (Nutlope/hallmark, MIT), ui-ux-pro-max (nextlevelbuilder, MIT)
+- improve-animations (emilkowalski/skills, MIT), gsap-* (greensock)

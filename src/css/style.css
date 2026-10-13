@@ -1452,3 +1452,24 @@ main picture img, .service-row__thumb img, .pp-thumbs img { filter: saturate(.78
 /* Yetkinlikler: sade blok */
 .svc__inc { margin-top: 1.5rem; }
 @media (min-width: 900px) { .work-grid--duo .work-card { grid-column: auto !important; } }
+
+/* ══ Tasarım becerileri denetimi (taste-skill, impeccable, hallmark) ══ */
+/* Sayfa başlığı: sağa sıkışmış küçük paragraf yerine tek odak — başlık üstte, açıklama altında */
+.page-head__grid { display: block !important; }
+.page-head__grid .t-lead { margin-top: 1.25rem; max-width: 58ch; }
+.page-head .t-display { text-wrap: balance; }
+
+/* Projeler: üç eşit kart yerine 1 büyük + 2 */
+@media (min-width: 900px) {
+  .work-grid--duo { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; column-gap: 2rem; row-gap: 3.5rem; }
+  .work-grid--duo .work-card:first-child { grid-column: 1 / -1 !important; }
+  .work-grid--duo .work-card:first-child .work-card__media { aspect-ratio: 21 / 9 !important; }
+}
+
+/* Tarayıcı yüzeyleri de tasarımın parçası */
+::selection { background: var(--text); color: var(--bg); }
+html { accent-color: var(--text); caret-color: var(--text); scrollbar-color: color-mix(in srgb, var(--text) 35%, transparent) transparent; }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
+.section--ink ::selection, .chero ::selection, .cpanel ::selection { background: #f3f2ee; color: #121211; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
