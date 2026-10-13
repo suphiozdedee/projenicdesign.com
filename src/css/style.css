@@ -1299,3 +1299,31 @@ p, li, dd { line-height: 1.7; }
 .section-head { margin-bottom: clamp(3rem, 6vw, 5rem); }
 .story__steps { min-height: 11.5rem; }
 @media (min-width: 1000px) { .motion-ready .story__steps { height: 12rem !important; } }
+
+/* ── Tipografi ölçeği: başlıklar daha küçük ve kalın, metin daha dolgun ── */
+body { font-weight: 450; }
+p, li, dd, .t-lead, .dhero__lead, .story__step p, .proj__sub, .service-row__desc { font-weight: 450; }
+.t-display, .t-h2, .projenic-h2, .projenic-hero, .t-h3, .work-card__title, .service-row__name, .step__title,
+.pp-title, .case-next__title, .contact-drawer__title, .project-modal__title, .cta-strip__text,
+.mobile-menu__nav a, .fact__value--word, .dhero__title, .dhero__overlay-title, .manifesto__text,
+.story__step h3, .proj h3 { font-weight: 700 !important; }
+.dmarquee__track { font-weight: 600; }
+.story__count { font-weight: 600; }
+
+.dhero__title { font-size: clamp(2.4rem, 4.6vw, 4.4rem) !important; }
+.dhero__overlay-title { font-size: clamp(1.8rem, 3.2vw, 3rem) !important; }
+.manifesto__text { font-size: clamp(1.5rem, 2.6vw, 2.5rem) !important; line-height: 1.3 !important; max-width: 28ch; }
+.story__count { font-size: clamp(3.2rem, 6vw, 5.5rem) !important; }
+.story__step h3 { font-size: clamp(1.4rem, 2vw, 1.9rem) !important; }
+.t-display, .projenic-hero { font-size: clamp(2.2rem, 4.4vw, 4rem) !important; }
+.t-h2, .projenic-h2 { font-size: clamp(1.7rem, 2.8vw, 2.5rem) !important; }
+.t-h3, .proj h3, .work-card__title { font-size: clamp(1.15rem, 1.5vw, 1.4rem) !important; }
+.service-row__name { font-size: clamp(1.15rem, 1.6vw, 1.45rem) !important; }
+.pp-title { font-size: clamp(2rem, 3.6vw, 3.2rem) !important; }
+.case-next__title, .project-modal__title { font-size: clamp(1.6rem, 2.8vw, 2.4rem) !important; }
+.dmarquee__track { font-size: clamp(1.2rem, 2vw, 1.7rem) !important; }
+.footer-wordmark { font-size: clamp(3rem, 10vw, 8.5rem) !important; font-weight: 700 !important; }
+@media (max-width: 800px) {
+  .dhero__title { font-size: clamp(2.1rem, 9vw, 2.8rem) !important; }
+  .manifesto__text { font-size: 1.4rem !important; }
+}
