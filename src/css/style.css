@@ -1253,3 +1253,18 @@ body { font-family: var(--font-sans); font-size: 1.0625rem; }
 .footer-wordmark { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; }
 .t-data, .num, .mono, .dhero__kicker, .story__eyebrow { font-family: var(--font-sans); }
 .num { font-variant-numeric: tabular-nums; }
+
+/* Lenis aktifken tarayıcının yumuşak kaydırması kapalı (sabitlenen bölümlerle çakışmasın) */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.motion-ready { scroll-behavior: auto !important; }
+/* Yatay galeri: 3 projede kartlar büyük, kaydırma gerçekten yol alsın */
+@media (min-width: 900px) {
+  .proj { flex-basis: clamp(340px, 38vw, 620px); }
+  .proj__img { aspect-ratio: 5 / 6; }
+  .motion-ready .dwork.is-static .dwork__track { width: auto; padding-right: var(--gutter); }
+  .motion-ready .dwork.is-static .proj__img { transform: none; }
+  .dwork.is-static .dwork__pin { min-height: 0; padding-block: var(--section-y); }
+}

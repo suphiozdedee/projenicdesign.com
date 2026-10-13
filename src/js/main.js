@@ -48,6 +48,7 @@ let lockCount = 0;
 function lockScroll(on) {
   lockCount = Math.max(0, lockCount + (on ? 1 : -1));
   document.body.classList.toggle('is-locked', lockCount > 0);
+  if (window.lenis) (lockCount > 0 ? window.lenis.stop() : window.lenis.start());
 }
 
 /** Bir katmanı aç/kapat: hidden → görünür → .is-open (geçiş için bir kare bekler). */
@@ -270,7 +271,7 @@ function initDrawer() {
     if (!trigger) return;
     if (inlineForm) {            // ana sayfa ve iletişim: formun kendisine kaydır
       e.preventDefault();
-      $('#talep').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+      if (window.lenis) window.lenis.scrollTo('#talep', { offset: -80 }); else $('#talep').scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
       setTimeout(() => $('input', inlineForm)?.focus({ preventScroll: true }), reduceMotion.matches ? 0 : 600);
     } else if (drawer) {
       e.preventDefault();
