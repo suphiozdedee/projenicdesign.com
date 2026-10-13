@@ -1046,19 +1046,14 @@ body.is-locked .wa-float { display: none; }
 
 /* ════════════════════════════════════════════════════════════════════════
    YÖN D — BEYAZ SİNEMATİK
-   Zodiak (başlık) + Satoshi (metin), yerel fontlar; yüzen kapsül menü;
+   Jost (Futura karşılığı), yerel font; yüzen kapsül menü;
    kaydırmaya bağlı sinematik bölümler (GSAP ScrollTrigger, src/js/motion.js).
    Bu blok üstteki temel sistemi geçersiz kılar.
    ════════════════════════════════════════════════════════════════════════ */
-@font-face { font-family: Zodiak; src: url(/assets/fonts/zodiak-400.woff2) format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: Zodiak; src: url(/assets/fonts/zodiak-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
-@font-face { font-family: Satoshi; src: url(/assets/fonts/satoshi-400.woff2) format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: Satoshi; src: url(/assets/fonts/satoshi-500.woff2) format('woff2'); font-weight: 500; font-display: swap; }
-@font-face { font-family: Satoshi; src: url(/assets/fonts/satoshi-700.woff2) format('woff2'); font-weight: 700; font-display: swap; }
 
 :root {
-  --font-sans: Satoshi, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-display: Zodiak, Georgia, 'Times New Roman', serif;
+  --font-sans: Jost, Futura, sans-serif;
+  --font-display: Jost, Futura, sans-serif;
   --dark: #151614;
   --text: var(--dark);
   --stone: #F3F2EE;
@@ -1068,7 +1063,7 @@ body.is-locked .wa-float { display: none; }
 }
 body { font-family: var(--font-sans); }
 
-/* Başlıklar: Zodiak */
+/* Başlıklar */
 .t-display, .t-h2, .projenic-h2, .projenic-hero, .t-h3, .work-card__title, .service-row__name, .step__title,
 .pp-title, .case-next__title, .contact-drawer__title, .project-modal__title, .cta-strip__text, .footer-wordmark,
 .mobile-menu__nav a, .fact__value--word {
@@ -1237,3 +1232,24 @@ html:not(.motion-ready) .dwork__track { overflow-x: auto; scroll-snap-type: x ma
 .projenic-input, .field input, .field select, .field textarea { border-radius: 12px; }
 .contact__panel, .form-status { border-radius: 20px; }
 .work-card__media, .pp-main, .pp-thumb, .svc__figure img, .case-gallery img, .modal-gallery img { border-radius: 18px; }
+
+/* ── Yazı tipi: Jost (Futura'nın açık lisanslı karşılığı, OFL-1.1) — tüm site ── */
+@font-face { font-family: Jost; src: url(/assets/fonts/jost-latin-ext-wght-normal.woff2) format('woff2-variations'); font-weight: 100 900; font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: Jost; src: url(/assets/fonts/jost-latin-wght-normal.woff2) format('woff2-variations'); font-weight: 100 900; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+:root {
+  --font-sans: Jost, Futura, 'Century Gothic', 'Avenir Next', sans-serif;
+  --font-display: Jost, Futura, 'Century Gothic', 'Avenir Next', sans-serif;
+}
+body { font-family: var(--font-sans); font-size: 1.0625rem; }
+.t-display, .t-h2, .projenic-h2, .projenic-hero, .t-h3, .work-card__title, .service-row__name, .step__title,
+.pp-title, .case-next__title, .contact-drawer__title, .project-modal__title, .cta-strip__text,
+.mobile-menu__nav a, .fact__value--word, .dhero__title, .dhero__overlay-title, .manifesto__text,
+.story__count, .story__step h3, .proj h3, .dmarquee__track {
+  font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em;
+}
+.dhero__title { font-weight: 500; letter-spacing: -0.03em; }
+.footer-wordmark { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.03em; }
+.t-data, .num, .mono, .dhero__kicker, .story__eyebrow { font-family: var(--font-sans); }
+.num { font-variant-numeric: tabular-nums; }
