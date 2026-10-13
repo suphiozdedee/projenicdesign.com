@@ -1347,3 +1347,48 @@ p, li, dd, .t-lead, .dhero__lead, .story__step p, .proj__sub, .service-row__desc
 }
 .pp-main { max-width: 1100px; margin-inline: auto; }
 .svc__figure { max-width: 640px; }
+
+/* ══ Sinematik ana sayfa: tam ekran açılış + üst üste kayan tam ekran projeler ══ */
+.chero { position: relative; height: 100svh; min-height: 560px; overflow: hidden; background: #0d0d0c; color: #fff; isolation: isolate; }
+.chero__media, .chero__media picture, .chero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.chero__media { z-index: -2; will-change: transform; }
+.chero__shade { position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 26%, rgba(0,0,0,0) 45%, rgba(0,0,0,.72) 100%); }
+.chero__content { position: absolute; inset: auto 0 0 0; padding-bottom: clamp(2rem, 5vh, 3.5rem); }
+.chero__kicker { font-weight: 600; font-size: 1rem; opacity: .85; margin-bottom: 1rem; }
+.chero__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.6rem, 6.4vw, 6.2rem); line-height: 1.02; letter-spacing: -0.01em; }
+.chero__title .line { display: block; overflow: hidden; padding-bottom: .08em; }
+.chero__title .line > span { display: inline-block; }
+.chero__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-top: clamp(1.5rem, 3vh, 2.5rem); flex-wrap: wrap; }
+.chero__lead { max-width: 34rem; font-size: 1.125rem; font-weight: 500; line-height: 1.6; color: rgba(255,255,255,.88); }
+.chero__actions { display: flex; align-items: center; gap: 1.5rem; }
+.pill-btn--light { background: #fff; color: #111; }
+.pill-btn--light i { background: rgba(0,0,0,.08); }
+.chero__link { color: #fff; font-weight: 600; }
+.chero__hint { position: absolute; left: 50%; bottom: 1.25rem; width: 1px; height: 44px; background: rgba(255,255,255,.3); overflow: hidden; }
+.chero__hint i { position: absolute; inset: 0; background: #fff; animation: hint 2.2s cubic-bezier(.7,0,.3,1) infinite; }
+@keyframes hint { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
+body[data-page="index"] .site-header:not(.is-scrolled) .site-nav__link { color: inherit; }
+
+.cwork { padding-top: var(--section-y); background: var(--bg); }
+.cwork__head { display: flex; justify-content: space-between; align-items: end; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.cpanel { position: relative; display: block; height: 100svh; min-height: 520px; overflow: hidden; color: #fff; background: #0d0d0c; isolation: isolate; }
+.cpanel__media, .cpanel__media picture, .cpanel__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cpanel__media { z-index: -2; will-change: transform; }
+.cpanel__shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(0,0,0,.25) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.7) 100%); }
+.cpanel__content { position: absolute; inset: auto 0 0 0; padding-bottom: clamp(2rem, 6vh, 4rem); }
+.cpanel__no { display: block; font-weight: 600; font-size: .95rem; opacity: .8; margin-bottom: .75rem; font-variant-numeric: tabular-nums; }
+.cpanel__title { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 6vw, 5.6rem); line-height: 1.02; letter-spacing: -0.01em; }
+.cpanel__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 2rem; margin-top: 1.25rem; font-weight: 500; font-size: 1.05rem; color: rgba(255,255,255,.88); }
+.cpanel__dim { position: relative; padding-inline: 1.1rem; font-weight: 700; color: #fff; }
+.cpanel__dim::before, .cpanel__dim::after { content: ''; position: absolute; top: 50%; width: .7rem; height: 1px; background: currentColor; }
+.cpanel__dim::before { left: 0; } .cpanel__dim::after { right: 0; }
+.cpanel__go { margin-left: auto; display: inline-flex; gap: .6rem; align-items: center; font-weight: 600; color: #fff; padding: .7rem 1.2rem; border: 1px solid rgba(255,255,255,.4); border-radius: 999px; transition: background-color .3s, color .3s; }
+.cpanel:hover .cpanel__go { background: #fff; color: #111; }
+.cpanel__go i { font-style: normal; }
+.cpanel:focus-visible { outline: 3px solid var(--accent); outline-offset: -6px; }
+@media (max-width: 700px) {
+  .chero__foot { flex-direction: column; align-items: flex-start; }
+  .cpanel__go { margin-left: 0; }
+  .cpanel { height: 82svh; }
+}

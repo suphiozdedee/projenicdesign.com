@@ -22,6 +22,8 @@ export function initMotion() {
     root.classList.add('motion-ready');
     const lenis = smoothScroll();
     hero(mm);
+    cineHero();
+    cineWork(mm);
     manifesto();
     story(mm);
     gallery(mm);
@@ -186,8 +188,7 @@ function reveals() {
       start: 'top 88%', once: true,
       onEnter: (batch) => gsap.timeline()
         .to(batch, { '--draw': 1, duration: 1, ease: 'power3.inOut', stagger: 0.12 }, 0)
-        .from(batch.map((r) => r.querySelectorAll('.service-row__name, .service-row__desc, .service-row__tags, .service-row__thumb')),
-          { y: 40, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.12 }, 0.15)
+        .from(batch.map((r) => r.firstElementChild), { y: 40, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.12, clearProps: 'transform' }, 0.15)
     });
   }
 
@@ -195,4 +196,40 @@ function reveals() {
   if (proj.length && innerWidth < 900) {
     proj.forEach((p) => gsap.from(p, { y: 60, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 90%', once: true } }));
   }
+}
+
+/* 7 · Tam ekran açılış: satırlar yükselir, fotoğraf yavaşça yaklaşır; kaydırınca derinleşir */
+function cineHero() {
+  const section = $('[data-chero]');
+  if (!section) return;
+  const media = $('.chero__media', section);
+  gsap.timeline({ defaults: { ease: 'expo.out' } })
+    .fromTo(media, { scale: 1.25 }, { scale: 1.08, duration: 2.6 }, 0)
+    .from('.chero__title .line > span', { yPercent: 110, duration: 1.4, stagger: 0.1 }, 0.25)
+    .from(['.chero__kicker', '.chero__lead', '.chero__actions'], { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.6);
+  gsap.timeline({ scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true } })
+    .to(media, { yPercent: 18, scale: 1.18, ease: 'none' }, 0)
+    .to('.chero__content', { yPercent: -30, opacity: 0, ease: 'none' }, 0)
+    .to('.chero__shade', { opacity: 1.0, ease: 'none' }, 0);
+}
+
+/* 8 · Projeler: her tam ekran proje sabitlenir, bir sonraki üstüne kayar; alttaki küçülüp kararır */
+function cineWork(mm) {
+  const panels = $$('.cpanel');
+  if (!panels.length) return;
+  panels.forEach((p) => {
+    const img = $('.cpanel__media', p);
+    gsap.fromTo(img, { scale: 1.2 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: p, start: 'top bottom', end: 'top top', scrub: true } });
+    gsap.from($$('.cpanel__no, .cpanel__title, .cpanel__meta', p), {
+      y: 50, opacity: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08,
+      scrollTrigger: { trigger: p, start: 'top 45%', toggleActions: 'play none none reverse' }
+    });
+  });
+  mm.add('(min-width: 701px)', () => {
+    panels.slice(0, -1).forEach((p) => {
+      ScrollTrigger.create({ trigger: p, start: 'top top', pin: true, pinSpacing: false });
+      gsap.to(p, { scale: 0.9, filter: 'brightness(0.45)', borderRadius: 24, ease: 'none',
+        scrollTrigger: { trigger: p, start: 'top top', end: 'bottom top', scrub: true } });
+    });
+  });
 }
