@@ -26,6 +26,7 @@ export function initMotion() {
     story(mm);
     gallery(mm);
     marquee();
+    reveals();
     // Yazı tipleri yüklenince ölçüler değişir; tetik noktalarını yeniden hesapla
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
     return () => { root.classList.remove('motion-ready'); lenis.destroy(); window.lenis = null; };
@@ -152,4 +153,46 @@ function marquee() {
       gsap.to(loop, { timeScale: self.direction || 1, duration: 1.2, delay: 0.25 });
     }
   });
+}
+
+/* 6 · Sayfa geneli: başlıklar maskeden yükselir, fotoğraflar perde gibi açılır */
+function reveals() {
+  $$('.t-h2, .projenic-h2, .pp-title, .case-next__title, .cta-band h2, .contact__title, .footer-wordmark').forEach((el) => {
+    SplitText.create(el, {
+      type: 'lines', mask: 'lines', linesClass: 'rl', aria: 'auto', autoSplit: true,
+      onSplit: (self) => gsap.from(self.lines, {
+        yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: 0.08,
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      })
+    });
+  });
+
+  $$('.svc__figure, .work-card__media, .pp-main, .case-gallery figure').forEach((box) => {
+    const img = $('img', box);
+    gsap.fromTo(box, { clipPath: 'inset(18% 8% 18% 8% round 22px)' }, {
+      clipPath: 'inset(0% 0% 0% 0% round 22px)', ease: 'power3.out', duration: 1.4,
+      scrollTrigger: { trigger: box, start: 'top 85%', once: true }
+    });
+    if (img) gsap.fromTo(img, { scale: 1.25, yPercent: -6 }, {
+      scale: 1.05, yPercent: 6, ease: 'none',
+      scrollTrigger: { trigger: box, start: 'top bottom', end: 'bottom top', scrub: true }
+    });
+  });
+
+  const rows = $$('.service-row');
+  if (rows.length) {
+    gsap.set(rows, { '--draw': 0 });
+    ScrollTrigger.batch(rows, {
+      start: 'top 88%', once: true,
+      onEnter: (batch) => gsap.timeline()
+        .to(batch, { '--draw': 1, duration: 1, ease: 'power3.inOut', stagger: 0.12 }, 0)
+        .from(batch.map((r) => r.querySelectorAll('.service-row__name, .service-row__desc, .service-row__tags, .service-row__thumb')),
+          { y: 40, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.12 }, 0.15)
+    });
+  }
+
+  const proj = $$('.proj');
+  if (proj.length && innerWidth < 900) {
+    proj.forEach((p) => gsap.from(p, { y: 60, opacity: 0, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 90%', once: true } }));
+  }
 }

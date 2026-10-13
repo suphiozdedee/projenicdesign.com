@@ -1327,3 +1327,10 @@ p, li, dd, .t-lead, .dhero__lead, .story__step p, .proj__sub, .service-row__desc
   .dhero__title { font-size: clamp(2.1rem, 9vw, 2.8rem) !important; }
   .manifesto__text { font-size: 1.4rem !important; }
 }
+
+/* Hareket: hizmet satırı çizgisi soldan çizilir, maskeli satırlar taşmaz */
+.motion-ready .service-row { position: relative; border-bottom-color: transparent; }
+.motion-ready .service-row::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--border); transform: scaleX(var(--draw, 1)); transform-origin: left; }
+.motion-ready .service-row[data-reveal] { opacity: 1 !important; transform: none !important; }
+.rl { padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.svc__figure, .work-card__media, .pp-main { overflow: hidden; }
