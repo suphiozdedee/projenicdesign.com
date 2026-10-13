@@ -38,4 +38,6 @@ Her tasarım değişikliğinden önce bunlara göre denetle:
 - taste-skill, redesign-skill (Leonxlnx/taste-skill, MIT) — yapay zeka kalıplarını engelleyen kurallar
 - impeccable (pbakaus/impeccable, Apache-2.0) — reference/craft-floor.md kalite tabanı
 - hallmark (Nutlope/hallmark, MIT), ui-ux-pro-max (nextlevelbuilder, MIT)
-- improve-animations (emilkowalski/skills, MIT), gsap-* (greensock)
+- improve-animations, animate, review-animations, find-animation-opportunities, animation-performance, apple-design (emilkowalski/skills, MIT), gsap-* (greensock)
+- motion-design (LottieFiles, MIT), design-motion-principles (kylezantos, MIT)
+- modern-web-design, lightweight-3d-effects, threejs-webgl, barba-js, scroll-reveal-libraries, locomotive-scroll (freshtechbro/claudedesignskills, MIT)

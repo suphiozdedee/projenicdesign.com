@@ -1329,8 +1329,8 @@ p, li, dd, .t-lead, .dhero__lead, .story__step p, .proj__sub, .service-row__desc
 }
 
 /* Hareket: hizmet satırı çizgisi soldan çizilir, maskeli satırlar taşmaz */
-.motion-ready .service-row { position: relative; border-bottom-color: transparent; }
-.motion-ready .service-row::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--border); transform: scaleX(var(--draw, 1)); transform-origin: left; }
+.rows-drawn .service-row { position: relative; border-bottom-color: transparent; }
+.service-row__rule { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--border); transform-origin: left; pointer-events: none; }
 .motion-ready .service-row[data-reveal] { opacity: 1 !important; transform: none !important; }
 .rl { padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .svc__figure, .work-card__media, .pp-main { overflow: hidden; }
@@ -1415,7 +1415,7 @@ body[data-page="index"] .site-header:not(.is-scrolled) .site-nav__link { color: 
 .section--ink { background: #121211; color: #f3f2ee; }
 .section--ink .t-lead, .section--ink .service-row__desc { color: rgba(243,242,238,.62); }
 .section--ink .text-link { color: #f3f2ee; }
-.section--ink .service-row::after { background: rgba(243,242,238,.14) !important; }
+.section--ink .service-row__rule { background: rgba(243,242,238,.14); }
 .section--ink .service-list { border-top: 1px solid rgba(243,242,238,.14); }
 .section--ink .service-row__name { font-size: clamp(1.6rem, 2.8vw, 2.6rem) !important; }
 .section--ink .service-row__link:hover .service-row__name { color: #fff; }
@@ -1473,3 +1473,11 @@ html { accent-color: var(--text); caret-color: var(--text); scrollbar-color: col
 .section--ink ::selection, .chero ::selection, .cpanel ::selection { background: #f3f2ee; color: #121211; }
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
+
+/* Hareket denetimi (emilkowalski review-animations): dokunmatik ekranda hover hareketi yok */
+@media (hover: none), (pointer: coarse) {
+  .service-row__link:hover .service-row__name, .pp-thumb:hover img, .wa-float:hover, .atelier__item:hover img,
+  .pill-btn:hover i, .proj:hover .proj__img img { transform: none; }
+  .service-row__thumb { display: none; }
+}
+.pill-btn:active, .cpanel__go:active { transform: scale(0.97); }
