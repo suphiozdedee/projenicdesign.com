@@ -68,7 +68,7 @@ function hero(mm) {
     });
     tl.fromTo(card, { clipPath: () => frameClip() }, { clipPath: 'inset(0px 0px 0px 0px round 0px)', ease: 'power2.inOut', duration: 1, immediateRender: false }, 0)
       .to($('img', card), { scale: 1, ease: 'none', duration: 1 }, 0)
-      .to('.dhero__title .line, .dhero__kicker', { xPercent: (i) => (i % 2 ? 22 : -22), opacity: 0, ease: 'power1.in', duration: 0.55, stagger: 0.04 }, 0)
+      .to('.dhero__title .line, .dhero__kicker', { y: -40, opacity: 0, ease: 'power2.in', duration: 0.3, stagger: 0.03 }, 0)
       .to(['.dhero__side', '.scroll-hint'], { opacity: 0, y: -20, duration: 0.3 }, 0)
       .to('.dhero__overlay', { opacity: 1, duration: 0.2 }, 0.8)
       .fromTo('.dhero__overlay .ddim', { '--d': 0 }, { '--d': 1, duration: 0.25, ease: 'power2.out' }, 0.8);
@@ -100,7 +100,7 @@ function story(mm) {
     const figs = $$('.story__stack figure', section);
     const steps = $$('.story__step', section);
     const count = $('[data-count]', section);
-    gsap.set(steps.slice(1), { yPercent: 100, opacity: 0 });
+    gsap.set(steps.slice(1), { yPercent: 30, opacity: 0 });
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: section, start: 'top top', end: '+=' + (figs.length - 1) * 70 + '%', scrub: 0.8, pin: '.story__pin',
@@ -111,8 +111,8 @@ function story(mm) {
     figs.slice(1).forEach((fig, i) => {
       tl.to(fig, { clipPath: 'inset(0% 0 0 0)', ease: 'power2.inOut', duration: 1 }, i)
         .fromTo($('img', fig), { scale: 1.22 }, { scale: 1, ease: 'power2.out', duration: 1 }, i)
-        .to(steps[i], { yPercent: -100, opacity: 0, duration: 0.5 }, i + 0.25)
-        .to(steps[i + 1], { yPercent: 0, opacity: 1, duration: 0.5 }, i + 0.4);
+        .to(steps[i], { yPercent: -30, opacity: 0, duration: 0.35 }, i + 0.15)
+        .fromTo(steps[i + 1], { yPercent: 30, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.35, immediateRender: false }, i + 0.55);
     });
     return () => gsap.set([...steps, ...figs], { clearProps: 'all' });
   });

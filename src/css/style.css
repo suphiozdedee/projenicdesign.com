@@ -1268,3 +1268,34 @@ html.lenis, html.lenis body { height: auto; }
   .motion-ready .dwork.is-static .proj__img { transform: none; }
   .dwork.is-static .dwork__pin { min-height: 0; padding-block: var(--section-y); }
 }
+
+/* ── Düzeltme: tüm fotoğraflar yatay (3:2), yazılar ferah ─────────────── */
+.proj__img, .story__stack figure, .motion-ready .story__stack, .pp-main, .modal-gallery img,
+.work-card__media, .atelier__item, .svc__figure img, .case-gallery img, .step__figure img { aspect-ratio: 3 / 2 !important; }
+@media (min-width: 1024px) {
+  .work-grid--editorial .work-card .work-card__media { aspect-ratio: 3 / 2 !important; }
+  .atelier__item { height: auto !important; }
+  .atelier__item:nth-child(2) { margin-top: 0 !important; }
+}
+@media (min-width: 900px) { .proj { flex-basis: clamp(420px, 44vw, 720px) !important; } }
+@media (min-width: 801px) {
+  .dhero__frame, .dhero__card { width: min(48vw, 720px); height: calc(min(48vw, 720px) / 1.5); }
+}
+@media (max-width: 800px) { .dhero__card { aspect-ratio: 3 / 2 !important; } }
+@media (min-width: 768px) { .pp-main { aspect-ratio: 3 / 2 !important; } }
+
+/* Yazı aralıkları */
+body { line-height: 1.7; letter-spacing: 0.005em; }
+p, li, dd { line-height: 1.7; }
+.t-display, .t-h2, .projenic-h2, .t-h3, .work-card__title, .service-row__name, .pp-title, .case-next__title,
+.contact-drawer__title, .cta-strip__text, .mobile-menu__nav a, .dhero__title, .dhero__overlay-title,
+.manifesto__text, .story__step h3, .proj h3 { letter-spacing: 0 !important; line-height: 1.12 !important; }
+.dhero__title { line-height: 1.05 !important; }
+.dhero__title .line { padding-bottom: 0.14em; margin-bottom: -0.06em; }
+.story__count { letter-spacing: -0.01em !important; line-height: 0.95 !important; }
+.footer-wordmark { letter-spacing: -0.01em !important; line-height: 1 !important; }
+.t-lead, .projenic-lead, .dhero__lead, .story__step p, .proj__sub, .service-row__desc { line-height: 1.7; }
+.site-nav { gap: 2rem; }
+.section-head { margin-bottom: clamp(3rem, 6vw, 5rem); }
+.story__steps { min-height: 11.5rem; }
+@media (min-width: 1000px) { .motion-ready .story__steps { height: 12rem !important; } }
