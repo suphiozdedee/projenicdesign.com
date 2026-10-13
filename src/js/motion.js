@@ -206,7 +206,7 @@ function cineHero() {
   gsap.timeline({ defaults: { ease: 'expo.out' } })
     .fromTo(media, { scale: 1.25 }, { scale: 1.08, duration: 2.6 }, 0)
     .from('.chero__title .line > span', { yPercent: 110, duration: 1.4, stagger: 0.1 }, 0.25)
-    .from(['.chero__kicker', '.chero__lead', '.chero__actions'], { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.6);
+    .from(['.chero__lead', '.chero__actions'], { y: 24, opacity: 0, duration: 1.1, stagger: 0.08 }, 0.6);
   gsap.timeline({ scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true } })
     .to(media, { yPercent: 18, scale: 1.18, ease: 'none' }, 0)
     .to('.chero__content', { yPercent: -30, opacity: 0, ease: 'none' }, 0)
@@ -228,7 +228,7 @@ function cineWork(mm) {
   mm.add('(min-width: 701px)', () => {
     panels.slice(0, -1).forEach((p) => {
       ScrollTrigger.create({ trigger: p, start: 'top top', pin: true, pinSpacing: false });
-      gsap.to(p, { scale: 0.9, filter: 'brightness(0.45)', borderRadius: 24, ease: 'none',
+      gsap.fromTo(p, { scale: 1, filter: 'brightness(1)', borderRadius: 0 }, { scale: 0.93, filter: 'brightness(0.78)', borderRadius: 28, ease: 'none',
         scrollTrigger: { trigger: p, start: 'top top', end: 'bottom top', scrub: true } });
     });
   });

@@ -1396,3 +1396,46 @@ body[data-page="index"] .site-header:not(.is-scrolled) .site-nav__link { color: 
 /* Logo daha belirgin */
 .site-header__brand .brand-logo { height: 24px !important; }
 @media (min-width: 640px) { .site-header__brand .brand-logo { height: 30px !important; } }
+
+/* ══ Estetik düzeltmeler ══ */
+/* Fotoğraflar: doygunluk ve keskinlik yumuşatıldı, tek bir sinematik renk tonu */
+.chero__media img, .cpanel__media img { filter: saturate(.78) contrast(1.06) brightness(.96); }
+.chero__media img { object-position: 50% 40%; }
+.chero__shade { background:
+  linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 55%, rgba(0,0,0,0) 100%),
+  linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,.1) 50%, rgba(0,0,0,.82) 100%); }
+.cpanel__shade { background:
+  linear-gradient(90deg, rgba(0,0,0,.45) 0%, rgba(0,0,0,0) 60%),
+  linear-gradient(180deg, rgba(0,0,0,.2) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,.78) 100%); }
+.chero__title { text-wrap: balance; }
+.chero__foot { align-items: center; }
+.cwork__stack { background: var(--bg); }
+
+/* Hizmetler: koyu, sade, büyük başlıklı bölüm */
+.section--ink { background: #121211; color: #f3f2ee; }
+.section--ink .t-lead, .section--ink .service-row__desc { color: rgba(243,242,238,.62); }
+.section--ink .text-link { color: #f3f2ee; }
+.section--ink .service-row::after { background: rgba(243,242,238,.14) !important; }
+.section--ink .service-list { border-top: 1px solid rgba(243,242,238,.14); }
+.section--ink .service-row__name { font-size: clamp(1.6rem, 2.8vw, 2.6rem) !important; }
+.section--ink .service-row__link:hover .service-row__name { color: #fff; }
+@media (min-width: 900px) {
+  .section--ink .service-row__link { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr) !important; align-items: center; padding-block: 2.1rem; }
+}
+
+/* Alt bilgi: saat şeridi kaldırıldı */
+.site-footer__mark { padding-top: clamp(3rem, 6vw, 5rem); }
+
+/* Telefonda projeler: fotoğraf yatay kalır, yazı altında */
+@media (max-width: 700px) {
+  .cpanel { height: auto !important; min-height: 0; background: var(--bg); color: var(--text); margin-bottom: 2.5rem; }
+  .cpanel__media { position: relative; inset: auto; aspect-ratio: 3 / 2; margin-inline: var(--gutter); border-radius: 16px; overflow: hidden; z-index: 0; }
+  .cpanel__media picture, .cpanel__media img { position: absolute; inset: 0; }
+  .cpanel__shade { display: none; }
+  .cpanel__content { position: static; padding: 1rem var(--gutter) 0; }
+  .cpanel__no { margin-bottom: .25rem; }
+  .cpanel__title { font-size: 1.9rem; }
+  .cpanel__meta { color: var(--muted); margin-top: .5rem; font-size: .95rem; }
+  .cpanel__dim { color: var(--text); }
+  .cpanel__go { color: var(--text); border-color: color-mix(in srgb, var(--text) 25%, transparent); }
+}
