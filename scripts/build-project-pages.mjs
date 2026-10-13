@@ -13,9 +13,9 @@ const SITE = 'https://projenicdesign.com';
 
 // Sıra = önceki / sonraki gezinmesi ve "01 / 06" numarası
 export const PROJECT_PAGES = [
-  { key: 'yamaha', file: 'proje-yamaha.html', meta: 'Fuar standı · Boat Show 2024 · İstanbul' },
-  { key: 'mercedes', file: 'proje-mercedes.html', meta: 'Etkinlik standı · 2023 · İstanbul' },
-  { key: 'dardanel', file: 'proje-dardanel.html', meta: 'Fuar standı · WorldFood 2024 · İstanbul' }
+  { key: 'yamaha', file: 'proje-yamaha.html', meta: 'Fuar standı · Boat Show 2024 · İstanbul', desc: 'Ağır deniz motorları sergilemesi için özel statik güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.' },
+  { key: 'mercedes', file: 'proje-mercedes.html', meta: 'Etkinlik standı · 2023 · İstanbul', desc: 'Mercedes-Benz Türk\'ün kurumsal kimliğini yansıtan minimalist ahşap hacimler, özel karşılama bankoları ve akustik bölmeler.' },
+  { key: 'dardanel', file: 'proje-dardanel.html', meta: 'Fuar standı · WorldFood 2024 · İstanbul', desc: 'Canlı şef mutfak istasyonu, interaktif tadım barı ve ışıklı pleksi teşhir duvarlarıyla lezzet ve mimariyi buluşturan fuar standı.' }
 ];
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -61,6 +61,9 @@ PROJECT_PAGES.forEach((page, i) => {
   <meta property="og:description" content="${esc(d.lead)}">
   <meta property="og:url" content="${url}">
   <meta property="og:image" content="${SITE}${d.heroImg}">
+  <meta property="og:image:width" content="1920">
+  <meta property="og:image:height" content="1200">
+  <meta property="og:image:alt" content="${title} — Projenic">
   <meta name="twitter:card" content="summary_large_image">
 <!-- @include head-common -->
   <script type="application/ld+json">
@@ -84,6 +87,7 @@ PROJECT_PAGES.forEach((page, i) => {
       <header class="pp-head">
         <p class="t-data">${esc(page.meta)}</p>
         <h1 class="pp-title">${esc(title)}</h1>
+        <p class="t-lead pp-desc">${esc(page.desc)}</p>
       </header>
 
       <div class="pp-grid">
@@ -106,13 +110,20 @@ PROJECT_PAGES.forEach((page, i) => {
           <div><dt>Alan</dt><dd class="num">${esc(d.area)}</dd></div>
         </dl>
       </div>
+
+      <nav class="case-next" aria-label="Sonraki proje">
+        <a href="/projeler.html" class="text-link">Tüm projeler</a>
+        <a href="/${next.file}" class="case-next__link"><span class="t-small">Sonraki proje</span><span class="case-next__title">${esc(projectData[next.key].title.replace(/ Showroom$/, ''))}</span></a>
+      </nav>
     </article>
   </main>
 
+  <aside aria-label="Hızlı iletişim">
   <a href="https://wa.me/905512047851?text=${encodeURIComponent(`Merhaba, ${title} projenizi gördüm; benzer bir proje için bilgi almak istiyorum.`)}" class="wa-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile yazın (yeni sekmede açılır)">
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
     <span>WhatsApp</span>
   </a>
+  </aside>
 
 <!-- @include footer -->
 <!-- @include drawer -->

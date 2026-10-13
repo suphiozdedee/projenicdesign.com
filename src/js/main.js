@@ -4,7 +4,6 @@
  * kaydırma koreografisi. Her modül kendi DOM'u yoksa sessizce çıkar.
  */
 
-import { initMotion, tuckHeader } from './motion.js';
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -27,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initBriefForms();
   initReveal();
   initProcessRail();
-  initMotion();
+  // Hareket kodu (GSAP, Lenis) yalnız gerektiğinde yüklenir
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) import('./motion.js').then((mod) => mod.initMotion());
   tuckHeader();
   initImageProtection();
 });
@@ -508,4 +508,21 @@ function initImageProtection() {
   const block = (e) => { if (e.target instanceof HTMLImageElement) e.preventDefault(); };
   document.addEventListener('contextmenu', block, { capture: true });
   document.addEventListener('dragstart', block, { capture: true });
+}
+
+/* Menü kaydırma yönüne göre gizlenir / görünür (yalnız transform) */
+function tuckHeader() {
+  const header = document.querySelector('[data-site-header]');
+  if (!header) return;
+  let last = scrollY, ticking = false;
+  addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const y = scrollY, d = y - last;
+      if (Math.abs(d) > 6) { header.classList.toggle('is-tucked', d > 0 && y > 160 && !document.body.classList.contains('is-locked')); last = y; }
+      ticking = false;
+    });
+  }, { passive: true });
+  header.addEventListener('focusin', () => header.classList.remove('is-tucked'));
 }

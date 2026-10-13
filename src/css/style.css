@@ -247,7 +247,7 @@ img, picture { display: block; }
 .projenic-input:focus, .field input:focus, .field select:focus, .field textarea:focus {
   outline: none;
   border-color: var(--text);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+  box-shadow: 0 0 0 2px var(--accent);
 }
 .projenic-input::placeholder, .field ::placeholder { color: var(--muted); opacity: 0.75; }
 
@@ -1061,6 +1061,7 @@ body.is-locked .wa-float { display: none; }
   --ease-d: cubic-bezier(0.32, 0.72, 0, 1);
   --nav-h: 88px;
 }
+[data-theme="dark"] { --text: #F3F3EF; --surface: #1A1B19; --stone: #1A1B19; }
 body { font-family: var(--font-sans); }
 
 /* Başlıklar */
@@ -1469,7 +1470,7 @@ main picture img, .service-row__thumb img, .pp-thumbs img { filter: saturate(.78
 /* Tarayıcı yüzeyleri de tasarımın parçası */
 ::selection { background: var(--text); color: var(--bg); }
 html { accent-color: var(--text); caret-color: var(--text); scrollbar-color: color-mix(in srgb, var(--text) 35%, transparent) transparent; }
-:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 .section--ink ::selection, .chero ::selection, .cpanel ::selection { background: #f3f2ee; color: #121211; }
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
@@ -1494,3 +1495,57 @@ p { text-wrap: pretty; }
 .site-header { transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1); }
 .site-header.is-tucked { transform: translateY(calc(-100% - 20px)); }
 .menu-open .site-header.is-tucked { transform: none; }
+
+/* ══ Animasyon denetimi düzeltmeleri (review-animations, gsap-scrolltrigger) ══ */
+/* Açılış: başlık ilk boyamadan önce gizli; JS gelmezse 2.5 sn sonra kendiliğinden görünür */
+@media (prefers-reduced-motion: no-preference) {
+  .js .chero__title .line > span { transform: translateY(110%); animation: chero-in 0s 2.5s forwards; }
+  .js .chero__lead, .js .chero__actions { transform: translateY(24px); animation: chero-in 0s 2.5s forwards; }
+  .chero.is-live .chero__title .line > span, .chero.is-live .chero__lead, .chero.is-live .chero__actions { animation: none; }
+}
+@keyframes chero-in { to { transform: none; } }
+.chero__shade { opacity: 1; }
+
+/* Proje sahneleri: ölçek içteki katmanda, sabitlenen öğede değil */
+.cpanel__inner { position: absolute; inset: 0; overflow: hidden; isolation: isolate; transform-origin: 50% 0; }
+@media (max-width: 700px) { .cpanel__inner { position: static; } }
+.chero__media, .cpanel__media { will-change: auto; }
+
+/* Sayfa geçişi: yalnız solma, yavaş başlayan eğri yok */
+::view-transition-old(root) { animation: 160ms cubic-bezier(0.23, 1, 0.32, 1) both vt-out; }
+::view-transition-new(root) { animation: 220ms cubic-bezier(0.23, 1, 0.32, 1) both vt-fade; }
+@keyframes vt-fade { from { opacity: 0; } }
+
+/* Basma geri bildirimi 160 ms, ok 240 ms */
+.pill-btn { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), background-color 180ms, color 180ms; }
+.pill-btn i { transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1); }
+.cpanel__go { transition: background-color 180ms, color 180ms, transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+
+/* ══ Tasarım denetimi düzeltmeleri (impeccable, taste-skill, hallmark) ══ */
+/* Menü gizlenince gölge kuyruğu ekranda kalmasın */
+.site-header.is-tucked { transform: translateY(calc(-100% - 64px)); }
+.site-header.is-tucked .site-header__inner { box-shadow: none; }
+/* Geri çekilen proje sahnesi beyaz çerçeve değil koyu zemine batar */
+@media (min-width: 701px) { .cwork__stack { background: #0d0d0c; } }
+/* Formu sarmalayan kart görünür olsun */
+.section--stone .contact__panel { background: var(--bg); }
+/* Ölçü ve sayılar: üçüncü yazı tipi yok, tek dil */
+.dim, .dim__label, .pp-bar, .pp-bar__count, .pp-spec dt, .num, .t-data { font-family: var(--font-sans) !important; font-variant-numeric: tabular-nums; }
+/* Hakkımızda: ilkeler başlığın altında 3 sütun; atölye bloğu ortalı */
+.section--stone .about { grid-template-columns: 1fr !important; }
+@media (min-width: 900px) { .principles--2col { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+.band .about { align-items: center; }
+.about .t-h2 { text-wrap: pretty; }
+/* Liste çizgileri ve bant noktaları tek ton */
+.svc__inc li::before { top: calc(.75em - 1px); height: 2px; background: color-mix(in srgb, var(--text) 35%, transparent); }
+/* Hizmetler sayfası atlama listesi */
+.svc-index ol { gap: .5rem 2rem; }
+/* CTA bandı dengeli */
+@media (min-width: 1024px) { .cta-band__inner { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr) !important; align-items: center; } }
+/* Proje sayfası: açıklama ve sola yaslı buton */
+.pp-desc { max-width: 60ch; margin-top: 1rem; }
+.pp-cta { justify-content: flex-start; }
+/* Projeler: ilk kartta logo kırpılmasın */
+@media (min-width: 900px) { .work-grid--duo .work-card:first-child .work-card__media { aspect-ratio: 16 / 9 !important; } .work-grid--duo .work-card:first-child img { object-position: 50% 30%; } }
+/* Telefonda açılışta stand görünsün */
+@media (max-width: 700px) { .chero__media img { object-position: 22% 45%; } }
