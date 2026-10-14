@@ -60,7 +60,7 @@ export const projectData = {
     scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Podyum', 'Hassas Montaj'],
     pillars: [
       { step: '01 / MİMARİ KONSEPT', title: 'Minimalist Lüks & Hassasiyet', desc: 'Mercedes-Benz tasarım felsefesine uygun yalın formlar, mat koyu yüzeyler ve keskin aydınlatma detayları.' },
-      { step: '02 / ATÖLYE İMALATI', title: 'Özel Ahşap ve Metal İmalat', desc: 'Atölyemizde üretilen özel tasarım görüşme bankoları, akustik paneller ve temiz yüzey işçiliği.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Özel Ahşap ve Metal İmalat', desc: 'Özel tasarım görüşme bankoları, akustik paneller ve temiz yüzey işçiliği.' },
       { step: '03 / SAHA TESLİMİ', title: 'Gece Kurulumu', desc: 'Montaj etkinlik mekanında gece vardiyasında tamamlanarak sabah lansmana hazır edildi.' }
     ],
     gallery: [
