@@ -41,8 +41,9 @@ export const projectData = {
       { step: '03 / SAHA TESLİMİ', title: 'Eksiksiz Gastronomi Standı', desc: 'Havalandırma ve pişirme donanımları test edilerek açılış saatinde tam kapasite hazır hale getirildi.' }
     ],
     gallery: [
-      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Işıklı Pleksi Teşhir Duvarları' },
-      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Karşılama Bankosu ve Genel Görünüm' }
+      { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Dardanel standı, karşılama bankosu ve oturma alanı' },
+      { src: '/assets/images/projects/dardanel-gallery-4.jpg', caption: 'Dardanel standı, köşe görünüm' },
+      { src: '/assets/images/projects/dardanel-gallery-1.jpg', caption: 'Dardanel standı, koridordan görünüm' }
     ]
   },
   mercedes: {
@@ -63,8 +64,9 @@ export const projectData = {
       { step: '03 / SAHA TESLİMİ', title: 'Hızlı ve Sessiz Kurulum', desc: 'Etkinlik mekanında gece vardiyasında kusursuz montaj tamamlanarak sabah lansmana hazır edildi.' }
     ],
     gallery: [
-      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Özel İmalat Danışma ve Görüşme Bankoları' },
-      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Akustik Bölme ve Mimari Aydınlatma Detayları' }
+      { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Mercedes-Benz Türk standı, karşılama bankosu' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-3.jpg', caption: 'Mercedes-Benz Türk standı, yan görünüm' },
+      { src: '/assets/images/projects/mercedes-benz-gallery-4.jpg', caption: 'Mercedes-Benz Türk standı, önden görünüm' }
     ]
   }
 };
