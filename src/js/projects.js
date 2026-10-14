@@ -38,7 +38,7 @@ export const projectData = {
     pillars: [
       { step: '01 / MİMARİ KONSEPT', title: 'Gastronomi ve Mimari Buluşması', desc: 'Ziyaretçiyi içine çeken koku, tat ve görsel deneyimi entegre eden açık mutfak ve tadım adaları.' },
       { step: '02 / ATÖLYE İMALATI', title: 'Hijyenik ve Fonksiyonel İmalat', desc: 'Paslanmaz tezgah entegrasyonu, su ve elektrik altyapısına uygun özel üretim ahşap modüller.' },
-      { step: '03 / SAHA TESLİMİ', title: 'Eksiksiz Gastronomi Standı', desc: 'Havalandırma ve pişirme donanımları test edilerek açılış saatinde tam kapasite hazır hale getirildi.' }
+      { step: '03 / SAHA TESLİMİ', title: 'Gastronomi Standı', desc: 'Havalandırma ve pişirme donanımları test edilerek açılış saatinde tam kapasite hazır hale getirildi.' }
     ],
     gallery: [
       { src: '/assets/images/projects/dardanel-gallery-2.jpg', caption: 'Dardanel standı, karşılama bankosu ve oturma alanı' },
@@ -49,7 +49,7 @@ export const projectData = {
   mercedes: {
     title: 'Mercedes-Benz Türk',
     type: 'ETKİNLİK STANDI / OTOMOTİV / İSTANBUL',
-    lead: 'Global otomotiv liderinin mühendislik ve inovasyon vizyonunu yansıtan minimalist ahşap hacimler, görüşme masaları ve akustik bölmeler.',
+    lead: 'Markanın mühendislik vurgusunu yansıtan sade ahşap hacimler, görüşme masaları ve akustik bölmeler.',
     heroImg: '/assets/images/projects/mercedes-benz-hero.jpg',
     heroCaption: 'Mercedes-Benz Türk — Özel Etkinlik ve Deneyim Standı',
     client: 'Mercedes-Benz Türk A.Ş.',
@@ -60,8 +60,8 @@ export const projectData = {
     scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Podyum', 'Hassas Montaj'],
     pillars: [
       { step: '01 / MİMARİ KONSEPT', title: 'Minimalist Lüks & Hassasiyet', desc: 'Mercedes-Benz tasarım felsefesine uygun yalın formlar, mat koyu yüzeyler ve keskin aydınlatma detayları.' },
-      { step: '02 / ATÖLYE İMALATI', title: 'Özel Ahşap ve Metal İmalat', desc: 'Kendi atölyemizde üretilen özel tasarım görüşme bankoları, akustik paneller ve kusursuz yüzey kalitesi.' },
-      { step: '03 / SAHA TESLİMİ', title: 'Hızlı ve Sessiz Kurulum', desc: 'Etkinlik mekanında gece vardiyasında kusursuz montaj tamamlanarak sabah lansmana hazır edildi.' }
+      { step: '02 / ATÖLYE İMALATI', title: 'Özel Ahşap ve Metal İmalat', desc: 'Atölyemizde üretilen özel tasarım görüşme bankoları, akustik paneller ve temiz yüzey işçiliği.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Gece Kurulumu', desc: 'Montaj etkinlik mekanında gece vardiyasında tamamlanarak sabah lansmana hazır edildi.' }
     ],
     gallery: [
       { src: '/assets/images/projects/mercedes-benz-gallery-2.jpg', caption: 'Mercedes-Benz Türk standı, karşılama bankosu' },

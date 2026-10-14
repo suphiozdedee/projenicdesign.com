@@ -435,7 +435,7 @@ function initBriefForms() {
         form.reset();
         required.forEach(i => i.removeAttribute('aria-invalid'));
         showStatus('success', `<strong>Talebiniz alındı, ${escapeHtml(lead.name.split(' ')[0])}.</strong>
-          Proje yöneticimiz 24 saat içinde ${escapeHtml(lead.email)} adresine ya da telefonla dönüş yapacak.
+          Proje yöneticimiz en kısa sürede ${escapeHtml(lead.email)} adresine ya da telefonla dönüş yapacak.
           <span class="form-status__actions"><a href="${waUrl}" target="_blank" rel="noopener noreferrer">Beklemek istemiyorsanız WhatsApp'tan yazın ↗</a></span>`);
       } catch (err) {
         // Bilgiler formda kalır; ziyaretçiye çalışan iki yol gösterilir
