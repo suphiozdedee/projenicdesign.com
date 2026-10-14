@@ -153,7 +153,16 @@ if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 $headers[] = 'X-Mailer: PHP/' . phpversion();
 
-$mailSent = @mail($to, $subject, $messageHtml, implode("\r\n", $headers));
+// Her talep, e-posta ulaşmasa da kaybolmasın diye web kökünün dışındaki bir kayıt dosyasına yazılır
+$logDir = dirname(__DIR__, 2) . '/form-talepleri';
+if (!is_dir($logDir)) { @mkdir($logDir, 0700, true); }
+@file_put_contents($logDir . '/talepler.jsonl', json_encode([
+    'tarih' => $date, 'firma' => $company, 'yetkili' => $name, 'telefon' => $phone, 'eposta' => $email,
+    'fuar' => $fair, 'alan' => $area, 'hizmet' => $service, 'not' => $notes, 'ip' => $ip
+], JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
+
+// -f: zarf göndericisi (Return-Path) alan adıyla eşleşsin; aksi halde Gmail iletiyi spama atabiliyor
+$mailSent = @mail($to, $subject, $messageHtml, implode("\r\n", $headers), '-f' . $fromEmail);
 
 if ($mailSent) {
     respond(200, [
