@@ -9,7 +9,7 @@ export const projectData = {
     client: 'Yamaha Motor / Burla A.Ş.',
     location: 'İstanbul Marin Fuar Alanı (Bosphorus Boat Show)',
     year: '2024',
-    area: '240 m²',
+    area: '',
     fabrication: 'Ağır Yük Podyumu & Özel Lake Bankolar',
     scope: ['Marin Stand Mimarisi', 'Ağır Yük Podyum Statik Çözümü', 'Özel Lake Karşılama Bankosu', 'Özel Işık Kurgusu', 'Saha Kurulumu'],
     pillars: [
@@ -32,7 +32,7 @@ export const projectData = {
     client: 'Dardanel Önentaş Gıda San. A.Ş.',
     location: 'TÜYAP Fuar ve Kongre Merkezi (WorldFood)',
     year: '2024',
-    area: '160 m²',
+    area: '',
     fabrication: 'Canlı Şef Mutfağı & Pleksi Teşhir Duvarları',
     scope: ['Konsept Stand Tasarımı', 'Canlı Şef Mutfak İstasyonu', 'Işıklı Pleksi Teşhir Duvarları', 'Özel Marangozluk', 'Anahtar Teslim'],
     pillars: [
@@ -55,7 +55,7 @@ export const projectData = {
     client: 'Mercedes-Benz Türk A.Ş.',
     location: 'İstanbul',
     year: '2023',
-    area: '190 m²',
+    area: '',
     fabrication: 'Minimalist Ahşap Karkas & Akustik Paneller',
     scope: ['Etkinlik Mimarisi', 'Kurumsal Kimlik Entegrasyonu', 'Özel Banko & Mobilya', 'Modüler Podyum', 'Hassas Montaj'],
     pillars: [

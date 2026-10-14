@@ -92,7 +92,7 @@ PROJECT_PAGES.forEach((page, i) => {
 
       <div class="pp-grid">
         <div class="pp-media">
-          <div class="dim pp-dim" aria-hidden="true"><span class="dim__tick dim__tick--a"></span><span class="dim__label">${esc(d.area)}</span><span class="dim__tick dim__tick--b"></span></div>
+          ${d.area ? `<div class="dim pp-dim" aria-hidden="true"><span class="dim__tick dim__tick--a"></span><span class="dim__label">${esc(d.area)}${d.height ? ` · yükseklik ${esc(d.height)}` : ''}</span><span class="dim__tick dim__tick--b"></span></div>` : ''}
           <div class="pp-main" data-pp-main>
             ${picture(main.src, main.caption, '(min-width: 1024px) 70vw, 100vw', true)}
           </div>
@@ -107,7 +107,8 @@ PROJECT_PAGES.forEach((page, i) => {
           <div class="pp-spec__client"><dt>Müşteri</dt><dd>${esc(d.client)}</dd></div>
           <div><dt>Yer</dt><dd>${esc(d.location)}</dd></div>
           <div><dt>Yıl</dt><dd class="num">${esc(d.year)}</dd></div>
-          <div><dt>Alan</dt><dd class="num">${esc(d.area)}</dd></div>
+          ${d.area ? `<div><dt>Ölçü</dt><dd class="num">${esc(d.area)}</dd></div>` : ''}
+          ${d.height ? `<div><dt>Yükseklik</dt><dd class="num">${esc(d.height)}</dd></div>` : ''}
         </dl>
       </div>
 
