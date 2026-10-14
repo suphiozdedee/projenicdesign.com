@@ -23,6 +23,54 @@ export const projectData = {
       { src: '/assets/images/projects/yamaha-gallery-4.jpg', caption: 'Genel Stand Perspektifi ve VIP Alanı' }
     ]
   },
+  sonmezler: {
+    title: 'Sönmezler Metal',
+    type: 'FUAR STANDI / METAL / 2023–2024',
+    lead: 'Çelik üreticisi için iki farklı fuarda kurduğumuz standlar: ışıklı logo duvarları, LED ekranlar, görüşme ve karşılama alanları.',
+    heroImg: '/assets/images/projects/sonmezler-hero.jpg',
+    heroCaption: 'Sönmezler Metal — Fuar Standı',
+    client: 'Sönmezler Metal',
+    location: 'Fuar standları',
+    year: '2023–2024',
+    area: '',
+    fabrication: 'Işıklı Logo Duvarları & Lake Bankolar',
+    scope: ['Stand Tasarımı', 'Işıklı Logo ve Grafik Uygulamaları', 'LED Ekran Entegrasyonu', 'Karşılama Bankosu', 'Anahtar Teslim'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Marka Rengiyle Kurgu', desc: 'Gri yüzeyler üzerinde sarı ışıklı logolar ve dolaylı aydınlatmayla marka kimliği öne çıkarıldı.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Banko ve Duvar Elemanları', desc: 'Işıklı karşılama bankosu, teşhir vitrinleri, saksı modülleri ve duvar panelleri üretildi.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Kurulum ve Teslim', desc: 'LED ekranlar, aydınlatma ve mobilya yerleşimi açılıştan önce tamamlandı.' }
+    ],
+    gallery: [
+      { src: '/assets/images/projects/sonmezler-gallery-1.jpg', caption: 'Sönmezler Metal standı, 2023, genel görünüm' },
+      { src: '/assets/images/projects/sonmezler-gallery-2.jpg', caption: 'Sönmezler Metal standı, 2023, oturma alanı' },
+      { src: '/assets/images/projects/sonmezler-gallery-3.jpg', caption: 'Sönmezler Metal standı, 2024, koridordan görünüm' },
+      { src: '/assets/images/projects/sonmezler-gallery-4.jpg', caption: 'Sönmezler Metal standı, 2024, karşılama bankosu' }
+    ]
+  },
+  jeanologia: {
+    title: 'Jeanologia',
+    type: 'FUAR STANDI / ITM 2024 / İSTANBUL',
+    lead: 'Tekstil bitim teknolojilerini sergileyen açık kurgulu fuar standı: makine teşhir alanları, ürün duvarları ve görüşme bölümleri.',
+    heroImg: '/assets/images/projects/jeanologia-hero.jpg',
+    heroCaption: 'Jeanologia — ITM 2024 Fuar Standı',
+    client: 'Jeanologia',
+    location: 'İstanbul (ITM 2024)',
+    year: '2024',
+    area: '',
+    fabrication: 'Lake Duvar Panelleri & Makine Teşhir Platformları',
+    scope: ['Stand Tasarımı', 'Makine Teşhir Alanları', 'LED Ekran Entegrasyonu', 'Ürün Teşhir Duvarları', 'Anahtar Teslim'],
+    pillars: [
+      { step: '01 / MİMARİ KONSEPT', title: 'Açık ve Aydınlık Kurgu', desc: 'Beyaz yüzeyler ve açık geçişlerle makineler ve ürünler her yönden görülebilecek şekilde yerleştirildi.' },
+      { step: '02 / ATÖLYE İMALATI', title: 'Duvar ve Teşhir Elemanları', desc: 'Lake duvar panelleri, ürün askı sistemleri ve banko gibi teşhir elemanları üretildi.' },
+      { step: '03 / SAHA TESLİMİ', title: 'Makine Yerleşimi', desc: 'Ağır makinelerin yerleşimi ve LED ekran kurulumu açılıştan önce tamamlandı.' }
+    ],
+    gallery: [
+      { src: '/assets/images/projects/jeanologia-gallery-1.jpg', caption: 'Jeanologia standı, koridordan görünüm' },
+      { src: '/assets/images/projects/jeanologia-gallery-2.jpg', caption: 'Jeanologia standı, LED ekran ve oturma alanı' },
+      { src: '/assets/images/projects/jeanologia-gallery-3.jpg', caption: 'Jeanologia standı, ürün teşhir duvarı' },
+      { src: '/assets/images/projects/jeanologia-gallery-4.jpg', caption: 'Jeanologia standı, makine teşhir alanı' }
+    ]
+  },
   dardanel: {
     title: 'Dardanel',
     type: 'FUAR STANDI / WORLDFOOD / İSTANBUL',

@@ -44,6 +44,8 @@ export default defineConfig({
         projeler: resolve(__dirname, 'projeler.html'),
         projeYamaha: resolve(__dirname, 'proje-yamaha.html'),
         projeMercedes: resolve(__dirname, 'proje-mercedes.html'),
+        projeSonmezler: resolve(__dirname, 'proje-sonmezler.html'),
+        projeJeanologia: resolve(__dirname, 'proje-jeanologia.html'),
         projeDardanel: resolve(__dirname, 'proje-dardanel.html'),
         yetkinlikler: resolve(__dirname, 'yetkinlikler.html'),
         hakkimizda: resolve(__dirname, 'hakkimizda.html'),

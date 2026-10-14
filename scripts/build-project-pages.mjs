@@ -15,6 +15,8 @@ const SITE = 'https://projenicdesign.com';
 export const PROJECT_PAGES = [
   { key: 'yamaha', file: 'proje-yamaha.html', meta: 'Fuar standı · Boat Show 2024 · İstanbul', desc: 'Ağır deniz motorları sergilemesi için özel statik güçlendirilmiş platform mimarisi, monolitik lake bankolar ve VIP ağırlama alanı.' },
   { key: 'mercedes', file: 'proje-mercedes.html', meta: 'Etkinlik standı · 2023 · İstanbul', desc: 'Mercedes-Benz Türk\'ün kurumsal kimliğini yansıtan minimalist ahşap hacimler, özel karşılama bankoları ve akustik bölmeler.' },
+  { key: 'sonmezler', file: 'proje-sonmezler.html', meta: 'Fuar standı · 2023–2024', desc: 'Çelik üreticisi için iki farklı fuarda kurduğumuz standlar: ışıklı logo duvarları, LED ekranlar, görüşme ve karşılama alanları.' },
+  { key: 'jeanologia', file: 'proje-jeanologia.html', meta: 'Fuar standı · ITM 2024 · İstanbul', desc: 'Tekstil bitim teknolojilerini sergileyen açık kurgulu fuar standı: makine teşhir alanları, ürün duvarları ve görüşme bölümleri.' },
   { key: 'dardanel', file: 'proje-dardanel.html', meta: 'Fuar standı · WorldFood 2024 · İstanbul', desc: 'Canlı şef mutfak istasyonu, interaktif tadım barı ve ışıklı pleksi teşhir duvarlarıyla lezzet ve mimariyi buluşturan fuar standı.' }
 ];
 
