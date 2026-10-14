@@ -30,7 +30,7 @@ export const projectData = {
     heroImg: '/assets/images/projects/sonmezler-hero.jpg',
     heroCaption: 'Sönmezler Metal — Fuar Standı',
     client: 'Sönmezler Metal',
-    location: 'Fuar standları',
+    location: '',
     year: '2023–2024',
     area: '',
     fabrication: 'Işıklı Logo Duvarları & Lake Bankolar',

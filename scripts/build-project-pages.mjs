@@ -107,7 +107,7 @@ PROJECT_PAGES.forEach((page, i) => {
 
         <dl class="pp-spec">
           <div class="pp-spec__client"><dt>Müşteri</dt><dd>${esc(d.client)}</dd></div>
-          <div><dt>Yer</dt><dd>${esc(d.location)}</dd></div>
+          ${d.location ? `<div><dt>Yer</dt><dd>${esc(d.location)}</dd></div>` : ''}
           <div><dt>Yıl</dt><dd class="num">${esc(d.year)}</dd></div>
           ${d.area ? `<div><dt>Ölçü</dt><dd class="num">${esc(d.area)}</dd></div>` : ''}
           ${d.height ? `<div><dt>Yükseklik</dt><dd class="num">${esc(d.height)}</dd></div>` : ''}
