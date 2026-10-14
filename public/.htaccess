@@ -1,6 +1,13 @@
 # ── PROJENIC DESIGN SYSTEM & HOSTINGER APACHE CONFIG ─────────────────
 # Güvenlik, HTTPS yönlendirmesi, önbellekleme ve sıkıştırma kuralları
 
+# HTTP/3 (QUIC) önerisi kapalı: Hostinger CDN'de QUIC bağlantısı takılıp sayfa dosyalarını yüklemiyordu.
+# Tarayıcılar HTTP/2 ile bağlanır.
+<IfModule mod_headers.c>
+  Header always unset Alt-Svc
+  Header unset Alt-Svc
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
