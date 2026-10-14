@@ -128,7 +128,7 @@ function cineHero() {
   section.classList.add('is-live'); // CSS yedek açılışını iptal et, GSAP üstlenir
   gsap.timeline({ defaults: { ease: 'expo.out' } })
     .fromTo(img, { scale: 1.25 }, { scale: 1.08, duration: 2.6 }, 0)
-    .fromTo('.chero__title .line > span', { yPercent: 110 }, { yPercent: 0, duration: 1.4, stagger: 0.1 }, 0.15)
+    .fromTo('.chero__title .line > span', { y: 0, yPercent: 110 }, { y: 0, yPercent: 0, duration: 1.4, stagger: 0.1 }, 0.15)
     .fromTo(['.chero__lead', '.chero__actions'], { y: 24 }, { y: 0, duration: 1.1, stagger: 0.08 }, 0.3);
   gsap.timeline({ scrollTrigger: { trigger: section, start: 'top top', end: 'bottom top', scrub: true } })
     .to(media, { yPercent: 18, scale: 1.1, ease: 'none' }, 0)
