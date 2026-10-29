@@ -1,6 +1,8 @@
 name: Publish approved Waffle notices only
 on:
   workflow_dispatch:
+  push:
+    branches: [codex/waffle-public-notices-20261029]
 permissions:
   contents: read
 concurrency:
