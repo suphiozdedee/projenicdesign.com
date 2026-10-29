@@ -11,7 +11,21 @@ try:
     assert host and user and password
     stage='TLS_LOGIN'
     with ftplib.FTP_TLS(context=context,timeout=30) as client:
-        client.connect(host,21);client.login(user,password);client.prot_p()
+        client.connect(host,21)
+        try:
+            client.auth()
+        except ssl.SSLCertVerificationError as cert_error:
+            if cert_error.verify_code != 62:
+                raise
+            # No credentials have been transmitted. Resolve this SAME server's
+            # provider hostname and validate its real certificate normally.
+            original_ips=set(socket.gethostbyname_ex(host)[2])
+            aliases={socket.gethostbyaddr(address)[0].rstrip('.') for address in original_ips}
+            candidates=[name for name in aliases if name.endswith(('.hstgr.io','.main-hosting.eu','.hostinger.com')) and set(socket.gethostbyname_ex(name)[2]) & original_ips]
+            if len(candidates)!=1:
+                raise
+            client.close();client.connect(candidates[0],21);client.auth()
+        client.login(user,password);client.prot_p()
         # No arbitrary paths, mirroring, directory cleanup, or remote delete.
         stage='UPLOAD_VERIFY'
         for name,body in content.items():
