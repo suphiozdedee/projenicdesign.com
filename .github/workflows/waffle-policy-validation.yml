@@ -1,0 +1,35 @@
+name: Validate Waffle policy sources
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'public/waffle*.html'
+      - 'scripts/deploy.js'
+      - 'scripts/deploy.safety.test.js'
+      - '.github/workflows/deploy.yml'
+      - '.github/workflows/waffle-policy-validation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'public/waffle*.html'
+      - 'scripts/deploy.js'
+      - 'scripts/deploy.safety.test.js'
+      - '.github/workflows/deploy.yml'
+      - '.github/workflows/waffle-policy-validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deployment-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check deployment without network or credentials
+        run: node --test scripts/deploy.safety.test.js

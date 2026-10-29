@@ -3,6 +3,14 @@ name: Deploy to Hostinger
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'public/waffle.html'
+      - 'public/waffle-gizlilik.html'
+      - 'public/waffle-kullanim-kosullari.html'
+      - 'scripts/deploy.js'
+      - 'scripts/deploy.safety.test.js'
+      - '.github/workflows/deploy.yml'
+      - '.github/workflows/waffle-policy-validation.yml'
   workflow_dispatch:
 
 concurrency:
@@ -27,22 +35,16 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm ci --ignore-scripts
 
       - name: Build production bundle
         run: npm run build
 
-      - name: Deploy to Hostinger via FTP
+      - name: Deploy to Hostinger via verified FTPS
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_REMOTE_PATH: .
         run: |
-          for i in 1 2 3; do
-            echo "FTP attempt $i"
-            node scripts/deploy.js && exit 0
-            echo "FTP failed, waiting 20s"
-            sleep 20
-          done
-          exit 1
+          node scripts/deploy.js
