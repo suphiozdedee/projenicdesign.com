@@ -7,6 +7,8 @@ on:
       - 'public/waffle.html'
       - 'public/waffle-gizlilik.html'
       - 'public/waffle-kullanim-kosullari.html'
+      - 'public/waffle-operasyon.html'
+      - 'public/waffle-operasyon-gizlilik.html'
       - 'scripts/deploy.js'
       - 'scripts/deploy.safety.test.js'
       - '.github/workflows/deploy.yml'
